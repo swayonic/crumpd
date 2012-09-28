@@ -1,0 +1,12 @@
+<% if period_list.nil? or period_list.count == 0 -%>
+	<i>None</i>
+<% else -%>
+	<ul>
+		<% for p in period_list -%>
+			<li>
+				<%= link_to p.name, period_path(p) %>
+				<%= p.start %> - <%= p.end %>
+			</li>
+		<% end -%>
+	</ul>
+<% end -%>

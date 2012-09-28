@@ -1,3 +1,30 @@
-<h1>MPD Home</h1>
+<% if @sso.nil? -%>
+	<div class="grid_12">
+		You are not authorized to use this site. Please log in.
+	</div>
+<% else -%>
 
-Welcome!
+<div class="grid_12">
+	<h1>MPD Home</h1>
+</div>
+<div class="clear"></div>
+
+<% if @sso.is_admin or @sso.periods.count > 0 -%>
+	<div class="grid_12">
+		<h2>Coaching Periods</h2>
+		<% if @sso.is_admin -%>
+			<h3>Current</h3>
+			<%= render :partial => 'period_list', :object => Period.active %>
+			<h3>Future</h3>
+			<%= render :partial => 'period_list', :object => Period.future %>
+			<h3>Past</h3>
+			<%= render :partial => 'period_list', :object => Period.past %>
+		<% else -%>
+			
+		<% end -%>
+	</div>
+	<div class="clear"></div>
+<% end -%>
+
+<% end %>
+

@@ -1,4 +1,5 @@
 <%= form_for :user, :html => {:action => login_path} do |f| %>
+	<%= print_flashes %>
 	<table>
 		<tr>
 			<td><%= f.label :account_number %></td>

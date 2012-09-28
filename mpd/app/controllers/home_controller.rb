@@ -17,6 +17,7 @@ class HomeController < ApplicationController
 			session[:username] = @user.account_number
 			redirect_to :action => :index
 		else
+			flash.now[:error] = "No user has the account number: #{@user.account_number}"
 			render :login
 		end
 	end
@@ -29,7 +30,7 @@ class HomeController < ApplicationController
 	private
 	def fake_cas
 		if session[:username] == nil
-			@sso = User.new
+			@sso = nil
 		else
 			@sso = User.find_by_account_number(session[:username])
 		end

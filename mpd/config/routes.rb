@@ -60,4 +60,6 @@ Mpd::Application.routes.draw do
 	match 'login' => 'home#do_login', :via => :post
 	match 'logout' => 'home#logout'
 
+	resources :period
+
 end

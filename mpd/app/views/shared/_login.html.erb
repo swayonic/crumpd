@@ -5,7 +5,7 @@
 				<%= image_tag "logo.png" %>
 			</td>
 			<td align=right valign=center>
-				<% if @sso.account_number.nil? -%>
+				<% if @sso.nil? -%>
 					<%= link_to 'Log In', login_path %>
 				<% else -%>
 					<%= @sso.display_name %>
