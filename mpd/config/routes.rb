@@ -1,4 +1,11 @@
 Mpd::Application.routes.draw do
+
+  resources :teams
+
+  resources :groups
+
+  resources :users
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -60,6 +67,6 @@ Mpd::Application.routes.draw do
 	match 'login' => 'home#do_login', :via => :post
 	match 'logout' => 'home#logout'
 
-	resources :period
+  resources :periods
 
 end

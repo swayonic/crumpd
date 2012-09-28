@@ -5,7 +5,7 @@
 		<% for p in period_list -%>
 			<li>
 				<%= link_to p.name, period_path(p) %>
-				<%= p.start %> - <%= p.end %>
+				(<%= p.start %> - <%= p.end %>)
 			</li>
 		<% end -%>
 	</ul>

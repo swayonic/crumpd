@@ -1,4 +1,0 @@
-class PeriodController < ApplicationController
-
-
-end

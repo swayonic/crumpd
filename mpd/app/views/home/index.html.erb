@@ -1,7 +1,5 @@
 <% if @sso.nil? -%>
-	<div class="grid_12">
-		You are not authorized to use this site. Please log in.
-	</div>
+	<%= render 'shared/unauthorized' %>
 <% else -%>
 
 <div class="grid_12">

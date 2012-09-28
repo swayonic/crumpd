@@ -4,11 +4,11 @@
 			<td>
 				<%= image_tag "logo.png" %>
 			</td>
-			<td align=right valign=center>
+			<td>
 				<% if @sso.nil? -%>
 					<%= link_to 'Log In', login_path %>
 				<% else -%>
-					<%= @sso.display_name %>
+					<%= @sso.display_name %> |
 					<%= link_to 'Log Out', logout_path %>
 				<% end -%>
 			</td>

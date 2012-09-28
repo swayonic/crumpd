@@ -36,4 +36,12 @@ class HomeController < ApplicationController
 		end
 	end
 
+	def admin_only
+		if @sso.nil? or !@sso.is_admin
+			render :partial => 'shared/unauthorized'
+			return false
+		end
+		return true
+	end
+
 end
