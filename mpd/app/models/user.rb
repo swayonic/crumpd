@@ -12,4 +12,8 @@ class User < ActiveRecord::Base
 	has_many :teams_as_leader, :through => :team_leaders, :source => :team
 	has_many :periods, :through => :period_admins
 
+	def display_name
+		"#{first_name} #{last_name}"
+	end
+
 end

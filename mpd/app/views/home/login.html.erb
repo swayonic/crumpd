@@ -1,0 +1,9 @@
+<%= form_for :user, :html => {:action => login_path} do |f| %>
+	<table>
+		<tr>
+			<td><%= f.label :account_number %></td>
+			<td><%= f.text_field :account_number %></td>
+		</tr>
+	</table>
+	<%= submit_tag 'Submit' %>
+<% end %>

@@ -11,3 +11,18 @@
  *= require_self
  *= require_tree .
  */
+
+body {
+	background: #123;
+	color: #222;
+	height: auto;
+	padding-bottom: 20px;
+}
+
+.container_12,
+.container_14,
+.container_16 {
+	background-color: #fff;
+	margin-bottom: 20px;
+	padding-bottom: 10px;
+}

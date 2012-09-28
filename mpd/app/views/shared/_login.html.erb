@@ -1,0 +1,22 @@
+<div class="grid_10 prefix_1 suffix_1 login_bar">
+	<table width="100%">
+		<tr>
+			<td>
+				<%= image_tag "logo.png" %>
+			</td>
+			<td align=right valign=center>
+				<% if @sso.account_number.nil? -%>
+					<%= link_to 'Log In', login_path %>
+				<% else -%>
+					<%= @sso.display_name %>
+					<%= link_to 'Log Out', logout_path %>
+				<% end -%>
+			</td>
+		</tr>
+	</table>
+</div>
+
+<div class="clear"></div>
+
+<hr>
+<hr>

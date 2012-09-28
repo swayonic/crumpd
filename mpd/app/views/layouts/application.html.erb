@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Mpd</title>
-  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <title><%= @page_title or "MPD - #{params[:controller].to_s.capitalize}" %></title>
+	<%= stylesheet_link_tag    "application", :media => 'all'  %>
+	<%= yield :stylesheets %>
   <%= javascript_include_tag "application" %>
+	<%= yield :javascripts %>
   <%= csrf_meta_tags %>
 </head>
 <body>
-
-<%= yield %>
-
+<div class="container_12">
+	<%= render :partial => 'shared/login' %>
+	<%= content_for?(:content) ? yield(:content) : yield %>
+</div>
 </body>
 </html>
