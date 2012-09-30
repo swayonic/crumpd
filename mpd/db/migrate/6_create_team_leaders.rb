@@ -22,6 +22,11 @@ class CreateTeamLeaders < ActiveRecord::Migration
 		l.user = User.find_by_last_name("Tayne")
 		l.team = Team.first
 		l.save
+		
+		l = TeamLeader.new
+		l.user = User.find_by_last_name("Couts")
+		l.team = Team.first
+		l.save
 
   end
 

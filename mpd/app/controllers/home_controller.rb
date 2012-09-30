@@ -17,7 +17,7 @@ class HomeController < ApplicationController
 			session[:username] = @user.account_number
 			redirect_to :action => :index
 		else
-			flash.now[:error] = "No user has the account number: #{@user.account_number}"
+			flash.now[:alert] = "No user has the account number: #{@user.account_number}"
 			render :login
 		end
 	end

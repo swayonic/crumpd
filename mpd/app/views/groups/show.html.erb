@@ -1,5 +1,29 @@
-<p id="notice"><%= notice %></p>
+<%= page_header "Coaching Group - " + @group.name %>
 
+<div class="grid_4">
+	<h2 width="100%" align="center">Coaches</h2>
+	<% if @group.coaches.nil? or @group.coaches.count == 0 -%>
+		<i>None</i>
+	<% else -%>
+		<ul>
+			<% for c in @group.coaches -%>
+				<li><%= link_to c.display_name, user_path(c) %></li>
+			<% end -%>
+		</ul>
+	<% end %>
+</div>
 
-<%= link_to 'Edit', edit_group_path(@group) %> |
-<%= link_to 'Back', groups_path %>
+<div class="grid_8">
+	<h2 width="100%" align="center">Group Members</h2>
+	<% if @group.members.nil? or @group.members.count == 0 -%>
+		<i>None</i>
+	<% else -%>
+		<ul>
+			<% for m in @group.members -%>
+				<li><%= link_to m.display_name, user_path(m) %></li>
+			<% end -%>
+		</ul>
+	<% end %>
+</div>
+
+<div class="clear"></div>

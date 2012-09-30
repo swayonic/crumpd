@@ -1,8 +1,9 @@
 Mpd::Application.routes.draw do
 
-  resources :teams
-
-  resources :groups
+  resources :periods do
+		resources :teams
+		resources :groups
+	end
 
   resources :users
 
@@ -66,7 +67,5 @@ Mpd::Application.routes.draw do
 	match 'login' => 'home#login', :via => :get
 	match 'login' => 'home#do_login', :via => :post
 	match 'logout' => 'home#logout'
-
-  resources :periods
 
 end

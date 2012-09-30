@@ -1,10 +1,7 @@
 .flash_notice {
 	color: green;
 }
-.flash_warning {
-	color: yellow;
-}
-.flash_error {
+.flash_alert {
 	color: red;
 }
 

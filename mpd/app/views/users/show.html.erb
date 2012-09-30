@@ -1,5 +1,41 @@
-<p id="notice"><%= notice %></p>
+<%= page_header "User - " + @user.display_name %>
 
+<div class="grid_3 suffix_1">
+	<table>
+		<tr>
+			<td>First Name</td>
+			<td>&nbsp;</td>
+			<td><%= @user.first_name %></td>
+		</tr>
+		<tr>
+			<td>Last Name</td>
+			<td>&nbsp;</td>
+			<td><%= @user.last_name %></td>
+		</tr>
+		<tr>
+			<td>Account Number</td>
+			<td>&nbsp;</td>
+			<td><%= @user.account_number %></td>
+		</tr>
+		<tr>
+			<td>Email Address</td>
+			<td>&nbsp;</td>
+			<td><%= @user.email %></td>
+		</tr>
+		<tr>
+			<td>Phone Number</td>
+			<td>&nbsp;</td>
+			<td><%= @user.phone %></td>
+		</tr>
+	</table>
+	<%= link_to "Edit", edit_user_path(@user) %>
+</div>
 
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+<div class="grid_4">
+	<h2>Test</h2>
+</div>
+<div class="grid_4">
+	<h2>Test</h2>
+</div>
+
+<div class="clear"></div>

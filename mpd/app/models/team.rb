@@ -3,8 +3,8 @@ class Team < ActiveRecord::Base
 
 	belongs_to :period
 	has_many :assignments
-	has_many :members, :through => :assignments, :source => :user
+	has_many :members, :through => :assignments, :source => :user, :order => "last_name, first_name DESC"
 	has_many :team_leaders
-	has_many :leaders, :through => :team_leaders, :source => :user
+	has_many :leaders, :through => :team_leaders, :source => :user, :order => "last_name, first_name DESC"
 
 end

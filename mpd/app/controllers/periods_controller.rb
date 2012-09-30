@@ -1,6 +1,7 @@
 class PeriodsController < ApplicationController
 	before_filter :admin_only, :except => :show
-  # GET /periods
+
+	# GET /periods
   def index
 		redirect_to root_path
   end
@@ -9,6 +10,12 @@ class PeriodsController < ApplicationController
   def show
 		#TODO authentication
     @period = Period.find(params[:id])
+
+		@new_group = Group.new
+		@new_group.period = @period
+		
+		@new_team = Team.new
+		@new_team.period = @period
   end
 
   # GET /periods/new

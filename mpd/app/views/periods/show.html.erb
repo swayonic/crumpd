@@ -1,5 +1,71 @@
-<p id="notice"><%= notice %></p>
+<%= page_header "Coaching Period - " + @period.name %>
 
+<div class="grid_4">
+	<h2 width="100%" align="center">Coaching Groups</h2>
+	<% if @period.groups.nil? or @period.groups.count == 0 -%>
+		<i>None</i>
+	<% else -%>
+		<ul>
+			<% for g in @period.groups -%>
+				<li>
+					<%= link_to g.name, period_group_path(@period, g) %>,
+					<% if g.coaches.nil? or g.coaches.count == 0 -%>
+						Coaches: <i>None</i>
+					<% elsif g.coaches.count == 1 -%>
+						Coach: <%= g.coaches.first.display_name %>
+					<% else -%>
+						Coaches: <%= g.coaches.first.display_name -%>
+						<% for index in 2..g.coaches.count -%>, <%= g.coaches[index].display_name -%><% end -%>
+					<% end -%>
+				</li>
+			<% end -%>
+		</ul>
+	<% end -%>
+	<%= form_for [@period, @new_group] do |f| -%>
+		<%= f.hidden_field :period_id %>
+		<%= f.text_field :name, :size => 12 %>
+		<%= f.submit %>
+	<% end -%>
+</div>
 
-<%= link_to 'Edit', edit_period_path(@period) %> |
-<%= link_to 'Back', periods_path %>
+<div class="grid_4">
+	<h2 width="100%" align="center">Teams</h2>
+	<% if @period.teams.nil? or @period.teams.count == 0 -%>
+		<i>None</i>
+	<% else -%>
+		<ul>
+			<% for t in @period.teams -%>
+				<li>
+					<%= link_to t.name, period_team_path(@period, t) %>,
+					<% if t.leaders.nil? or t.leaders.count == 0 -%>
+						Leaders: <i>None</i>
+					<% elsif t.leaders.count == 1 -%>
+						Leader: <%= t.leaders.first.display_name %>
+					<% else -%>
+						Leaders: <%= t.leaders.first.display_name -%><% for index in 1..t.leaders.count-1 -%>, <%= t.leaders[index].display_name -%><% end -%>
+					<% end -%>
+				</li>
+			<% end -%>
+		</ul>
+	<% end -%>
+	<%= form_for [@period, @new_team] do |f| -%>
+		<%= f.hidden_field :period_id %>
+		<%= f.text_field :name, :size => 12 %>
+		<%= f.submit %>
+	<% end -%>
+</div>
+
+<div class="grid_4">
+	<h2 width="100%" align="center">Administrators</h2>
+	<% if @period.admins.nil? or @period.admins.count == 0 -%>
+		<i>None</i>
+	<% else -%>
+		<ul>
+			<% for a in @period.admins -%>
+				<li><%= link_to a.display_name, user_path(a) %></li>
+			<% end -%>
+		</ul>
+	<% end -%>
+</div>
+
+<div class="clear"></div>

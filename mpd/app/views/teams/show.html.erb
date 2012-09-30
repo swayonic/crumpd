@@ -1,5 +1,29 @@
-<p id="notice"><%= notice %></p>
+<%= page_header "Team - " + @team.name %>
 
+<div class="grid_4">
+	<h2 width="100%" align="center">Team Leaders</h2>
+	<% if @team.leaders.nil? or @team.leaders.count == 0 -%>
+		<i>None</i>
+	<% else -%>
+		<ul>
+			<% for l in @team.leaders -%>
+				<li><%= link_to l.display_name, user_path(l) %></li>
+			<% end -%>
+		</ul>
+	<% end %>
+</div>
 
-<%= link_to 'Edit', edit_team_path(@team) %> |
-<%= link_to 'Back', teams_path %>
+<div class="grid_8">
+	<h2 width="100%" align="center">Team Members</h2>
+	<% if @team.members.nil? or @team.members.count == 0 -%>
+		<i>None</i>
+	<% else -%>
+		<ul>
+			<% for m in @team.members -%>
+				<li><%= link_to m.display_name, user_path(m) %></li>
+			<% end -%>
+		</ul>
+	<% end %>
+</div>
+
+<div class="clear"></div>
