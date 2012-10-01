@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title><%= @page_title or "MPD - #{params[:controller].to_s.capitalize}" %></title>
+  <title>MPD - <%= @page_title or params[:controller].to_s.capitalize %></title>
 	<%= stylesheet_link_tag    "application", :media => 'all'  %>
 	<%= yield :stylesheets %>
   <%= javascript_include_tag "application" %>

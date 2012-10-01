@@ -8,7 +8,7 @@
 		<ul>
 			<% for g in @period.groups -%>
 				<li>
-					<%= link_to g.name, period_group_path(@period, g) %>,
+					<%= link_to g.name, g %>,
 					<% if g.coaches.nil? or g.coaches.count == 0 -%>
 						Coaches: <i>None</i>
 					<% elsif g.coaches.count == 1 -%>
@@ -22,7 +22,6 @@
 		</ul>
 	<% end -%>
 	<%= form_for [@period, @new_group] do |f| -%>
-		<%= f.hidden_field :period_id %>
 		<%= f.text_field :name, :size => 12 %>
 		<%= f.submit %>
 	<% end -%>
@@ -36,7 +35,7 @@
 		<ul>
 			<% for t in @period.teams -%>
 				<li>
-					<%= link_to t.name, period_team_path(@period, t) %>,
+					<%= link_to t.name, t %>,
 					<% if t.leaders.nil? or t.leaders.count == 0 -%>
 						Leaders: <i>None</i>
 					<% elsif t.leaders.count == 1 -%>
@@ -49,7 +48,6 @@
 		</ul>
 	<% end -%>
 	<%= form_for [@period, @new_team] do |f| -%>
-		<%= f.hidden_field :period_id %>
 		<%= f.text_field :name, :size => 12 %>
 		<%= f.submit %>
 	<% end -%>

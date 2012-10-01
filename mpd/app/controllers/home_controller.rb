@@ -27,6 +27,9 @@ class HomeController < ApplicationController
 		redirect_to :action => :index
 	end
 
+	def unauthorized
+	end
+
 	private
 	def fake_cas
 		if session[:username] == nil

@@ -1,18 +1,14 @@
-class TeamsController < ApplicationController
+class TeamsController < HomeController
   
-	# GET /teams
-  def index
-    @teams = Team.all
-  end
-
   # GET /teams/1
   def show
     @team = Team.find(params[:id])
   end
 
-  # GET /teams/new
+  # GET /periods/1/teams/new
   def new
-    @team = Team.new
+		@period = Period.find(params[:period_id])
+    @team = @period.teams.build
   end
 
   # GET /teams/1/edit
@@ -20,9 +16,10 @@ class TeamsController < ApplicationController
     @team = Team.find(params[:id])
   end
 
-  # POST /teams
+  # POST /periods/1/teams
   def create
-    @team = Team.new(params[:team])
+		@period = Period.find(params[:period_id])
+    @team = @period.teams.build(params[:team])
 		
 		if @team.save
 			redirect_to @team, notice: 'Team was successfully created.'
@@ -47,6 +44,15 @@ class TeamsController < ApplicationController
     @team = Team.find(params[:id])
     @team.destroy
 		
-		redirect_to teams_url
+		redirect_to period_url(@team.period)
   end
+
+	# DELETE /team_leaders/1
+	def destroy_leader
+		@leader = TeamLeader.find(params[:id])
+		@leader.destroy
+
+		render :text => 'Team Leader destroyed.'
+	end
+
 end

@@ -1,18 +1,14 @@
-class GroupsController < ApplicationController
+class GroupsController < HomeController
   
-	# GET /groups
-  def index
-    @groups = Group.all
-  end
-
   # GET /groups/1
   def show
     @group = Group.find(params[:id])
   end
 
-  # GET /groups/new
+  # GET /periods/1/groups/new
   def new
-    @group = Group.new
+		@period = Period.find(params[:period_id])
+		@group = @period.groups.build
   end
 
   # GET /groups/1/edit
@@ -20,9 +16,10 @@ class GroupsController < ApplicationController
     @group = Group.find(params[:id])
   end
 
-  # POST /groups
+  # POST /periods/1/groups
   def create
-    @group = Group.new(params[:group])
+    @period = Period.find(params[:period_id])
+		@group = @period.groups.build(params[:group])
 		
 		if @group.save
 			redirect_to @group, notice: 'Group was successfully created.'
@@ -47,6 +44,15 @@ class GroupsController < ApplicationController
     @group = Group.find(params[:id])
     @group.destroy
 		
-		redirect_to groups_url
+		redirect_to period_url(@group.period)
   end
+	
+	# DELETE /group_coaches/1
+	def destroy_coach
+		@coach = GroupCoach.find(params[:id])
+		@coach.destroy
+
+		render :text => 'Group Coach destroyed.'
+	end
+
 end

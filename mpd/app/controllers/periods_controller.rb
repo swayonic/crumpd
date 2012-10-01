@@ -1,4 +1,4 @@
-class PeriodsController < ApplicationController
+class PeriodsController < HomeController
 	before_filter :admin_only, :except => :show
 
 	# GET /periods
@@ -57,5 +57,14 @@ class PeriodsController < ApplicationController
     
 		redirect_to periods_url
   end
+	
+	# DELETE /period_admins/1
+	def destroy_admin
+		@admin = PeriodAdmin.find(params[:id])
+		@admin.destroy
+
+		render :text => 'Period Admin destroyed.'
+	end
+
 
 end

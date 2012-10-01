@@ -1,14 +1,35 @@
 <%= page_header "Team - " + @team.name %>
 
 <div class="grid_4">
-	<h2 width="100%" align="center">Team Leaders</h2>
+	<h2>Description</h2>
+	<table class="description">
+		<tr>
+			<td>Team Name</td>
+			<td><%= @team.name %></td>
+		</tr>
+		<tr>
+			<td>Coaching Period</td>
+			<td><%= link_to @team.period.name, period_path(@team.period) %></td>
+		</tr>
+	</table>
+	<%= link_to 'Edit', edit_team_path(@team) %>
+
+	<br>
+	<br>
+
+	<h2>Leaders</h2>
 	<% if @team.leaders.nil? or @team.leaders.count == 0 -%>
 		<i>None</i>
 	<% else -%>
 		<ul>
-			<% for l in @team.leaders -%>
-				<li><%= link_to l.display_name, user_path(l) %></li>
+			<% for l in @team.team_leaders.sort_by{ |l| [l.user.last_name, l.user.first_name]} -%>
+				<li>
+					<%= link_to l.user.display_name, user_path(l.user) %>
+					<%= link_to image_tag('icons/silk/cross.png'), url_for(:action => 'destroy_leader', :id => l.id), method: :delete, data: { confirm: 'Are you sure you want to remove this team leader?' } %>
+				</li>
 			<% end -%>
+			
+			TODO: New
 		</ul>
 	<% end %>
 </div>

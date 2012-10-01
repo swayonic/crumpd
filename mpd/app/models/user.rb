@@ -6,10 +6,10 @@ class User < ActiveRecord::Base
 	has_many :team_leaders
 	has_many :period_admins
 
-	has_many :groups_as_member, :through => :assignments, :source => :group, :order => "name DESC"
-	has_many :groups_as_coach, :through => :group_coaches, :source => :group, :order => "name DESC"
-	has_many :teams_as_member, :through => :assignments, :source => :team, :order => "name DESC"
-	has_many :teams_as_leader, :through => :team_leaders, :source => :team, :order => "name DESC"
+	has_many :groups_as_member, :through => :assignments, :source => :group, :order => "name"
+	has_many :groups_as_coach, :through => :group_coaches, :source => :group, :order => "name"
+	has_many :teams_as_member, :through => :assignments, :source => :team, :order => "name"
+	has_many :teams_as_leader, :through => :team_leaders, :source => :team, :order => "name"
 	has_many :periods, :through => :period_admins, :order => "start DESC"
 
 	validates :email, :format => { 

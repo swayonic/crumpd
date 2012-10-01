@@ -1,11 +1,21 @@
 Mpd::Application.routes.draw do
 
-  resources :periods do
-		resources :teams
-		resources :groups
+  resources :periods, :shallow => true do
+		resources :teams, :shallow => true do
+			resources :leaders
+		end
+		resources :groups, :shallow => true do
+			resources :coaches
+		end
+		resources :admins
 	end
 
   resources :users
+  
+	match 'login' => 'home#login', :via => :get
+	match 'login' => 'home#do_login', :via => :post
+	match 'logout' => 'home#logout'
+	root :to => 'home#index'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -56,16 +66,11 @@ Mpd::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  root :to => 'home#index'
 
   # See how all your routes lay out with "rake routes"
 
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id))(.:format)'
-
-	match 'login' => 'home#login', :via => :get
-	match 'login' => 'home#do_login', :via => :post
-	match 'logout' => 'home#logout'
 
 end
