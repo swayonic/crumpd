@@ -16,6 +16,9 @@ class PeriodsController < HomeController
 		
 		@new_team = Team.new
 		@new_team.period = @period
+		
+		@new_admin = PeriodAdmin.new
+		@new_admin.period = @period
   end
 
   # GET /periods/new

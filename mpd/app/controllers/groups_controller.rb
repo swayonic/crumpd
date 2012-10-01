@@ -3,6 +3,9 @@ class GroupsController < HomeController
   # GET /groups/1
   def show
     @group = Group.find(params[:id])
+
+		@new_coach = GroupCoach.new
+		@new_coach.group = @group
   end
 
   # GET /periods/1/groups/new

@@ -1,4 +1,5 @@
 <%= page_header "Coaching Period - " + @period.name %>
+<%= flash_header %>
 
 <div class="grid_4">
 	<h2 width="100%" align="center">Coaching Groups</h2>
@@ -59,10 +60,17 @@
 		<i>None</i>
 	<% else -%>
 		<ul>
-			<% for a in @period.admins -%>
-				<li><%= link_to a.display_name, user_path(a) %></li>
+			<% for a in @period.period_admins.sort_by{ |a| [a.user.last_name, a.user.first_name]} -%>
+				<li>
+					<%= link_to a.user.display_name, a.user %>
+					<%= link_to image_tag('icons/silk/delete.png'), a, method: :delete, data: { confirm: 'Are you sure you want to remove this admin?' } %>
+				</li>
 			<% end -%>
 		</ul>
+	<% end -%>
+	<%= form_for [@period, @new_admin] do |f| -%>
+		<%= f.text_field :user_id, :size => 12 %>
+		<%= f.submit 'Add Admin' %>
 	<% end -%>
 </div>
 

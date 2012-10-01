@@ -1,4 +1,5 @@
 <%= page_header "Team - " + @team.name %>
+<%= flash_header %>
 
 <div class="grid_4">
 	<h2>Description</h2>
@@ -25,13 +26,15 @@
 			<% for l in @team.team_leaders.sort_by{ |l| [l.user.last_name, l.user.first_name]} -%>
 				<li>
 					<%= link_to l.user.display_name, user_path(l.user) %>
-					<%= link_to image_tag('icons/silk/cross.png'), url_for(:action => 'destroy_leader', :id => l.id), method: :delete, data: { confirm: 'Are you sure you want to remove this team leader?' } %>
+					<%= link_to image_tag('icons/silk/cross.png'), l, method: :delete, data: { confirm: 'Are you sure you want to remove this team leader?' } %>
 				</li>
 			<% end -%>
-			
-			TODO: New
 		</ul>
 	<% end %>
+	<%= form_for [@team, @new_leader] do |f| -%>
+		<%= f.text_field :user_id, :size => 12 %>
+		<%= f.submit 'Add Leader' %>
+	<% end -%>
 </div>
 
 <div class="grid_8">

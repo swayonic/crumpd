@@ -1,5 +1,9 @@
 module ApplicationHelper
 
+	def flash_header
+		render :partial => 'shared/flash_header'
+	end
+
 	def print_flashes
 		render :partial => 'shared/flash'
 	end

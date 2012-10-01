@@ -3,6 +3,9 @@ class TeamsController < HomeController
   # GET /teams/1
   def show
     @team = Team.find(params[:id])
+
+		@new_leader = TeamLeader.new
+		@new_leader.team = @team
   end
 
   # GET /periods/1/teams/new
