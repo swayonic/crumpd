@@ -2,14 +2,14 @@
 	<table width="100%">
 		<tr>
 			<td>
-				<a href="/"><%= image_tag "logo.png" %></a>
+				<%= link_to image_tag("logo.png"), root_url %></a>
 			</td>
 			<td>
 				<% if @sso.nil? -%>
-					<%= link_to 'Log In', login_path %>
+					<%= link_to 'Log In', login_url %>
 				<% else -%>
 					<%= @sso.display_name %> |
-					<%= link_to 'Log Out', logout_path %>
+					<%= link_to 'Log Out', logout_url %>
 				<% end -%>
 			</td>
 		</tr>

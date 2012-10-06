@@ -26,7 +26,7 @@
 			<% for l in @team.team_leaders.sort_by{ |l| [l.user.last_name, l.user.first_name]} -%>
 				<li>
 					<%= link_to l.user.display_name, user_path(l.user) %>
-					<%= link_to image_tag('icons/silk/cross.png'), l, method: :delete, data: { confirm: 'Are you sure you want to remove this team leader?' } %>
+					<%= link_to image_tag('icons/silk/delete.png'), l, method: :delete, data: { confirm: 'Are you sure you want to remove this team leader?' } %>
 				</li>
 			<% end -%>
 		</ul>
@@ -43,11 +43,18 @@
 		<i>None</i>
 	<% else -%>
 		<ul>
-			<% for m in @team.members -%>
-				<li><%= link_to m.display_name, user_path(m) %></li>
+			<% for a in @team.assignments.sort_by{ |a| [a.user.last_name, a.user.first_name]} -%>
+				<li>
+					<%= link_to a.user.display_name, a.user %>
+					<%= link_to image_tag('icons/silk/delete.png'), team_member_url(a), method: :delete, data: { confirm: 'Are you sure you want to remove this team member?' } %>
+				</li>
 			<% end -%>
 		</ul>
 	<% end %>
+	<%= form_for :user, :url => team_team_members_url(@team) do |f| -%>
+		<%= f.text_field :user_id, :size => 12 %>
+		<%= f.submit 'Add Member' %>
+	<% end -%>
 </div>
 
 <div class="clear"></div>

@@ -5,10 +5,12 @@ class AdminsController < HomeController
 		@period = Period.find(params[:period_id])
 		@admin = @period.period_admins.build(params[:period_admin])
 
-		if @admin.save
-			notice = 'Admin created'
+		if @period.admins.select{ |u| u.id == @admin.user_id}.count > 0
+			flash.notice = 'Admin already exists'
+		elsif @admin.save
+			flash.notice = 'Admin added'
 		else
-			alert = 'Admin not created'
+			flash.alert = 'Admin not added'
 		end
 
 		redirect_to @period

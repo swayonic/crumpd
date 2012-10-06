@@ -50,12 +50,4 @@ class TeamsController < HomeController
 		redirect_to period_url(@team.period)
   end
 
-	# DELETE /team_leaders/1
-	def destroy_leader
-		@leader = TeamLeader.find(params[:id])
-		@leader.destroy
-
-		render :text => 'Team Leader destroyed.'
-	end
-
 end

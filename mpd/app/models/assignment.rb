@@ -4,4 +4,16 @@ class Assignment < ActiveRecord::Base
 	belongs_to :user
 	belongs_to :group
 	belongs_to :team
+
+	# TODO: validate group and team in same period
+
+	def period
+		if !group.nil?
+			return group.period
+		elsif !team.nil?
+			return team.period
+		else
+			return nil
+		end
+	end
 end

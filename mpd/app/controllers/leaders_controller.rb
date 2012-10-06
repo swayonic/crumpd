@@ -6,11 +6,11 @@ class LeadersController < HomeController
 		@leader = @team.team_leaders.build(params[:team_leader])
 
 		if @team.leaders.select{ |u| u.id == @leader.user_id}.count > 0
-			notice = 'Leader already exists'
+			flash.notice = 'Leader already exists'
 		elsif @leader.save
-			notice = 'Leader added'
+			flash.notice = 'Leader added'
 		else
-			alert = 'Leader not added'
+			flash.alert = 'Leader not added'
 		end
 
 		redirect_to @team

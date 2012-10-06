@@ -5,10 +5,12 @@ class CoachesController < HomeController
 		@group = Group.find(params[:group_id])
 		@coach = @group.group_coaches.build(params[:group_coach])
 
-		if @coach.save
-			notice = 'Coach added'
+		if @group.coaches.select{ |u| u.id == @coach.user_id }.count > 0
+			flash.notice = 'Coach already exists'
+		elsif @coach.save
+			flash.notice = 'Coach added'
 		else
-			alert = 'Coach not added'
+			flash.alert = 'Coach not added'
 		end
 
 		redirect_to @group

@@ -3,9 +3,11 @@ Mpd::Application.routes.draw do
   resources :periods, :shallow => true do
 		resources :teams, :shallow => true do
 			resources :leaders, :as => 'team_leaders', :only => [:show, :create, :destroy]
+			resources :team_members, :only => [:show, :create, :destroy]
 		end
 		resources :groups, :shallow => true do
 			resources :coaches, :as => 'group_coaches', :only => [:show, :create, :destroy]
+			resources :group_members, :only => [:show, :create, :destroy]
 		end
 		resources :admins, :as => 'period_admins', :only => [:show, :create, :destroy]
 	end

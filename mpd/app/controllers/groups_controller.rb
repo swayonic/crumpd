@@ -6,6 +6,9 @@ class GroupsController < HomeController
 
 		@new_coach = GroupCoach.new
 		@new_coach.group = @group
+		
+		@new_assn = Assignment.new
+		@new_assn.group = @group
   end
 
   # GET /periods/1/groups/new
