@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 8) do
+ActiveRecord::Schema.define(:version => 9) do
 
   create_table "assignments", :force => true do |t|
     t.integer "user_id"
@@ -53,6 +53,15 @@ ActiveRecord::Schema.define(:version => 8) do
     t.date   "start"
     t.date   "end"
   end
+
+  create_table "pledges", :force => true do |t|
+    t.integer "assignment_id"
+    t.string  "name"
+    t.decimal "amount",        :precision => 10, :scale => 0
+    t.boolean "is_in_hand",                                   :default => false, :null => false
+  end
+
+  add_index "pledges", ["assignment_id"], :name => "fk_pledges_assignments"
 
   create_table "team_leaders", :force => true do |t|
     t.integer "user_id"

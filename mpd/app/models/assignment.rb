@@ -4,6 +4,7 @@ class Assignment < ActiveRecord::Base
 	belongs_to :user
 	belongs_to :group
 	belongs_to :team
+	has_many :pledges
 
 	# TODO: validate group and team in same period
 

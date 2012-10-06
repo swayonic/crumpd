@@ -1,5 +1,7 @@
 Mpd::Application.routes.draw do
 
+  resources :pledges
+
   resources :periods, :shallow => true do
 		resources :teams, :shallow => true do
 			resources :leaders, :as => 'team_leaders', :only => [:show, :create, :destroy]
