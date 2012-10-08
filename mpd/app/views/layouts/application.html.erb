@@ -2,10 +2,18 @@
 <html>
 <head>
   <title>MPD - <%= @page_title or params[:controller].to_s.capitalize %></title>
+<!-- STYLESHEETS -->
 	<%= stylesheet_link_tag    "application", :media => 'all'  %>
 	<%= yield :stylesheets %>
+<!-- JAVASCRIPS -->
   <%= javascript_include_tag "application" %>
+	<% if @javascripts -%>
+		<% for script in @javascripts -%>
+			<%= javascript_include_tag script %>
+		<% end -%>
+	<% end -%>
 	<%= yield :javascripts %>
+<!-- METATAGS -->
   <%= csrf_meta_tags %>
 </head>
 <body>

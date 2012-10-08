@@ -6,6 +6,9 @@ class TeamsController < HomeController
 
 		@new_leader = TeamLeader.new
 		@new_leader.team = @team
+		
+		@new_assn = Assignment.new
+		@new_assn.team = @team
   end
 
   # GET /periods/1/teams/new

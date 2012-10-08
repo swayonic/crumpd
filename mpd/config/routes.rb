@@ -5,16 +5,32 @@ Mpd::Application.routes.draw do
   resources :periods, :shallow => true do
 		resources :teams, :shallow => true do
 			resources :leaders, :as => 'team_leaders', :only => [:show, :create, :destroy]
-			resources :team_members, :only => [:show, :create, :destroy]
+			# Assignments
+			#resources :team_members, :only => [:show, :create, :destroy]
 		end
 		resources :groups, :shallow => true do
 			resources :coaches, :as => 'group_coaches', :only => [:show, :create, :destroy]
-			resources :group_members, :only => [:show, :create, :destroy]
+			# Assignments
+			#resources :group_members, :only => [:show, :create, :destroy]
 		end
 		resources :admins, :as => 'period_admins', :only => [:show, :create, :destroy]
 	end
 
   resources :users
+
+	resources :assignments, :except => [:index, :create, :destroy], :shallow => true do
+		member do
+			delete 'team' # Delete team
+			delete 'group' # Delete group
+		end
+		collection do
+			post 'create_team' # Create w/ team
+			post 'create_group' # Create w/ group
+		end
+
+		resources :pledges
+		resources :reports
+	end
   
 	match 'login' => 'home#login', :via => :get
 	match 'login' => 'home#do_login', :via => :post

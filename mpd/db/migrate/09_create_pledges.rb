@@ -4,6 +4,7 @@ class CreatePledges < ActiveRecord::Migration
 			t.integer :assignment_id
       t.string :name
 			t.decimal :amount
+			t.decimal :frequency
       t.boolean :is_in_hand, :null => false, :default => false
     end
 		
@@ -15,10 +16,10 @@ class CreatePledges < ActiveRecord::Migration
 		SQL
 
 		a = Assignment.first
-		p = Pledge.new(:name => 'Mom', :amount => 100, :is_in_hand => true)
+		p = Pledge.new(:name => 'Mom', :amount => 100, :frequency => 12, :is_in_hand => true)
 		p.assignment = a
 		p.save
-		p = Pledge.new(:name => 'Dad', :amount => 100)
+		p = Pledge.new(:name => 'Dad', :frequency => 12, :amount => 100)
 		p.assignment = a
 		p.save
   end

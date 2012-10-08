@@ -17,8 +17,8 @@ ActiveRecord::Schema.define(:version => 9) do
     t.integer "user_id"
     t.integer "team_id"
     t.integer "group_id"
-    t.decimal "monthly_goal",  :precision => 10, :scale => 0
-    t.decimal "one_time_goal", :precision => 10, :scale => 0
+    t.decimal "monthly_goal", :precision => 10, :scale => 0
+    t.decimal "onetime_goal", :precision => 10, :scale => 0
   end
 
   add_index "assignments", ["group_id"], :name => "fk_assignments_groups"
@@ -58,6 +58,7 @@ ActiveRecord::Schema.define(:version => 9) do
     t.integer "assignment_id"
     t.string  "name"
     t.decimal "amount",        :precision => 10, :scale => 0
+    t.decimal "frequency",     :precision => 10, :scale => 0
     t.boolean "is_in_hand",                                   :default => false, :null => false
   end
 

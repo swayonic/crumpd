@@ -5,7 +5,7 @@ class CreateAssignments < ActiveRecord::Migration
 			t.references :team
 			t.references :group
       t.decimal :monthly_goal
-      t.decimal :one_time_goal
+      t.decimal :onetime_goal
     end
 		
 		execute <<-SQL
@@ -27,8 +27,8 @@ class CreateAssignments < ActiveRecord::Migration
 				REFERENCES groups(id)
 		SQL
 
-		a = Assignment.new(:monthly_goal => 2080, :one_time_goal => 17282)
-		a.user = User.find_by_last_name("Yeager")
+		a = Assignment.new(:monthly_goal => 2080, :onetime_goal => 17282)
+		a.user = User.first
 		a.team = Team.first
 		a.group = Group.first
 		a.save

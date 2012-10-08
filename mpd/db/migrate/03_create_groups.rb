@@ -13,7 +13,7 @@ class CreateGroups < ActiveRecord::Migration
 		SQL
 
 		g = Group.new(
-			:name => 'default'
+			:name => 'Group 1'
 			)
 		g.period = Period.first
 		g.save
