@@ -10,10 +10,10 @@
 		</tr>
 		<tr>
 			<td>Coaching Period</td>
-			<td><%= link_to @group.period.name, period_path(@group.period) %></td>
+			<td><%= link_to @group.period.name, @group.period %></td>
 		</tr>
 	</table>
-	<%= link_to 'Edit', edit_group_path(@group) %>
+	<%= link_to 'Edit', edit_group_url(@group) %>
 
 	<br>
 	<br>
@@ -25,7 +25,7 @@
 		<ul>
 			<% for c in @group.group_coaches.sort_by{ |c| [c.user.last_name, c.user.first_name]} -%>
 				<li>
-					<%= link_to c.user.display_name, user_path(c.user) %>
+					<%= link_to c.user.display_name, c.user %>
 					<%= link_to image_tag('icons/silk/delete.png'), c, method: :delete, data: { confirm: 'Are you sure you want to remove this coach?' } %>
 				</li>
 			<% end -%>
@@ -45,7 +45,7 @@
 		<ul>
 			<% for a in @group.assignments.sort_by{ |a| [a.user.last_name, a.user.first_name]} -%>
 				<li>
-					<%= link_to a.user.display_name, a.user %>
+					<%= link_to a.user.display_name, a %>
 					<%= link_to image_tag('icons/silk/delete.png'), group_assignment_url(a), method: :delete, data: { confirm: 'Are you sure you want to remove this group member?' } %>
 				</li>
 			<% end -%>

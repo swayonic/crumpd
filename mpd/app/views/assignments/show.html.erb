@@ -1,0 +1,126 @@
+<%= page_header @assignment.user.display_name + ' - ' + @assignment.period.name %>
+<%= flash_header %>
+
+<div class="grid_4">
+	<h2>Details</h2>
+	<table class="description">
+		<tr>
+			<td>User</td>
+			<td><%= link_to @assignment.user.display_name, @assignment.user %>
+		</tr>
+		<tr>
+			<td>Team</td>
+			<td>
+				<% if @assignment.team.nil? -%>
+					<i>None</i>
+				<% else -%>
+					<%= link_to @assignment.team.name, @assignment.team %>
+				<% end -%>
+			</td>
+		</tr>
+		<tr>
+			<td>Coaching Group</td>
+			<td>
+				<% if @assignment.group.nil? -%>
+					<i>None</i>
+				<% else -%>
+					<%= link_to @assignment.group.name, @assignment.group %>
+				<% end -%>
+			</td>
+		</tr>
+	</table>
+	<%= link_to 'Edit', edit_assignment_url(@assignment) %>
+</div>
+
+<div class="grid_8">
+	<table width="100%">
+		<tr>
+			<td colspan=2>
+				<h2 width="100%" align="center">Pledges</h2>
+			</td>
+		</tr>
+		<tr>
+			<td width="50%" style='text-align:center;'>
+				<h3>Monthly</h3>
+			</td>
+			<td width="50%" style='text-align:center;'>
+				<h3>One-Time</h3>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<table class='description'>
+					<tr>
+						<td>Goal</td>
+						<td><%= @assignment.monthly_goal %></td>
+					</tr>
+					<tr>
+						<td>Total in-hand</td>
+						<td><%= @assignment.monthly_in_hand %></td>
+					</tr>
+					<tr>
+						<td>Total pledged</td>
+						<td><%= @assignment.monthly_pledged %></td>
+					</tr>
+				</table>
+			</td>
+			<td>
+				<table class='description'>
+					<tr>
+						<td>Goal</td>
+						<td><%= @assignment.onetime_goal %></td>
+					</tr>
+					<tr>
+						<td>Total in-hand</td>
+						<td><%= @assignment.onetime_in_hand %></td>
+					</tr>
+					<tr>
+						<td>Total pledged</td>
+						<td><%= @assignment.onetime_pledged %></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<table width=100% class='description'>
+					<tr>
+						<th>Name</th>
+						<th width=1%>Amount</th>
+						<th width=1%>In-Hand</th>
+						<th width=1%>Delete</th>
+					</tr>
+					<%= render :partial => 'pledge', :collection => @assignment.pledges.monthly %>
+				</table>
+			</td>
+			<td>
+				<table width=100% class='description'>
+					<tr>
+						<th>Name</th>
+						<th width=1%>Amount</th>
+						<th width=1%>In-Hand</th>
+						<th width=1%>Delete</th>
+					</tr>
+					<%= render :partial => 'pledge', :collection => @assignment.pledges.onetime %>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td colspan=2 width="100%">
+				<%= form_for @new_pledge do |f| -%>
+					<h3>New Pledge</h3>
+					<%= f.hidden_field :assignment_id, :size => 12 %>
+					Name: <%= f.text_field :name %>
+					<br>
+					Amount: <%= f.text_field :amount, :size => 4 %>
+					In-Hand: 
+					<%= f.check_box :is_in_hand %>
+					One-Time: 
+					<%= check_box :pledge, :is_onetime %>
+					<%= f.submit 'Add pledge' %>
+				<% end -%>
+			</td>
+		</tr>
+	</table>
+</div>
+<div class="clear"></div>

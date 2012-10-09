@@ -1,0 +1,17 @@
+<% p = pledge -%>
+<tr>
+	<td><%= p.name %></td>
+	<td><%= p.amount %></td>
+	<td style='text-align:center;'>
+		<% if p.is_in_hand -%>
+			<% p.is_in_hand = false -%>
+			<%= link_to image_tag('icons/silk/accept.png'), toggle_pledge_url(p), :method => :put %>
+		<% else -%>
+			<%= link_to image_tag('icons/silk/error.png'), toggle_pledge_url(p), :method => :put %>
+		<% end -%>
+	</td>
+	<td style='text-align:center;'>
+		<%= link_to image_tag('icons/silk/delete.png'), p, :method => :delete%>
+	</td>
+</tr>
+

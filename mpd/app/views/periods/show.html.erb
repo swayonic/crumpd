@@ -2,6 +2,32 @@
 <%= flash_header %>
 
 <div class="grid_4">
+	<h2 width="100%" align="center">Teams</h2>
+	<% if @period.teams.nil? or @period.teams.count == 0 -%>
+		<i>None</i>
+	<% else -%>
+		<ul>
+			<% for t in @period.teams -%>
+				<li>
+					<%= link_to t.name, t %>,
+					<% if t.leaders.nil? or t.leaders.count == 0 -%>
+						Leaders: <i>None</i>
+					<% elsif t.leaders.count == 1 -%>
+						Leader: <%= t.leaders.first.display_name %>
+					<% else -%>
+						Leaders: <%= t.leaders.first.display_name -%><% for index in 1..t.leaders.count-1 -%>, <%= t.leaders[index].display_name -%><% end -%>
+					<% end -%>
+				</li>
+			<% end -%>
+		</ul>
+	<% end -%>
+	<%= form_for [@period, @new_team] do |f| -%>
+		<%= f.text_field :name, :size => 12 %>
+		<%= f.submit %>
+	<% end -%>
+</div>
+
+<div class="grid_4">
 	<h2 width="100%" align="center">Coaching Groups</h2>
 	<% if @period.groups.nil? or @period.groups.count == 0 -%>
 		<i>None</i>
@@ -23,32 +49,6 @@
 		</ul>
 	<% end -%>
 	<%= form_for [@period, @new_group] do |f| -%>
-		<%= f.text_field :name, :size => 12 %>
-		<%= f.submit %>
-	<% end -%>
-</div>
-
-<div class="grid_4">
-	<h2 width="100%" align="center">Teams</h2>
-	<% if @period.teams.nil? or @period.teams.count == 0 -%>
-		<i>None</i>
-	<% else -%>
-		<ul>
-			<% for t in @period.teams -%>
-				<li>
-					<%= link_to t.name, t %>,
-					<% if t.leaders.nil? or t.leaders.count == 0 -%>
-						Leaders: <i>None</i>
-					<% elsif t.leaders.count == 1 -%>
-						Leader: <%= t.leaders.first.display_name %>
-					<% else -%>
-						Leaders: <%= t.leaders.first.display_name -%><% for index in 1..t.leaders.count-1 -%>, <%= t.leaders[index].display_name -%><% end -%>
-					<% end -%>
-				</li>
-			<% end -%>
-		</ul>
-	<% end -%>
-	<%= form_for [@period, @new_team] do |f| -%>
 		<%= f.text_field :name, :size => 12 %>
 		<%= f.submit %>
 	<% end -%>

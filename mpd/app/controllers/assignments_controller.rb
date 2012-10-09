@@ -1,5 +1,31 @@
 class AssignmentsController < HomeController
-  
+
+	# GET /assignments/1
+	def show
+		@assignment = Assignment.find(params[:id])
+
+		@new_pledge = Pledge.new
+		@new_pledge.assignment = @assignment
+	end
+
+	# GET /assignments/1/edit
+	def edit
+		@assignment = Assignment.find(params[:id])
+	end
+
+	def update
+		@assignment = Assignment.find(params[:id])
+
+		params[:assignment][:team_id] = nil if params[:assignment][:team_id] == '0'
+		params[:assignment][:group_id] = nil if params[:assignment][:group_id] == '0'
+
+		if @assignment.update_attributes(params[:assignment])
+			redirect_to @assignment, notice: 'Assignment was successfully updated'
+		else
+			render action: 'edit'
+		end
+	end
+
 	# POST /assignments/create_team
 	def create_team
 		assn = Assignment.new(params[:assignment])
