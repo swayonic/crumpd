@@ -29,4 +29,30 @@ class User < ActiveRecord::Base
 		"#{first_name} #{last_name}"
 	end
 
+	def can_view?(u)
+		return true if can_edit?(u)
+		periods.each do |p|
+			return true if p.admins.include?(u)
+		end
+		teams_as_leader.each do |t|
+			return true if t.period.admins.include?(u)
+		end
+		teams_as_member.each do |t|
+			return true if t.period.admins.include?(u)
+		end
+		groups_as_coach.each do |g|
+			return true if g.period.admins.include?(u)
+		end
+		groups_as_member.each do |g|
+			return true if g.period.admins.include?(u)
+		end
+		return false
+	end
+
+	def can_edit?(u)
+		return true if u.is_admin
+		return true if u == self
+		return false
+	end
+
 end

@@ -20,6 +20,12 @@ class CreateTeams < ActiveRecord::Migration
 			:end => "2013/07/01")
 		t.period = Period.first
 		t.save
+		t = Team.new(
+			:name => "EA NJ",
+			:start => "2012/08/01",
+			:end => "2013/07/01")
+		t.period = Period.first
+		t.save
 
   end
 

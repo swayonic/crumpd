@@ -10,4 +10,14 @@ class Period < ActiveRecord::Base
 	scope :past, lambda { where('? > end', Date.today ) }
 	scope :future, lambda { where('? < start', Date.today ) }
 
+	def can_view?(u)
+		return can_edit?(u)
+	end
+
+	def can_edit?(u)
+		return true if u.is_admin
+		return true if admins.include?(u)
+		return false
+	end
+
 end

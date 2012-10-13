@@ -1,23 +1,25 @@
 class HomeController < ApplicationController
 	#	CAS railtie
 	#before_filter RubyCAS::Filter
-	before_filter :fake_cas
+	before_filter :fake_cas, :except => [:login, :do_login]
 
 	def index
+		if @sso.is_admin
+			@periods = Period.order('start DESC')
+		else
+			@periods = @sso.periods
+		end
 	end
 
 	def login
-		@user = User.new
 	end
 
 	def do_login
-		@user = User.new(params[:user])
-
-		if newuser = User.find_by_account_number(@user.account_number)
-			session[:username] = @user.account_number
+		if newuser = User.find(params[:login][:id])
+			session[:username] = newuser.id
 			redirect_to :action => :index
 		else
-			flash.now[:alert] = "No user has the account number: #{@user.account_number}"
+			flash.now[:alert] = "No user has the ID: #{params[:login][:id]}"
 			render :login
 		end
 	end
@@ -34,8 +36,11 @@ class HomeController < ApplicationController
 	def fake_cas
 		if session[:username] == nil
 			@sso = nil
+			render 'shared/unauthorized'
+			return false
 		else
-			@sso = User.find_by_account_number(session[:username])
+			@sso = User.find(session[:username])
+			return true
 		end
 	end
 

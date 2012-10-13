@@ -11,12 +11,6 @@ class TeamsController < HomeController
 		@new_assn.team = @team
   end
 
-  # GET /periods/1/teams/new
-  def new
-		@period = Period.find(params[:period_id])
-    @team = @period.teams.build
-  end
-
   # GET /teams/1/edit
   def edit
     @team = Team.find(params[:id])
@@ -26,11 +20,13 @@ class TeamsController < HomeController
   def create
 		@period = Period.find(params[:period_id])
     @team = @period.teams.build(params[:team])
-		
-		if @team.save
+	
+		if @team.name.strip.empty?
+			redirect_to @period, alert: 'Cannot create a team without a name'
+		elsif @team.save
 			redirect_to @team, notice: 'Team was successfully created.'
 		else
-			render action: "new"
+			redirect_to @period, alert: 'Cannot create team: an error occured while saving'
 		end
   end
 

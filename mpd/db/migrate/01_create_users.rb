@@ -14,6 +14,8 @@ class CreateUsers < ActiveRecord::Migration
 		User.new(:first_name => "James",	:last_name => "Wood", :account_number => '0596504').save
 		User.new(:first_name => "Ethan", :last_name => "Tayne").save
 		User.new(:first_name => "Hope", :last_name => "Couts").save
+		User.new(:first_name => "Geoffrey", :last_name => "Sanders").save
+		User.new(:first_name => "Peter", :last_name => "Nystrom").save
   end
 
 	def down

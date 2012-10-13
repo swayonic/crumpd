@@ -5,7 +5,9 @@ class CoachesController < HomeController
 		@group = Group.find(params[:group_id])
 		@coach = @group.group_coaches.build(params[:group_coach])
 
-		if @group.coaches.select{ |u| u.id == @coach.user_id }.count > 0
+		if @coach.user.nil?
+			flash.alert = 'No user found'
+		elsif @group.coaches.select{ |u| u.id == @coach.user_id }.count > 0
 			flash.notice = 'Coach already exists'
 		elsif @coach.save
 			flash.notice = 'Coach added'

@@ -5,7 +5,9 @@ class LeadersController < HomeController
 		@team = Team.find(params[:team_id])
 		@leader = @team.team_leaders.build(params[:team_leader])
 
-		if @team.leaders.select{ |u| u.id == @leader.user_id}.count > 0
+		if @leader.user.nil?
+			flash.alert = 'No user found'
+		elsif @team.leaders.select{ |u| u.id == @leader.user_id}.count > 0
 			flash.notice = 'Leader already exists'
 		elsif @leader.save
 			flash.notice = 'Leader added'

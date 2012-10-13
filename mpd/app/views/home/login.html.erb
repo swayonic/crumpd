@@ -1,9 +1,9 @@
-<%= form_for :user, :html => {:action => login_path} do |f| %>
+<%= form_for :login, :html => {:action => login_path} do |f| %>
 	<%= print_flashes %>
-	<table>
+	<table class='description'>
 		<tr>
-			<td><%= f.label :account_number %></td>
-			<td><%= f.text_field :account_number %></td>
+			<td><%= f.label :id %></td>
+			<td><%= f.text_field :id %></td>
 		</tr>
 	</table>
 	<%= submit_tag 'Submit' %>

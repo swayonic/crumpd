@@ -45,4 +45,19 @@ class Assignment < ActiveRecord::Base
 	def onetime_pledged_pct
 		(onetime_goal and onetime_goal != 0) ? (Float(onetime_pledged) / onetime_goal).round(4) : 0
 	end
+
+	def can_view?(u)
+		return true if can_edit?(u)
+		return true if u == self.user
+		return true if team.leaders.include?(u)
+		return false
+	end
+
+	def can_edit?(u)
+		return true if u.is_admin
+		return true if period.admins.include?(u)
+		return true if group.coaches.include?(u)
+		return false
+	end
+
 end

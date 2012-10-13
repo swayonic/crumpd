@@ -1,28 +1,54 @@
-<% if @sso.nil? -%>
-	<%= render 'shared/unauthorized' %>
-<% else -%>
+<%= page_header 'MPD Home' %>
 
-<div class="grid_12">
-	<h1>MPD Home</h1>
+<div class="grid_10 prefix_1 suffix_1">
+	<% if @sso.assignments.count > 0 -%>
+		<h2>My Assignments</h2>
+		<ul>
+			<% for a in @sso.assignments -%>
+				<li>
+				 	<%= link_to a.period.name, a %>
+					<% if a.team -%>
+						<br>Team: <%= link_to a.team.name, a.team %>
+					<% end -%>
+					<% if a.group -%>
+						<br>Coaching group: <%= link_to a.group.name, a.group %>
+					<% end -%>
+				</li>
+			<% end -%>
+		</ul>
+	<% end -%>
+
+	<% if @sso.teams_as_leader.count > 0 -%>
+		<h2>My Teams</h2>
+		<ul>
+			<% for t in @sso.teams_as_leader -%>
+				<li><%= link_to t.name, t %></li>
+			<% end -%>
+		</ul>
+	<% end -%>
+
+	<% if @sso.groups_as_coach.count > 0 -%>
+		<h2>My Coaching Groups</h2>
+		<ul>
+			<% for g in @sso.groups_as_coach -%>
+				<li><%= link_to g.name, g %></li>
+			<% end -%>
+		</ul>
+	<% end -%>
+
+	<% if @periods.count > 0 -%>
+		<h2>Coaching Periods</h2>	
+		<ul>
+			<% for p in @periods -%>
+				<li>
+					<%= link_to p.name, p %>
+					<% if p.start and p.end -%>
+						(<%= p.start.strftime('%b %e, %Y') %> - <%= p.end.strftime('%b %e, %Y') %>)
+					<% end -%>
+				</li>
+			<% end -%>
+		</ul>
+	<% end -%>
 </div>
 <div class="clear"></div>
-
-<% if @sso.is_admin or @sso.periods.count > 0 -%>
-	<div class="grid_12">
-		<h2>Coaching Periods</h2>
-		<% if @sso.is_admin -%>
-			<h3>Current</h3>
-			<%= render :partial => 'period_list', :object => Period.active %>
-			<h3>Future</h3>
-			<%= render :partial => 'period_list', :object => Period.future %>
-			<h3>Past</h3>
-			<%= render :partial => 'period_list', :object => Period.past %>
-		<% else -%>
-			
-		<% end -%>
-	</div>
-	<div class="clear"></div>
-<% end -%>
-
-<% end %>
 

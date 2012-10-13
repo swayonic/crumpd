@@ -11,12 +11,6 @@ class GroupsController < HomeController
 		@new_assn.group = @group
   end
 
-  # GET /periods/1/groups/new
-  def new
-		@period = Period.find(params[:period_id])
-		@group = @period.groups.build
-  end
-
   # GET /groups/1/edit
   def edit
     @group = Group.find(params[:id])
@@ -27,10 +21,12 @@ class GroupsController < HomeController
     @period = Period.find(params[:period_id])
 		@group = @period.groups.build(params[:group])
 		
-		if @group.save
+		if @group.name.strip.empty?
+			redirect_to @period, alert: 'Cannot create a group without a name'
+		elsif @group.save
 			redirect_to @group, notice: 'Group was successfully created.'
 		else
-			render action: "new"
+			redirect_to @period, alert: 'Cannot create group: an error occured while saving'
 		end
   end
 
