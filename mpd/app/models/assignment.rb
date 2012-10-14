@@ -49,14 +49,14 @@ class Assignment < ActiveRecord::Base
 	def can_view?(u)
 		return true if can_edit?(u)
 		return true if u == self.user
-		return true if team.leaders.include?(u)
+		return true if team and team.leaders.include?(u)
+		return true if group and group.coaches.include?(u)
 		return false
 	end
 
 	def can_edit?(u)
 		return true if u.is_admin
 		return true if period.admins.include?(u)
-		return true if group.coaches.include?(u)
 		return false
 	end
 

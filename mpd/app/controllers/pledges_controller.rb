@@ -4,6 +4,10 @@ class PledgesController < ApplicationController
 	def create
 		is_onetime = params[:pledge].delete('is_onetime')
 		@pledge = Pledge.new(params[:pledge])
+		if !@pledge.assignment.can_edit?(@sso)
+			render 'shared/unauthorized'
+			return
+		end
 
 		if is_onetime == "1"
 			@pledge.frequency = 1
@@ -27,6 +31,11 @@ class PledgesController < ApplicationController
 	# PUT /pledges/1/toggle
 	def toggle
 		@pledge = Pledge.find(params[:id])
+		if !@pledge.assignment.can_edit?(@sso)
+			render 'shared/unauthorized'
+			return
+		end
+
 		@pledge.is_in_hand = !@pledge.is_in_hand
 
 		if @pledge.save
@@ -41,6 +50,11 @@ class PledgesController < ApplicationController
 	# DELETE /pledges/1
 	def destroy
 		@pledge = Pledge.find(params[:id])
+		if !@pledge.assignment.can_edit?(@sso)
+			render 'shared/unauthorized'
+			return
+		end
+
 		@pledge.destroy
 
 		redirect_to @pledge.assignment

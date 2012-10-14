@@ -3,6 +3,11 @@ class GroupsController < HomeController
   # GET /groups/1
   def show
     @group = Group.find(params[:id])
+		if !@group.can_view?(@sso)
+			render 'shared/unauthorized'
+			return
+		end
+
 
 		@new_coach = GroupCoach.new
 		@new_coach.group = @group
@@ -14,11 +19,21 @@ class GroupsController < HomeController
   # GET /groups/1/edit
   def edit
     @group = Group.find(params[:id])
+		if !@group.can_edit?(@sso)
+			render 'shared/unauthorized'
+			return
+		end
+
   end
 
   # POST /periods/1/groups
   def create
     @period = Period.find(params[:period_id])
+		if !@period.can_edit?(@sso)
+			render 'shared/unauthorized'
+			return
+		end
+
 		@group = @period.groups.build(params[:group])
 		
 		if @group.name.strip.empty?
@@ -33,7 +48,11 @@ class GroupsController < HomeController
   # PUT /groups/1
   def update
     @group = Group.find(params[:id])
-		
+		if !@group.can_edit?(@sso)
+			render 'shared/unauthorized'
+			return
+		end
+
 		if @group.update_attributes(params[:group])
 			redirect_to @group, notice: 'Group was successfully updated.'
 		else
@@ -44,6 +63,11 @@ class GroupsController < HomeController
   # DELETE /groups/1
   def destroy
     @group = Group.find(params[:id])
+		if !@group.period.can_edit?(@sso)
+			render 'shared/unauthorized'
+			return
+		end
+
     @group.destroy
 		
 		redirect_to period_url(@group.period)
@@ -52,6 +76,11 @@ class GroupsController < HomeController
 	# DELETE /group_coaches/1
 	def destroy_coach
 		@coach = GroupCoach.find(params[:id])
+		if !@coach.group.can_edit?(@sso)
+			render 'shared/unauthorized'
+			return
+		end
+
 		@coach.destroy
 
 		render :text => 'Group Coach destroyed.'

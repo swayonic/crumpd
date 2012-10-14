@@ -6,7 +6,7 @@
 	<table class="description">
 		<tr>
 			<td>User</td>
-			<td><%= link_to @assignment.user.display_name, @assignment.user %>
+			<td><%= link_to_if @assignment.user.can_view?(@sso), @assignment.user.display_name, @assignment.user %>
 		</tr>
 		<tr>
 			<td>Team</td>
@@ -14,7 +14,7 @@
 				<% if @assignment.team.nil? -%>
 					<i>None</i>
 				<% else -%>
-					<%= link_to @assignment.team.name, @assignment.team %>
+					<%= link_to_if @assignment.team.can_view?(@sso), @assignment.team.name, @assignment.team %>
 				<% end -%>
 			</td>
 		</tr>
@@ -24,19 +24,27 @@
 				<% if @assignment.group.nil? -%>
 					<i>None</i>
 				<% else -%>
-					<%= link_to @assignment.group.name, @assignment.group %>
+					<%= link_to_if @assignment.group.can_view?(@sso), @assignment.group.name, @assignment.group %>
 				<% end -%>
 			</td>
 		</tr>
 	</table>
-	<%= link_to 'Edit', edit_assignment_url(@assignment) %>
+	<% if @assignment.can_edit?(@sso) -%>
+		<%= link_to 'Edit', edit_assignment_url(@assignment) %>
+	<% end -%>
 </div>
 
 <div class="grid_8">
+	<h2 align="center">Reports</h2>
+</div>
+
+<div class="clear"></div>
+
+<div class="grid_12">
 	<table width="100%">
 		<tr>
 			<td colspan=2>
-				<h2 width="100%" align="center">Pledges</h2>
+				<h2 align="center">Pledges</h2>
 			</td>
 		</tr>
 		<tr>
@@ -105,22 +113,25 @@
 				</table>
 			</td>
 		</tr>
-		<tr>
-			<td colspan=2 width="100%">
-				<%= form_for @new_pledge do |f| -%>
-					<h3>New Pledge</h3>
-					<%= f.hidden_field :assignment_id, :size => 12 %>
-					Name: <%= f.text_field :name %>
-					<br>
-					Amount: <%= f.text_field :amount, :size => 4 %>
-					In-Hand: 
-					<%= f.check_box :is_in_hand %>
-					One-Time: 
-					<%= check_box :pledge, :is_onetime %>
-					<%= f.submit 'Add pledge' %>
-				<% end -%>
-			</td>
-		</tr>
+		<% if @assignment.can_edit?(@sso) -%>
+			<tr>
+				<td colspan=2 width="100%">
+					<%= form_for @new_pledge do |f| -%>
+						<h3>New Pledge</h3>
+						<%= f.hidden_field :assignment_id, :size => 12 %>
+						Name: <%= f.text_field :name %>
+						<br>
+						Amount: <%= f.text_field :amount, :size => 4 %>
+						In-Hand: 
+						<%= f.check_box :is_in_hand %>
+						One-Time: 
+						<%= check_box :pledge, :is_onetime %>
+						<%= f.submit 'Add pledge' %>
+					<% end -%>
+				</td>
+			</tr>
+		<% end -%>
 	</table>
 </div>
+
 <div class="clear"></div>

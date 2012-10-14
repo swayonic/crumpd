@@ -1,13 +1,12 @@
 class UsersController < HomeController
 
-	# GET /users
-  def index
-    @users = User.all
-  end
-
   # GET /users/1
   def show
     @user = User.find(params[:id])
+		if !@user.can_view?(@sso)
+			render 'shared/unauthorized'
+			return
+		end
   end
 
   # GET /users/new
@@ -18,6 +17,10 @@ class UsersController < HomeController
   # GET /users/1/edit
   def edit
     @user = User.find(params[:id])
+		if !@user.can_edit?(@sso)
+			render 'shared/unauthorized'
+			return
+		end
   end
 
   # POST /users
@@ -34,6 +37,10 @@ class UsersController < HomeController
   # PUT /users/1
   def update
     @user = User.find(params[:id])
+		if !@user.can_edit?(@sso)
+			render 'shared/unauthorized'
+			return
+		end
 		
 		if @user.update_attributes(params[:user])
 			redirect_to @user, notice: 'User was successfully updated.'
@@ -45,8 +52,13 @@ class UsersController < HomeController
   # DELETE /users/1
   def destroy
     @user = User.find(params[:id])
+		if !@user.can_edit?(@sso)
+			render 'shared/unauthorized'
+			return
+		end
+
     @user.destroy
 
-		redirect_to users_url
+		redirect_to users_url # DNE
   end
 end

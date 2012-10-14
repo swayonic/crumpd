@@ -3,6 +3,10 @@ class AssignmentsController < HomeController
 	# GET /assignments/1
 	def show
 		@assignment = Assignment.find(params[:id])
+		if !@assignment.can_view?(@sso)
+			render 'shared/unauthorized'
+			return
+		end
 
 		@new_pledge = Pledge.new
 		@new_pledge.assignment = @assignment
@@ -11,10 +15,18 @@ class AssignmentsController < HomeController
 	# GET /assignments/1/edit
 	def edit
 		@assignment = Assignment.find(params[:id])
+		if !@assignment.can_edit?(@sso)
+			render 'shared/unauthorized'
+			return
+		end
 	end
 
 	def update
 		@assignment = Assignment.find(params[:id])
+		if !@assignment.can_edit?(@sso)
+			render 'shared/unauthorized'
+			return
+		end
 
 		params[:assignment][:team_id] = nil if params[:assignment][:team_id] == '0'
 		params[:assignment][:group_id] = nil if params[:assignment][:group_id] == '0'
@@ -29,6 +41,10 @@ class AssignmentsController < HomeController
 	# POST /assignments/create_team
 	def create_team
 		assn = Assignment.new(params[:assignment])
+		if !assn.can_edit?(@sso)
+			render 'shared/unauthorized'
+			return
+		end
 
 		assns = assn.user.assignments.select{ |a| a.period and a.period.id == assn.team.period.id }
 
@@ -64,9 +80,12 @@ class AssignmentsController < HomeController
 	# DELETE /assignments/1/team
 	def team
 		assn = Assignment.find(params[:id])
+		if !assn.can_edit?(@sso)
+			render 'shared/unauthorized'
+			return
+		end
 
 		team = assn.team
-
 		assn.team = nil
 
 		if assn.group.nil?
@@ -89,6 +108,10 @@ class AssignmentsController < HomeController
 	# POST /assignments/create_group
 	def create_group
 		assn = Assignment.new(params[:assignment])
+		if !assn.can_edit?(@sso)
+			render 'shared/unauthorized'
+			return
+		end
 
 		assns = assn.user.assignments.select{ |a| a.period and a.period.id == assn.group.period.id }
 
@@ -124,6 +147,10 @@ class AssignmentsController < HomeController
 	# DELETE /assignments/1/group
 	def group
 		assn = Assignment.find(params[:id])
+		if !assn.can_edit?(@sso)
+			render 'shared/unauthorized'
+			return
+		end
 
 		group = assn.group
 

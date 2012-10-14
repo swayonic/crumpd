@@ -29,6 +29,7 @@ class User < ActiveRecord::Base
 		"#{first_name} #{last_name}"
 	end
 
+	# TODO: Is there a way to do this with fewer queries?
 	def can_view?(u)
 		return true if can_edit?(u)
 		periods.each do |p|
@@ -36,15 +37,23 @@ class User < ActiveRecord::Base
 		end
 		teams_as_leader.each do |t|
 			return true if t.period.admins.include?(u)
+			return true if t.leaders.include?(u)
+			return true if t.members.include?(u)
 		end
 		teams_as_member.each do |t|
 			return true if t.period.admins.include?(u)
+			return true if t.leaders.include?(u)
+			return true if t.members.include?(u)
 		end
 		groups_as_coach.each do |g|
 			return true if g.period.admins.include?(u)
+			return true if g.coaches.include?(u)
+			return true if g.members.include?(u)
 		end
 		groups_as_member.each do |g|
 			return true if g.period.admins.include?(u)
+			return true if g.coaches.include?(u)
+			return true if g.members.include?(u)
 		end
 		return false
 	end

@@ -2,8 +2,11 @@ class PeriodsController < HomeController
 
   # GET /periods/1
   def show
-		#TODO authentication
     @period = Period.find(params[:id])
+		if !@period.can_view?(@sso)
+			render 'shared/unauthorized'
+			return
+		end
 
 		@new_group = Group.new
 		@new_group.period = @period

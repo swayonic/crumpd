@@ -3,6 +3,10 @@ class TeamsController < HomeController
   # GET /teams/1
   def show
     @team = Team.find(params[:id])
+		if !@team.can_view?(@sso)
+			render 'shared/unauthorized'
+			return
+		end
 
 		@new_leader = TeamLeader.new
 		@new_leader.team = @team
@@ -14,11 +18,20 @@ class TeamsController < HomeController
   # GET /teams/1/edit
   def edit
     @team = Team.find(params[:id])
+		if !@team.can_edit?(@sso)
+			render 'shared/unauthorized'
+			return
+		end
   end
 
   # POST /periods/1/teams
   def create
 		@period = Period.find(params[:period_id])
+		if !@period.can_edit?(@sso)
+			render 'shared/unauthorized'
+			return
+		end
+
     @team = @period.teams.build(params[:team])
 	
 		if @team.name.strip.empty?
@@ -33,6 +46,10 @@ class TeamsController < HomeController
   # PUT /teams/1
   def update
 		@team = Team.find(params[:id])
+		if !@team.can_edit?(@sso)
+			render 'shared/unauthorized'
+			return
+		end
 		
 		if @team.update_attributes(params[:team])
 			redirect_to @team, notice: 'Team was successfully updated.'
@@ -44,9 +61,14 @@ class TeamsController < HomeController
   # DELETE /teams/1
   def destroy
     @team = Team.find(params[:id])
+		if !@team.period.can_edit?(@sso)
+			render 'shared/unauthorized'
+			return
+		end
+
     @team.destroy
 		
-		redirect_to period_url(@team.period)
+		redirect_to @team.period
   end
 
 end
