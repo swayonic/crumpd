@@ -1,6 +1,30 @@
 <%= page_header "Editing Team" %>
 
 <div class="grid_6 prefix_3 suffix_3">
-  <%= render 'form' %>
+
+<%= form_for(@team) do |f| %>
+  <% if @team.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@team.errors.count, "error") %> prohibited this team from being saved:</h2>
+
+      <ul>
+      <% @team.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+	<% end %>
+
+	<div class="field">
+		<%= f.label :name %>
+		<%= f.text_field :name %>
+	</div>
+
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+
 </div>
 <div class="clear"></div>
