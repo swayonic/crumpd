@@ -5,6 +5,7 @@ class Assignment < ActiveRecord::Base
 	belongs_to :group
 	belongs_to :team
 	has_many :pledges
+	has_many :reports
 
 	# TODO: validate group and team in same period
 

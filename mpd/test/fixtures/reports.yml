@@ -1,0 +1,47 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  assignment_id: 1
+  monthly_inhand: 9.99
+  new_monthly_amt: 9.99
+  new_monthly_count: 1
+  new_monthly_pledged: 9.99
+  onetime_inhand: 9.99
+  new_onetime_amt: 9.99
+  new_onetime_count: 1
+  onetime_pledged: 9.99
+  account_balance: 9.99
+  num_contacts: 1
+  new_referrals: 1
+  num_phone_dials: 1
+  num_phone_convos: 1
+  phone_hours: 1.5
+  num_precall_letters: 1
+  num_support_letters: 1
+  letter_hours: 1.5
+  mpd_hours: 1.5
+  had_coach_convo: 
+  prayer_requests: MyText
+
+two:
+  assignment_id: 1
+  monthly_inhand: 9.99
+  new_monthly_amt: 9.99
+  new_monthly_count: 1
+  new_monthly_pledged: 9.99
+  onetime_inhand: 9.99
+  new_onetime_amt: 9.99
+  new_onetime_count: 1
+  onetime_pledged: 9.99
+  account_balance: 9.99
+  num_contacts: 1
+  new_referrals: 1
+  num_phone_dials: 1
+  num_phone_convos: 1
+  phone_hours: 1.5
+  num_precall_letters: 1
+  num_support_letters: 1
+  letter_hours: 1.5
+  mpd_hours: 1.5
+  had_coach_convo: 
+  prayer_requests: MyText

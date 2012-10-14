@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 9) do
+ActiveRecord::Schema.define(:version => 10) do
 
   create_table "assignments", :force => true do |t|
     t.integer "user_id"
@@ -63,6 +63,34 @@ ActiveRecord::Schema.define(:version => 9) do
   end
 
   add_index "pledges", ["assignment_id"], :name => "fk_pledges_assignments"
+
+  create_table "reports", :force => true do |t|
+    t.integer  "assignment_id"
+    t.decimal  "monthly_inhand",      :precision => 10, :scale => 0
+    t.decimal  "new_monthly_amt",     :precision => 10, :scale => 0
+    t.integer  "new_monthly_count"
+    t.decimal  "new_monthly_pledged", :precision => 10, :scale => 0
+    t.decimal  "onetime_inhand",      :precision => 10, :scale => 0
+    t.decimal  "new_onetime_amt",     :precision => 10, :scale => 0
+    t.integer  "new_onetime_count"
+    t.decimal  "onetime_pledged",     :precision => 10, :scale => 0
+    t.decimal  "account_balance",     :precision => 10, :scale => 0
+    t.integer  "num_contacts"
+    t.integer  "new_referrals"
+    t.integer  "num_phone_dials"
+    t.integer  "num_phone_convos"
+    t.float    "phone_hours"
+    t.integer  "num_precall_letters"
+    t.integer  "num_support_letters"
+    t.float    "letter_hours"
+    t.float    "mpd_hours"
+    t.boolean  "had_coach_convo"
+    t.text     "prayer_requests"
+    t.datetime "created_at",                                         :null => false
+    t.datetime "updated_at",                                         :null => false
+  end
+
+  add_index "reports", ["assignment_id"], :name => "fk_reports_assignments"
 
   create_table "team_leaders", :force => true do |t|
     t.integer "user_id"
