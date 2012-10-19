@@ -1,13 +1,15 @@
-class PledgesController < ApplicationController
+class PledgesController < HomeController
 
-	# POST /pledges
+	# POST /assignment/1/pledges
 	def create
-		is_onetime = params[:pledge].delete('is_onetime')
-		@pledge = Pledge.new(params[:pledge])
-		if !@pledge.assignment.can_edit?(@sso)
+		@assignment = Assignment.find(params[:assignment_id])
+		if !@assignment.can_edit?(@sso)
 			render 'shared/unauthorized'
 			return
 		end
+
+		is_onetime = params[:pledge].delete('is_onetime')
+		@pledge = @assignment.pledges.build(params[:pledge])
 
 		if is_onetime == "1"
 			@pledge.frequency = 1

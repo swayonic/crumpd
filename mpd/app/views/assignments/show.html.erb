@@ -117,9 +117,8 @@
 		<% if @assignment.can_edit?(@sso) -%>
 			<tr>
 				<td colspan=2 width="100%">
-					<%= form_for @new_pledge do |f| -%>
+					<%= form_for @new_pledge, :url => assignment_pledges_url(@assignment) do |f| -%>
 						<h3>New Pledge</h3>
-						<%= f.hidden_field :assignment_id, :size => 12 %>
 						Name: <%= f.text_field :name %>
 						<br>
 						Amount: <%= f.text_field :amount, :size => 4 %>
