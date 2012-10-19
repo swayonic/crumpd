@@ -1,0 +1,2 @@
+module ReportFieldsHelper
+end

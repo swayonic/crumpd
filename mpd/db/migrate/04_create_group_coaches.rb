@@ -1,8 +1,8 @@
 class CreateGroupCoaches < ActiveRecord::Migration
   def up
     create_table :group_coaches do |t|
-			t.references :user
-			t.references :group
+			t.integer :user_id, :null => false
+			t.integer :group_id, :null => false
     end
 
 		execute <<-SQL

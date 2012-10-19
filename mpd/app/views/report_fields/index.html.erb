@@ -1,0 +1,21 @@
+<h1>Listing report_fields</h1>
+
+<table>
+  <tr>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @report_fields.each do |report_field| %>
+  <tr>
+    <td><%= link_to 'Show', report_field %></td>
+    <td><%= link_to 'Edit', edit_report_field_path(report_field) %></td>
+    <td><%= link_to 'Destroy', report_field, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Report field', new_report_field_path %>

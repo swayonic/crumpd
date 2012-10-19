@@ -1,110 +1,30 @@
-<p id="notice"><%= notice %></p>
+<%= page_header @report.assignment.user.display_name + ' - ' + @report.assignment.period.name + ' - Report' %>
+<%= flash_header %>
 
-<p>
-  <b>Assignment:</b>
-  <%= @report.assignment_id %>
-</p>
+<div class="grid_10 prefix_1 suffix_1" align='center'>
+	<table style='description'>
+		<% for line in @report.goal_lines -%>
+			<tr>
+				<td><b><%= Goal.title(line.frequency) %> in-hand</b></td>
+				<td><%= line.inhand %></td>
+			</tr>
+			<tr>
+				<td><b><%= Goal.title(line.frequency) %> pledged</b></td>
+				<td><%= line.pledged %></td>
+			</tr>
+		<% end -%>
 
-<p>
-  <b>Monthly inhand:</b>
-  <%= @report.monthly_inhand %>
-</p>
+		<tr><td>&nbsp;</td></tr>
 
-<p>
-  <b>New monthly amt:</b>
-  <%= @report.new_monthly_amt %>
-</p>
+		<% for line in @report.field_lines -%>
+			<tr>
+				<td><b><%= line.report_field.name %></b></td>
+				<td><%= line.value %></td>
+			</tr>
+		<% end -%>
+	</table>
 
-<p>
-  <b>New monthly count:</b>
-  <%= @report.new_monthly_count %>
-</p>
-
-<p>
-  <b>New monthly pledged:</b>
-  <%= @report.new_monthly_pledged %>
-</p>
-
-<p>
-  <b>Onetime inhand:</b>
-  <%= @report.onetime_inhand %>
-</p>
-
-<p>
-  <b>New onetime amt:</b>
-  <%= @report.new_onetime_amt %>
-</p>
-
-<p>
-  <b>New onetime count:</b>
-  <%= @report.new_onetime_count %>
-</p>
-
-<p>
-  <b>Onetime pledged:</b>
-  <%= @report.onetime_pledged %>
-</p>
-
-<p>
-  <b>Account balance:</b>
-  <%= @report.account_balance %>
-</p>
-
-<p>
-  <b>Num contacts:</b>
-  <%= @report.num_contacts %>
-</p>
-
-<p>
-  <b>New referrals:</b>
-  <%= @report.new_referrals %>
-</p>
-
-<p>
-  <b>Num phone dials:</b>
-  <%= @report.num_phone_dials %>
-</p>
-
-<p>
-  <b>Num phone convos:</b>
-  <%= @report.num_phone_convos %>
-</p>
-
-<p>
-  <b>Phone hours:</b>
-  <%= @report.phone_hours %>
-</p>
-
-<p>
-  <b>Num precall letters:</b>
-  <%= @report.num_precall_letters %>
-</p>
-
-<p>
-  <b>Num support letters:</b>
-  <%= @report.num_support_letters %>
-</p>
-
-<p>
-  <b>Letter hours:</b>
-  <%= @report.letter_hours %>
-</p>
-
-<p>
-  <b>Mpd hours:</b>
-  <%= @report.mpd_hours %>
-</p>
-
-<p>
-  <b>Had coach convo:</b>
-  <%= @report.had_coach_convo %>
-</p>
-
-<p>
-  <b>Prayer requests:</b>
-  <%= @report.prayer_requests %>
-</p>
-
-
-<%= link_to 'Edit', edit_report_path(@report) %> |
-<%= link_to 'Back', assignment_reports_path(@report.assignment) %>
+	<%= link_to 'Edit', edit_report_path(@report) %> |
+	<%= link_to 'Back', assignment_reports_path(@report.assignment) %>
+</div>
+<div class='clear'></div>

@@ -1,63 +1,34 @@
-<h1>Listing reports</h1>
+<%= page_header @assignment.user.display_name + ' - ' + @assignment.period.name + ' - Reports' %>
+<%= flash_header %>
 
-<table>
-  <tr>
-    <th>Assignment</th>
-    <th>Monthly inhand</th>
-    <th>New monthly amt</th>
-    <th>New monthly count</th>
-    <th>New monthly pledged</th>
-    <th>Onetime inhand</th>
-    <th>New onetime amt</th>
-    <th>New onetime count</th>
-    <th>Onetime pledged</th>
-    <th>Account balance</th>
-    <th>Num contacts</th>
-    <th>New referrals</th>
-    <th>Num phone dials</th>
-    <th>Num phone convos</th>
-    <th>Phone hours</th>
-    <th>Num precall letters</th>
-    <th>Num support letters</th>
-    <th>Letter hours</th>
-    <th>Mpd hours</th>
-    <th>Had coach convo</th>
-    <th>Prayer requests</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+<div class="grid_10 prefix_1 suffix_1">
+	<% if @assignment.reports.count > 0 -%>
+		<table class='description'>
+		  <tr>
+				<th>Report</th>
+				<% for g in @assignment.goals -%>
+					<th><%= g.title %> in-hand</th>
+					<th><%= g.title %> pledged</th>
+				<% end -%>
+				<th>
+		  </tr>
+			<% @assignment.reports.each do |report| -%>
+				<tr>
+					<td>
+						<%= link_to report.created_at.strftime('%b %e, %Y'), report %>
+						<% if report.updated_at -%>
+							<i>Updated <%= report.updated_at.strftime('%b %e, %Y') %></i>
+						<% end -%>
+					</td>
+					<% for g in @assignment.goals -%>
+						<td><%= report.goal_lines.find_by_frequency(g.frequency).inhand || '' %></td>
+						<td><%= report.goal_lines.find_by_frequency(g.frequency).pledged || '' %></td>
+					<% end -%>				
+				</tr>
+			<% end -%>
+		</table>
+	<% end -%>
 
-<% @reports.each do |report| %>
-  <tr>
-    <td><%= report.assignment_id %></td>
-    <td><%= report.monthly_inhand %></td>
-    <td><%= report.new_monthly_amt %></td>
-    <td><%= report.new_monthly_count %></td>
-    <td><%= report.new_monthly_pledged %></td>
-    <td><%= report.onetime_inhand %></td>
-    <td><%= report.new_onetime_amt %></td>
-    <td><%= report.new_onetime_count %></td>
-    <td><%= report.onetime_pledged %></td>
-    <td><%= report.account_balance %></td>
-    <td><%= report.num_contacts %></td>
-    <td><%= report.new_referrals %></td>
-    <td><%= report.num_phone_dials %></td>
-    <td><%= report.num_phone_convos %></td>
-    <td><%= report.phone_hours %></td>
-    <td><%= report.num_precall_letters %></td>
-    <td><%= report.num_support_letters %></td>
-    <td><%= report.letter_hours %></td>
-    <td><%= report.mpd_hours %></td>
-    <td><%= report.had_coach_convo %></td>
-    <td><%= report.prayer_requests %></td>
-    <td><%= link_to 'Show', report %></td>
-    <td><%= link_to 'Edit', edit_report_path(report) %></td>
-    <td><%= link_to 'Destroy', report, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
-
-<br />
-
-<%= link_to 'New Report', new_assignment_report_path %>
+	<%= link_to 'New Report', new_assignment_report_path %>
+</div>
+<div class='clear'></div>

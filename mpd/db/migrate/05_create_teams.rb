@@ -2,7 +2,7 @@ class CreateTeams < ActiveRecord::Migration
   def up
     create_table :teams do |t|
       t.string :name, :null => false
-			t.references :period
+			t.integer :period_id, :null => false
       t.date :start
       t.date :end
     end

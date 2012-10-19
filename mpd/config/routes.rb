@@ -29,8 +29,13 @@ Mpd::Application.routes.draw do
 		resources :pledges, :only => [:create, :destroy] do
 			put 'toggle', :on => :member
 		end
+
 		resources :reports
+  	
+		resources :goals
 	end
+  
+	resources :report_fields
   
 	match 'login' => 'home#login', :via => :get
 	match 'login' => 'home#do_login', :via => :post

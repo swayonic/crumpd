@@ -1,8 +1,8 @@
 class CreatePeriodAdmins < ActiveRecord::Migration
   def up
     create_table :period_admins do |t|
-			t.references :user
-			t.references :period
+			t.integer :user_id, :null => false
+			t.integer :period_id, :null => false
     end
 		
 		execute <<-SQL

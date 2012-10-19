@@ -1,8 +1,8 @@
 class CreateGroups < ActiveRecord::Migration
   def up
     create_table :groups do |t|
-      t.string :name # not necessary
-			t.references :period
+      t.string :name
+			t.integer :period_id, :null => false
     end
 
 		execute <<-SQL

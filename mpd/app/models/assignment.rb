@@ -2,22 +2,14 @@ class Assignment < ActiveRecord::Base
   attr_accessible :monthly_goal, :onetime_goal, :user_id, :team_id, :group_id
 
 	belongs_to :user
+	belongs_to :period
 	belongs_to :group
 	belongs_to :team
 	has_many :pledges
-	has_many :reports
+	has_many :reports, :order => 'created_at DESC'
+	has_many :goals, :order => 'frequency'
 
 	# TODO: validate group and team in same period
-
-	def period
-		if !group.nil?
-			return group.period
-		elsif !team.nil?
-			return team.period
-		else
-			return nil
-		end
-	end
 
 	def monthly_in_hand
 		pledges.monthly.in_hand.map{ |p| p.amount }.sum

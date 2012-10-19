@@ -1,7 +1,7 @@
 class CreateReports < ActiveRecord::Migration
   def up
     create_table :reports do |t|
-      t.integer :assignment_id
+      t.integer :assignment_id, :null => false
       t.timestamps
 			t.integer :updated_by
     end

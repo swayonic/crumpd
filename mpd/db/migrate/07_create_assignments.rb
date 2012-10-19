@@ -1,11 +1,10 @@
 class CreateAssignments < ActiveRecord::Migration
   def up
     create_table :assignments do |t|
-			t.references :user
-			t.references :team
-			t.references :group
-      t.decimal :monthly_goal
-      t.decimal :onetime_goal
+			t.integer :user_id, :null => false
+			t.integer :period_id, :null => false
+			t.integer :team_id
+			t.integer :group_id
     end
 		
 		execute <<-SQL
@@ -13,6 +12,12 @@ class CreateAssignments < ActiveRecord::Migration
 				ADD CONSTRAINT fk_assignments_users
 				FOREIGN KEY (user_id)
 				REFERENCES users(id)
+		SQL
+		execute <<-SQL
+			ALTER TABLE assignments
+				ADD CONSTRAINT fk_assignments_periods
+				FOREIGN KEY (period_id)
+				REFERENCES periods(id)
 		SQL
 		execute <<-SQL
 			ALTER TABLE assignments
@@ -27,25 +32,30 @@ class CreateAssignments < ActiveRecord::Migration
 				REFERENCES groups(id)
 		SQL
 
-		a = Assignment.new(:monthly_goal => 2080, :onetime_goal => 17282)
+		a = Assignment.new
 		a.user = User.first
+		a.period = Period.first
 		a.team = Team.first
 		a.group = Group.first
 		a.save
-		a = Assignment.new(:monthly_goal => 2080, :onetime_goal => 17282)
+		a = Assignment.new
 		a.user = User.find_by_last_name('Tayne')
+		a.period = Period.first
 		a.team = Team.first
 		a.save
-		a = Assignment.new(:monthly_goal => 2080, :onetime_goal => 17282)
+		a = Assignment.new
 		a.user = User.find_by_last_name('Couts')
+		a.period = Period.first
 		a.team = Team.first
 		a.save
-		a = Assignment.new(:monthly_goal => 2080, :onetime_goal => 17282)
+		a = Assignment.new
 		a.user = User.find_by_last_name('Nystrom')
+		a.period = Period.first
 		a.team = Team.first
 		a.save
-		a = Assignment.new(:monthly_goal => 2080, :onetime_goal => 17282)
+		a = Assignment.new
 		a.user = User.find_by_last_name('Sanders')
+		a.period = Period.first
 		a.team = Team.find(2)
 		a.group = Group.first
 		a.save

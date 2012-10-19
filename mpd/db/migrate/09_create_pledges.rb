@@ -1,10 +1,10 @@
 class CreatePledges < ActiveRecord::Migration
   def up
     create_table :pledges do |t|
-			t.integer :assignment_id
-      t.string :name
-			t.decimal :amount
-			t.decimal :frequency
+			t.integer :assignment_id, :null => false
+      t.string :name, :null => false
+			t.decimal :amount, :null => false
+			t.integer :frequency, :null => false
       t.boolean :is_in_hand, :null => false, :default => false
     end
 		

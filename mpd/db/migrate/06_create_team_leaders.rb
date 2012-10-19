@@ -1,8 +1,8 @@
 class CreateTeamLeaders < ActiveRecord::Migration
   def up
     create_table :team_leaders do |t|
-			t.references :user
-			t.references :team
+			t.integer :user_id, :null => false
+			t.integer :team_id, :null => false
     end
 
 		execute <<-SQL

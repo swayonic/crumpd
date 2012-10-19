@@ -8,19 +8,11 @@ class PledgesController < HomeController
 			return
 		end
 
-		is_onetime = params[:pledge].delete('is_onetime')
 		@pledge = @assignment.pledges.build(params[:pledge])
-
-		if is_onetime == "1"
-			@pledge.frequency = 1
-		else
-			@pledge.frequency = 12
-		end
-
 		@pledge.name.strip!
 
 		if @pledge.assignment.pledges.select{ |p| p.name == @pledge.name and p.frequency == @pledge.frequency}.count > 0
-			flash.alert = "Cannot add another pledge with the name \"#{@pledge.name}\" as a #{is_onetime ? 'one-time' : 'monthly'} gift. Please choose a different name or remove the other pledge."
+			flash.alert = "Cannot add another pledge with the name \"#{@pledge.name}\" as a #{Goal.freq_title @pledge.frequency} gift. Please choose a different name or remove the other pledge."
 		elsif @pledge.save
 			flash.notice = 'Pledge added'
 		else

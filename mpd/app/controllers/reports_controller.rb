@@ -1,72 +1,104 @@
 class ReportsController < HomeController
-  # GET /reports
-  # GET /reports.json
+  
+	# GET /assignments/1/reports
   def index
-    @reports = Report.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @reports }
-    end
+		@assignment = Assignment.find(params[:assignment_id])
   end
 
   # GET /reports/1
-  # GET /reports/1.json
   def show
     @report = Report.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @report }
-    end
   end
 
-  # GET /reports/new
-  # GET /reports/new.json
+  # GET /assignments/1/reports/new
   def new
-    @report = Report.new
+		@assignment = Assignment.find(params[:assignment_id])
+    @report = @assignment.reports.new
 
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @report }
-    end
+		for g in @assignment.goals
+			l = @report.goal_lines.new(:frequency => g.frequency)
+		end
+
+		for f in @assignment.period.report_fields
+			l = @report.field_lines.new
+			l.report_field = f
+		end
   end
 
   # GET /reports/1/edit
   def edit
     @report = Report.find(params[:id])
+		
+		for g in @report.assignment.goals
+			if @report.goal_lines.find_by_frequency(g.frequency).nil?
+				l = @report.goal_lines.new(:frequency => g.frequency)
+			end
+		end
+		for f in @report.assignment.period.report_fields
+			if @report.field_lines.find_by_report_field_id(f.id).nil?
+				l = @report.field_lines.new
+				l.report_field = f
+			end
+		end
   end
 
-  # POST /reports
-  # POST /reports.json
+  # POST /assignments/1/reports
   def create
-    @report = Report.new(params[:report])
+		@assignment = Assignment.find(params[:assignment_id])
+    @report = @assignment.reports.new(params[:report])
 
-    respond_to do |format|
-      if @report.save
-        format.html { redirect_to @report, notice: 'Report was successfully created.' }
-        format.json { render json: @report, status: :created, location: @report }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @report.errors, status: :unprocessable_entity }
-      end
-    end
+		params.each do |key, value|
+			if key =~ /^goal_(\d+)$/
+				l = @report.goal_lines.new
+				l.frequency = $1
+				l.inhand = value[:inhand]
+				l.pledged = value[:pledged]
+				l.report = @report
+			elsif key =~ /^field_(\d+)$/
+				l = @report.field_lines.new
+				l.report_field_id = $1
+				l.value = value[:value]
+				l.report = @report
+			end
+		end
+
+    if @report.save
+			redirect_to @report, notice: 'Report was successfully created.'
+		else
+			render action: "new"
+		end
   end
 
   # PUT /reports/1
-  # PUT /reports/1.json
   def update
-    @report = Report.find(params[:id])
+		@report = Report.find(params[:id])
+		valid = true
+		
 
-    respond_to do |format|
-      if @report.update_attributes(params[:report])
-        format.html { redirect_to @report, notice: 'Report was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @report.errors, status: :unprocessable_entity }
-      end
-    end
+		params.each do |key, value|
+			if key =~ /^goal_(\d+)$/
+				l = @report.goal_lines.find_by_frequency($1) || @report.goal_lines.new
+				l.frequency = $1
+				l.inhand = value[:inhand]
+				l.pledged = value[:pledged]
+				l.report = @report
+				valid = false if !l.save
+			elsif key =~ /^field_(\d+)$/
+				l = @report.field_lines.find_by_report_field_id($1) || @report.field_lines.new
+				l.report_field_id = $1
+				l.value = value[:value]
+				l.report = @report
+				valid = false if !l.save
+			end
+		end
+
+		valid = false if !@report.update_attributes(params[:report])
+		
+		if valid
+			redirect_to @report, notice: 'Report was successfully updated.'
+		else
+			render action: "edit"
+		end
   end
 
   # DELETE /reports/1

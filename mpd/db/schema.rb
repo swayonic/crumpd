@@ -11,23 +11,31 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 10) do
+ActiveRecord::Schema.define(:version => 14) do
 
   create_table "assignments", :force => true do |t|
-    t.integer "user_id"
+    t.integer "user_id",   :null => false
+    t.integer "period_id", :null => false
     t.integer "team_id"
     t.integer "group_id"
-    t.decimal "monthly_goal", :precision => 10, :scale => 0
-    t.decimal "onetime_goal", :precision => 10, :scale => 0
   end
 
   add_index "assignments", ["group_id"], :name => "fk_assignments_groups"
+  add_index "assignments", ["period_id"], :name => "fk_assignments_periods"
   add_index "assignments", ["team_id"], :name => "fk_assignments_teams"
   add_index "assignments", ["user_id"], :name => "fk_assignments_users"
 
+  create_table "goals", :force => true do |t|
+    t.integer "assignment_id",                                :null => false
+    t.integer "frequency",                                    :null => false
+    t.decimal "amount",        :precision => 10, :scale => 0, :null => false
+  end
+
+  add_index "goals", ["assignment_id"], :name => "fk_goals_assignments"
+
   create_table "group_coaches", :force => true do |t|
-    t.integer "user_id"
-    t.integer "group_id"
+    t.integer "user_id",  :null => false
+    t.integer "group_id", :null => false
   end
 
   add_index "group_coaches", ["group_id"], :name => "fk_coaches_groups"
@@ -35,14 +43,14 @@ ActiveRecord::Schema.define(:version => 10) do
 
   create_table "groups", :force => true do |t|
     t.string  "name"
-    t.integer "period_id"
+    t.integer "period_id", :null => false
   end
 
   add_index "groups", ["period_id"], :name => "fk_groups_periods"
 
   create_table "period_admins", :force => true do |t|
-    t.integer "user_id"
-    t.integer "period_id"
+    t.integer "user_id",   :null => false
+    t.integer "period_id", :null => false
   end
 
   add_index "period_admins", ["period_id"], :name => "fk_admins_periods"
@@ -55,46 +63,58 @@ ActiveRecord::Schema.define(:version => 10) do
   end
 
   create_table "pledges", :force => true do |t|
-    t.integer "assignment_id"
-    t.string  "name"
-    t.decimal "amount",        :precision => 10, :scale => 0
-    t.decimal "frequency",     :precision => 10, :scale => 0
+    t.integer "assignment_id",                                                   :null => false
+    t.string  "name",                                                            :null => false
+    t.decimal "amount",        :precision => 10, :scale => 0,                    :null => false
+    t.integer "frequency",                                                       :null => false
     t.boolean "is_in_hand",                                   :default => false, :null => false
   end
 
   add_index "pledges", ["assignment_id"], :name => "fk_pledges_assignments"
 
+  create_table "report_field_lines", :force => true do |t|
+    t.integer "report_id",       :null => false
+    t.integer "report_field_id", :null => false
+    t.string  "value"
+  end
+
+  add_index "report_field_lines", ["report_field_id"], :name => "fk_report_field_lines_report_fields"
+  add_index "report_field_lines", ["report_id"], :name => "fk_report_field_lines_reports"
+
+  create_table "report_fields", :force => true do |t|
+    t.integer "period_id",                      :null => false
+    t.integer "list_index",  :default => 1,     :null => false
+    t.string  "name",                           :null => false
+    t.string  "field_type",                     :null => false
+    t.boolean "required",    :default => false, :null => false
+    t.string  "description"
+    t.boolean "active",      :default => true,  :null => false
+  end
+
+  add_index "report_fields", ["period_id"], :name => "fk_report_fields_periods"
+
+  create_table "report_goal_lines", :force => true do |t|
+    t.integer "report_id",                                               :null => false
+    t.integer "frequency",                                               :null => false
+    t.decimal "inhand",    :precision => 10, :scale => 0, :default => 0
+    t.decimal "pledged",   :precision => 10, :scale => 0, :default => 0
+  end
+
+  add_index "report_goal_lines", ["report_id"], :name => "fk_report_goal_lines_reports"
+
   create_table "reports", :force => true do |t|
-    t.integer  "assignment_id"
-    t.decimal  "monthly_inhand",      :precision => 10, :scale => 0
-    t.decimal  "new_monthly_amt",     :precision => 10, :scale => 0
-    t.integer  "new_monthly_count"
-    t.decimal  "new_monthly_pledged", :precision => 10, :scale => 0
-    t.decimal  "onetime_inhand",      :precision => 10, :scale => 0
-    t.decimal  "new_onetime_amt",     :precision => 10, :scale => 0
-    t.integer  "new_onetime_count"
-    t.decimal  "onetime_pledged",     :precision => 10, :scale => 0
-    t.decimal  "account_balance",     :precision => 10, :scale => 0
-    t.integer  "num_contacts"
-    t.integer  "new_referrals"
-    t.integer  "num_phone_dials"
-    t.integer  "num_phone_convos"
-    t.float    "phone_hours"
-    t.integer  "num_precall_letters"
-    t.integer  "num_support_letters"
-    t.float    "letter_hours"
-    t.float    "mpd_hours"
-    t.boolean  "had_coach_convo"
-    t.text     "prayer_requests"
-    t.datetime "created_at",                                         :null => false
-    t.datetime "updated_at",                                         :null => false
+    t.integer  "assignment_id", :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+    t.integer  "updated_by"
   end
 
   add_index "reports", ["assignment_id"], :name => "fk_reports_assignments"
+  add_index "reports", ["updated_by"], :name => "fk_reports_users"
 
   create_table "team_leaders", :force => true do |t|
-    t.integer "user_id"
-    t.integer "team_id"
+    t.integer "user_id", :null => false
+    t.integer "team_id", :null => false
   end
 
   add_index "team_leaders", ["team_id"], :name => "fk_leaders_teams"
@@ -102,7 +122,7 @@ ActiveRecord::Schema.define(:version => 10) do
 
   create_table "teams", :force => true do |t|
     t.string  "name",      :null => false
-    t.integer "period_id"
+    t.integer "period_id", :null => false
     t.date    "start"
     t.date    "end"
   end

@@ -32,102 +32,62 @@
 	<% if @assignment.can_edit?(@sso) -%>
 		<%= link_to 'Edit', edit_assignment_url(@assignment) %>
 	<% end -%>
-</div>
+	
+	<br>
+	<br>
 
-<div class="grid_8">
-	<h2 align="center">Reports</h2>
+	<h2>Reports</h2>
 	<%= link_to 'All', assignment_reports_url(@assignment) %>
 </div>
 
-<div class="clear"></div>
-
-<div class="grid_12">
-	<table width="100%">
+<div class="grid_8">
+	<table width="100%" class='description'>
 		<tr>
-			<td colspan=2>
+			<td colspan=5>
 				<h2 align="center">Pledges</h2>
 			</td>
 		</tr>
 		<tr>
-			<td width="50%" style='text-align:center;'>
-				<h3>Monthly</h3>
-			</td>
-			<td width="50%" style='text-align:center;'>
-				<h3>One-Time</h3>
-			</td>
+			<th>Name</th>
+			<th width=1%>Amount</th>
+			<th width=1%>Frequency</th>
+			<th width=1%>In-Hand</th>
+			<% if @assignment.can_edit?(@sso) -%>
+				<th width=1%>Delete</th>
+			<% end -%>
 		</tr>
-		<tr>
-			<td>
-				<table class='description'>
-					<tr>
-						<td>Goal</td>
-						<td><%= @assignment.monthly_goal %></td>
-					</tr>
-					<tr>
-						<td>Total in-hand</td>
-						<td><%= @assignment.monthly_in_hand %></td>
-					</tr>
-					<tr>
-						<td>Total pledged</td>
-						<td><%= @assignment.monthly_pledged %></td>
-					</tr>
-				</table>
-			</td>
-			<td>
-				<table class='description'>
-					<tr>
-						<td>Goal</td>
-						<td><%= @assignment.onetime_goal %></td>
-					</tr>
-					<tr>
-						<td>Total in-hand</td>
-						<td><%= @assignment.onetime_in_hand %></td>
-					</tr>
-					<tr>
-						<td>Total pledged</td>
-						<td><%= @assignment.onetime_pledged %></td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<table width=100% class='description'>
-					<tr>
-						<th>Name</th>
-						<th width=1%>Amount</th>
-						<th width=1%>In-Hand</th>
-						<th width=1%>Delete</th>
-					</tr>
-					<%= render :partial => 'pledge', :collection => @assignment.pledges.monthly %>
-				</table>
-			</td>
-			<td>
-				<table width=100% class='description'>
-					<tr>
-						<th>Name</th>
-						<th width=1%>Amount</th>
-						<th width=1%>In-Hand</th>
-						<th width=1%>Delete</th>
-					</tr>
-					<%= render :partial => 'pledge', :collection => @assignment.pledges.onetime %>
-				</table>
-			</td>
-		</tr>
+		<%= render :partial => 'pledge', :collection => @assignment.pledges.sort_by{|p| [p.name, p.frequency]} %>
 		<% if @assignment.can_edit?(@sso) -%>
 			<tr>
-				<td colspan=2 width="100%">
-					<%= form_for @new_pledge, :url => assignment_pledges_url(@assignment) do |f| -%>
-						<h3>New Pledge</h3>
-						Name: <%= f.text_field :name %>
+				<td colspan=5 width="100%">
+					<div align='center'>
 						<br>
-						Amount: <%= f.text_field :amount, :size => 4 %>
-						In-Hand: 
-						<%= f.check_box :is_in_hand %>
-						One-Time: 
-						<%= check_box :pledge, :is_onetime %>
-						<%= f.submit 'Add pledge' %>
-					<% end -%>
+						<h3>New Pledge</h3>
+						<%= form_for @new_pledge, :url => assignment_pledges_url(@assignment) do |f| -%>
+							<table class='description'>
+								<tr>
+									<td>Name</td>
+									<td><%= f.text_field :name %></td>
+								</tr>
+								<tr>
+									<td>Amount</td>
+									<td><%= f.text_field :amount, :size => 4 %></td>
+								</tr>
+								<tr>
+									<td>In-Hand</td>
+									<td><%= f.check_box :is_in_hand %></td>
+								</tr>
+								<tr>
+									<td>Frequency</td>
+									<td>
+										<% freq_array = @assignment.goals.map{|g| [Goal.title(g.frequency), g.frequency]} -%>
+										<%= f.select :frequency, options_for_select(freq_array) %>
+									</td>
+								</tr>
+							</table>
+							<%= f.submit 'Add pledge' %>
+						<% end -%>
+					</div>
 				</td>
 			</tr>
 		<% end -%>

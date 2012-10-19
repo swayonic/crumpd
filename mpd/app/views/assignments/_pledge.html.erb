@@ -2,6 +2,7 @@
 <tr>
 	<td><%= p.name %></td>
 	<td><%= p.amount %></td>
+	<td><%= Goal.title(p.frequency) %></td>
 	<% if @assignment.can_edit?(@sso) -%>
 		<td style='text-align:center;'>
 			<% if p.is_in_hand -%>
@@ -13,6 +14,8 @@
 		<td style='text-align:center;'>
 			<%= link_to image_tag('icons/silk/delete.png'), p, :method => :delete%>
 		</td>
+	<% else -%>
+		<td><%= p.is_in_hand ? 'Y' : '' %></td>
 	<% end -%>
 </tr>
 

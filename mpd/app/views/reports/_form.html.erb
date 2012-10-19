@@ -1,101 +1,61 @@
-<%= form_for(@report) do |f| %>
-  <% if @report.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@report.errors.count, "error") %> prohibited this report from being saved:</h2>
+<%= flash_header %>
 
-      <ul>
-      <% @report.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+<div class="grid_10 prefix_1 suffix_1" align='center'>
+	<%= form_for [@assignment, @report] do |f| %>
+	  <% if @report.errors.any? %>
+	    <div id="error_explanation">
+	      <h2><%= pluralize(@report.errors.count, "error") %> prohibited this report from being saved:</h2>
+	
+	      <ul>
+		      <% @report.errors.full_messages.each do |msg| %>
+		        <li><%= msg %></li>
+		      <% end %>
+	      </ul>
+	    </div>
+	  <% end %>
 
-  <div class="field">
-    <%= f.label :assignment_id %><br />
-    <%= f.number_field :assignment_id %>
-  </div>
-  <div class="field">
-    <%= f.label :monthly_inhand %><br />
-    <%= f.text_field :monthly_inhand %>
-  </div>
-  <div class="field">
-    <%= f.label :new_monthly_amt %><br />
-    <%= f.text_field :new_monthly_amt %>
-  </div>
-  <div class="field">
-    <%= f.label :new_monthly_count %><br />
-    <%= f.number_field :new_monthly_count %>
-  </div>
-  <div class="field">
-    <%= f.label :new_monthly_pledged %><br />
-    <%= f.text_field :new_monthly_pledged %>
-  </div>
-  <div class="field">
-    <%= f.label :onetime_inhand %><br />
-    <%= f.text_field :onetime_inhand %>
-  </div>
-  <div class="field">
-    <%= f.label :new_onetime_amt %><br />
-    <%= f.text_field :new_onetime_amt %>
-  </div>
-  <div class="field">
-    <%= f.label :new_onetime_count %><br />
-    <%= f.number_field :new_onetime_count %>
-  </div>
-  <div class="field">
-    <%= f.label :onetime_pledged %><br />
-    <%= f.text_field :onetime_pledged %>
-  </div>
-  <div class="field">
-    <%= f.label :account_balance %><br />
-    <%= f.text_field :account_balance %>
-  </div>
-  <div class="field">
-    <%= f.label :num_contacts %><br />
-    <%= f.number_field :num_contacts %>
-  </div>
-  <div class="field">
-    <%= f.label :new_referrals %><br />
-    <%= f.number_field :new_referrals %>
-  </div>
-  <div class="field">
-    <%= f.label :num_phone_dials %><br />
-    <%= f.number_field :num_phone_dials %>
-  </div>
-  <div class="field">
-    <%= f.label :num_phone_convos %><br />
-    <%= f.number_field :num_phone_convos %>
-  </div>
-  <div class="field">
-    <%= f.label :phone_hours %><br />
-    <%= f.text_field :phone_hours %>
-  </div>
-  <div class="field">
-    <%= f.label :num_precall_letters %><br />
-    <%= f.number_field :num_precall_letters %>
-  </div>
-  <div class="field">
-    <%= f.label :num_support_letters %><br />
-    <%= f.number_field :num_support_letters %>
-  </div>
-  <div class="field">
-    <%= f.label :letter_hours %><br />
-    <%= f.text_field :letter_hours %>
-  </div>
-  <div class="field">
-    <%= f.label :mpd_hours %><br />
-    <%= f.text_field :mpd_hours %>
-  </div>
-  <div class="field">
-    <%= f.label :had_coach_convo %><br />
-    <%= f.text_field :had_coach_convo %>
-  </div>
-  <div class="field">
-    <%= f.label :prayer_requests %><br />
-    <%= f.text_area :prayer_requests %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+		<table style='description'>
+			<% for line in @report.goal_lines -%>
+				<%= fields_for "goal_#{line.frequency}", line do |l| %>
+					<tr>
+						<td><b><%= Goal.title(line.frequency) %> in-hand</b></td>
+						<td><%= l.text_field :inhand, :size => 4 %></td>
+					</tr>
+					<tr>
+						<td><b><%= Goal.title(line.frequency) %> pledged</b></td>
+						<td><%= l.text_field :pledged, :size => 4 %></td>
+					</tr>
+				<% end -%>
+			<% end -%>
+
+			<tr><td>&nbsp;</td></tr>
+
+			<% for line in @report.field_lines -%>
+				<%= fields_for "field_#{line.report_field.id}", line do |l| %>
+					<tr>
+						<td>
+							<% if line.report_field.required -%>
+								<b><%= line.report_field.name %></b>
+							<% else -%>
+								<%= line.report_field.name %>
+							<% end -%>
+						</td>
+						<td>
+							<% if line.report_field.is_number? -%>
+								<%= l.text_field :value, :size => 4 %>
+							<% elsif line.report_field.is_text? -%>
+								<%= l.text_area :value, :rows => 5 %>
+							<% else -%>
+								<%= l.text_field :value %>
+							<% end -%>
+						</td>
+					</tr>
+				<% end -%>
+			<% end -%>
+		</table>
+
+		<%= f.submit %>
+		
+	<% end %>
+</div>
+<div class='clear'></div>
