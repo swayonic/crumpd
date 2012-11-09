@@ -49,16 +49,14 @@ class ReportsController < HomeController
 
 		params.each do |key, value|
 			if key =~ /^goal_(\d+)$/
-				l = @report.goal_lines.new
+				l = @report.goal_lines.build
 				l.frequency = $1
 				l.inhand = value[:inhand]
 				l.pledged = value[:pledged]
-				l.report = @report
 			elsif key =~ /^field_(\d+)$/
-				l = @report.field_lines.new
+				l = @report.field_lines.build
 				l.report_field_id = $1
 				l.value = value[:value]
-				l.report = @report
 			end
 		end
 
@@ -77,18 +75,24 @@ class ReportsController < HomeController
 
 		params.each do |key, value|
 			if key =~ /^goal_(\d+)$/
-				l = @report.goal_lines.find_by_frequency($1) || @report.goal_lines.new
-				l.frequency = $1
-				l.inhand = value[:inhand]
-				l.pledged = value[:pledged]
-				l.report = @report
-				valid = false if !l.save
+				freq = Integer($1)
+				if !@report.goal_lines.find_by_frequency(freq)
+					@report.goal_lines.build(:frequency => freq)
+				end
+				@report.goal_lines.select{|l| l.frequency == freq}.each do |l|	
+					l.inhand = value[:inhand]
+					l.pledged = value[:pledged]
+					valid = false if !l.save
+				end
 			elsif key =~ /^field_(\d+)$/
-				l = @report.field_lines.find_by_report_field_id($1) || @report.field_lines.new
-				l.report_field_id = $1
-				l.value = value[:value]
-				l.report = @report
-				valid = false if !l.save
+				id = Integer($1)
+				if !@report.field_lines.find_by_report_field_id(id)
+					@report.field_lines.build(:report_field_id => id)
+				end
+				@report.field_lines.select{|l| l.report_field_id == id}.each do |l|
+					l.value = value[:value]
+					valid = false if !l.save
+				end
 			end
 		end
 

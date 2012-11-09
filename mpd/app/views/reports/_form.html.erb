@@ -3,13 +3,13 @@
 <div class="grid_10 prefix_1 suffix_1" align='center'>
 	<%= form_for [@assignment, @report] do |f| %>
 	  <% if @report.errors.any? %>
-	    <div id="error_explanation">
+	    <div id="error_explanation" align='left'>
 	      <h2><%= pluralize(@report.errors.count, "error") %> prohibited this report from being saved:</h2>
-	
 	      <ul>
-		      <% @report.errors.full_messages.each do |msg| %>
-		        <li><%= msg %></li>
-		      <% end %>
+					<%# HACK: I can't get rid of the "is invalid" errors -%>
+					<% @report.errors.select{|attr, msg| msg != "is invalid"}.each do |attr, msg| -%>
+						<li><%= msg %></li>
+					<% end -%>
 	      </ul>
 	    </div>
 	  <% end %>
