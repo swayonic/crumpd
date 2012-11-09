@@ -15,6 +15,7 @@ class AssignmentsController < HomeController
 	# GET /assignments/1/edit
 	def edit
 		@assignment = Assignment.find(params[:id])
+		@new_goal = Goal.new
 		if !@assignment.can_edit?(@sso)
 			render 'shared/unauthorized'
 			return
@@ -28,10 +29,32 @@ class AssignmentsController < HomeController
 			return
 		end
 
+		valid = true
+
 		params[:assignment][:team_id] = nil if params[:assignment][:team_id] == '0'
 		params[:assignment][:group_id] = nil if params[:assignment][:group_id] == '0'
 
-		if @assignment.update_attributes(params[:assignment])
+		for goal in @assignment.goals
+			if params["remove_goal_#{goal.frequency}"] and params["remove_goal_#{goal.frequency}"] == '1'
+				goal.destroy
+			else
+				params.select{|key, value| key == "goal_#{goal.frequency}"}.each do |key, value|
+					goal.amount = Float(value[:amount])
+				end
+			end
+		end
+
+		if !params[:new_goal][:frequency].blank? and !params[:new_goal][:amount].blank?
+			@new_goal = Goal.new(params[:new_goal])
+			@new_goal.assignment = @assignment
+			if !@new_goal.save
+				flash.alert[:now] = 'Could not create new Goal'
+			end
+		end
+
+		valid = false if !@assignment.update_attributes(params[:assignment])
+
+		if valid
 			redirect_to @assignment, notice: 'Assignment was successfully updated'
 		else
 			render action: 'edit'

@@ -3,16 +3,31 @@
 
 <div class="grid_6 prefix_3 suffix_3">
 	<%= form_for @assignment do |f| %>
-		Monthly goal: <%= f.text_field :monthly_goal, :size => 4 %>
-		<br>
-		One-time goal: <%= f.text_field :onetime_goal, :size => 4 %>
-		<br>
+		<h2>Groups</h2>
 
 		<% teams_array = [['None', 0]].concat( @assignment.period.teams.map { |t| [t.name, t.id] }) -%>
 		Team: <%= f.select :team_id, options_for_select(teams_array, @assignment.team_id) %>
 		<br>
 		<% groups_array = [['None', 0]].concat( @assignment.period.groups.map { |t| [t.name, t.id] }) -%>
 		Coaching group: <%= f.select :group_id, options_for_select(groups_array, @assignment.group_id) %>
+		<br>
+		<br>
+
+		<h2>Goals</h2>
+
+		<% for goal in @assignment.goals -%>
+			<%= fields_for "goal_#{goal.frequency}", goal do |g| -%>
+				<%= goal.title %> <%= g.text_field :amount, :size => 4 %>
+				Delete: <%= check_box_tag "remove_goal_#{goal.frequency}" %>
+				<br>
+			<% end -%>
+		<% end -%>
+		<%= fields_for "new_goal", @new_goal do |g| -%>
+			<b>New Goal</b>
+			Frequency (?): <%= g.text_field :frequency, :size => 4 %>
+			Amount: <%= g.text_field :amount, :size => 4 %>
+		<% end -%>
+		<br>
 		<br>
 		<%= f.submit 'Save changes' %>
 	<% end -%>

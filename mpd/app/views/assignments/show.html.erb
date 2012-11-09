@@ -28,6 +28,12 @@
 				<% end -%>
 			</td>
 		</tr>
+		<% for goal in @assignment.goals -%>
+			<tr>
+				<td><%= goal.title %> goal</td>
+				<td><%= goal.amount %></td>
+			</tr>
+		<% end -%>
 	</table>
 	<% if @assignment.can_edit?(@sso) -%>
 		<%= link_to 'Edit', edit_assignment_url(@assignment) %>
