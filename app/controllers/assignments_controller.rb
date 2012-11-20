@@ -7,9 +7,6 @@ class AssignmentsController < HomeController
 			render 'shared/unauthorized'
 			return
 		end
-
-		@new_pledge = Pledge.new
-		@new_pledge.assignment = @assignment
 	end
 
 	# GET /assignments/1/edit

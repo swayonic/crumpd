@@ -41,63 +41,17 @@
 	
 	<br>
 	<br>
+	<% if @assignment.can_view_pledges?(@sso) -%>
+		<h3>Progress</h3>
+		<%= link_to 'View Pledges', assignment_pledges_url(@assignment) %><br>
+		<%= render :partial => 'pledges/progress_size4' %>
+	<% end -%>
 
-	<h2>Reports</h2>
-	<%= link_to 'All', assignment_reports_url(@assignment) %>
 </div>
 
-<div class="grid_8">
-	<table width="100%" class='description'>
-		<tr>
-			<td colspan=5>
-				<h2 align="center">Pledges</h2>
-			</td>
-		</tr>
-		<tr>
-			<th>Name</th>
-			<th width=1%>Amount</th>
-			<th width=1%>Frequency</th>
-			<th width=1%>In-Hand</th>
-			<% if @assignment.can_edit?(@sso) -%>
-				<th width=1%>Delete</th>
-			<% end -%>
-		</tr>
-		<%= render :partial => 'pledge', :collection => @assignment.pledges.sort_by{|p| [p.name, p.frequency]} %>
-		<% if @assignment.can_edit?(@sso) -%>
-			<tr>
-				<td colspan=5 width="100%">
-					<div align='center'>
-						<br>
-						<h3>New Pledge</h3>
-						<%= form_for @new_pledge, :url => assignment_pledges_url(@assignment) do |f| -%>
-							<table class='description'>
-								<tr>
-									<td>Name</td>
-									<td><%= f.text_field :name %></td>
-								</tr>
-								<tr>
-									<td>Amount</td>
-									<td><%= f.text_field :amount, :size => 4 %></td>
-								</tr>
-								<tr>
-									<td>In-Hand</td>
-									<td><%= f.check_box :is_in_hand %></td>
-								</tr>
-								<tr>
-									<td>Frequency</td>
-									<td>
-										<% freq_array = @assignment.goals.map{|g| [Goal.title(g.frequency), g.frequency]} -%>
-										<%= f.select :frequency, options_for_select(freq_array) %>
-									</td>
-								</tr>
-							</table>
-							<%= f.submit 'Add pledge' %>
-						<% end -%>
-					</div>
-				</td>
-			</tr>
-		<% end -%>
-	</table>
+<div class='grid_8'>
+<h2>Reports</h2>
+<%= link_to 'All', assignment_reports_url(@assignment) %>
 </div>
 
 <div class="clear"></div>

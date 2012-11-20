@@ -26,7 +26,7 @@ Mpd::Application.routes.draw do
 			post 'create_group' # Create w/ group
 		end
 
-		resources :pledges, :only => [:create, :destroy] do
+		resources :pledges, :only => [:index, :create, :destroy] do
 			put 'toggle', :on => :member
 		end
 

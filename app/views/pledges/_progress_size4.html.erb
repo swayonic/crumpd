@@ -1,0 +1,8 @@
+<i>TODO: graphs</i><br>
+<% for g in @assignment.goals -%>
+	<b><%= g.title %></b>: 
+		<%= @assignment.goal_pledged(g.frequency) %> pledged,
+		<%= @assignment.goal_inhand(g.frequency) %> in-hand
+		out of <%= g.amount %>
+	<br>
+<% end -%>
