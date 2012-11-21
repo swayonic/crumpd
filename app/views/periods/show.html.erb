@@ -2,6 +2,29 @@
 <%= flash_header %>
 
 <div class="grid_4">
+	<%= link_to 'Edit Report Fields', show_fields_period_url(@period) %>
+	<br>
+	<br>
+	<h2 width="100%" align="center">Administrators</h2>
+	<% if @period.admins.nil? or @period.admins.count == 0 -%>
+		<i>None</i>
+	<% else -%>
+		<ul>
+			<% for a in @period.period_admins.sort_by{ |a| [a.user.last_name, a.user.first_name]} -%>
+				<li>
+					<%= link_to a.user.display_name, a.user %>
+					<%= link_to image_tag('icons/silk/delete.png'), a, method: :delete, data: { confirm: 'Are you sure you want to remove this admin?' } %>
+				</li>
+			<% end -%>
+		</ul>
+	<% end -%>
+	<%= form_for [@period, @new_admin] do |f| -%>
+		<%= f.text_field :user_id, :size => 12 %>
+		<%= f.submit 'Add Admin' %>
+	<% end -%>
+</div>
+
+<div class="grid_4">
 	<h2 width="100%" align="center">Teams</h2>
 	<% if @period.teams.nil? or @period.teams.count == 0 -%>
 		<i>None</i>
@@ -51,26 +74,6 @@
 	<%= form_for [@period, @new_group] do |f| -%>
 		<%= f.text_field :name, :size => 12 %>
 		<%= f.submit %>
-	<% end -%>
-</div>
-
-<div class="grid_4">
-	<h2 width="100%" align="center">Administrators</h2>
-	<% if @period.admins.nil? or @period.admins.count == 0 -%>
-		<i>None</i>
-	<% else -%>
-		<ul>
-			<% for a in @period.period_admins.sort_by{ |a| [a.user.last_name, a.user.first_name]} -%>
-				<li>
-					<%= link_to a.user.display_name, a.user %>
-					<%= link_to image_tag('icons/silk/delete.png'), a, method: :delete, data: { confirm: 'Are you sure you want to remove this admin?' } %>
-				</li>
-			<% end -%>
-		</ul>
-	<% end -%>
-	<%= form_for [@period, @new_admin] do |f| -%>
-		<%= f.text_field :user_id, :size => 12 %>
-		<%= f.submit 'Add Admin' %>
 	<% end -%>
 </div>
 

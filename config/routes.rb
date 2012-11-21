@@ -12,9 +12,13 @@ Mpd::Application.routes.draw do
 			#resources :group_members, :only => [:show, :create, :destroy]
 		end
 		resources :admins, :as => 'period_admins', :only => [:show, :create, :destroy]
+		
+		#resources :report_fields
+		member do
+			get 'show_fields'
+			post 'update_fields'
+		end
 	end
-
-  resources :users, :except => :index
 
 	resources :assignments, :except => [:index, :create, :destroy], :shallow => true do
 		member do
@@ -35,7 +39,7 @@ Mpd::Application.routes.draw do
 		resources :goals
 	end
   
-	resources :report_fields
+  resources :users, :except => :index
   
 	match 'login' => 'home#login', :via => :get
 	match 'login' => 'home#do_login', :via => :post

@@ -12,6 +12,14 @@ class ReportField < ActiveRecord::Base
 		end
 	end
 
+	def self.type_array
+		return [
+			['Integer', 'I'],
+			['Decimal', 'D'],
+			['String', 'S'],
+			['Text', 'T'] ]
+	end
+
 	def is_integer?
 		field_type == 'I'
 	end

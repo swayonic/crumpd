@@ -21,4 +21,14 @@ class Period < ActiveRecord::Base
 		return false
 	end
 
+	def can_view_fields?(u)
+		return can_edit_fields?(u)
+	end
+
+	def can_edit_fields?(u)
+		return true if u.is_admin
+		return true if admins.include?(u)
+		return false
+	end
+
 end

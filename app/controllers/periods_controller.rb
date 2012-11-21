@@ -18,4 +18,26 @@ class PeriodsController < HomeController
 		@new_admin.period = @period
   end
 
+	# GET /periods/1/show_fields
+	def show_fields
+		@period = Period.find(params[:id])
+		if !@period.can_view_fields?(@sso)
+			render 'shared/unauthorized'
+			return
+		end
+	end
+
+	# POST /periods/1/update_fields
+	def update_fields
+		@period = Period.find(params[:id])
+		if !@period.can_edit_fields?(@sso)
+			render 'shared/unauthorized'
+			return
+		end
+
+		flash.notice = params.inspect
+
+		redirect_to :action => :show_fields, :id => params[:id]
+	end
+
 end
