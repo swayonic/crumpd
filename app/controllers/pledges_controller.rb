@@ -31,7 +31,7 @@ class PledgesController < HomeController
 			flash.alert = 'Pledge not added: an error occured while saving'
 		end
 		
-		redirect_to @pledge.assignment
+		redirect_to :action => :index, :assignment_id => @pledge.assignment.id
 	end
 
 	# PUT /pledges/1/toggle
@@ -50,7 +50,7 @@ class PledgesController < HomeController
 			flash.alert = 'Pledge not updated: an error occured while saving'
 		end
 
-		redirect_to @pledge.assignment
+		redirect_to :action => :index, :assignment_id => @pledge.assignment.id
   end
 
 	# DELETE /pledges/1
@@ -63,6 +63,6 @@ class PledgesController < HomeController
 
 		@pledge.destroy
 
-		redirect_to @pledge.assignment
+		redirect_to :action => :index, :assignment_id => @pledge.assignment.id
 	end
 end

@@ -30,7 +30,7 @@ Mpd::Application.routes.draw do
 			put 'toggle', :on => :member
 		end
 
-		resources :reports
+		resources :reports, :except => [:index]
   	
 		resources :goals
 	end

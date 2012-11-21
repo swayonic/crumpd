@@ -50,8 +50,34 @@
 </div>
 
 <div class='grid_8'>
-<h2>Reports</h2>
-<%= link_to 'All', assignment_reports_url(@assignment) %>
+	<% if @assignment.reports.count > 0 -%>
+		<table class='description'>
+		  <tr>
+				<th>Report</th>
+				<% for g in @assignment.goals -%>
+					<th><%= g.title %> in-hand</th>
+					<th><%= g.title %> pledged</th>
+				<% end -%>
+				<th>
+		  </tr>
+			<% @assignment.reports.each do |report| -%>
+				<tr>
+					<td>
+						<%= link_to report.created_at.strftime('%b %e, %Y'), report %>
+						<% if report.updated_at -%>
+							<i>Updated <%= report.updated_at.strftime('%b %e, %Y') %></i>
+						<% end -%>
+					</td>
+					<% for g in @assignment.goals -%>
+						<td><%= report.goal_lines.find_by_frequency(g.frequency).inhand || '' %></td>
+						<td><%= report.goal_lines.find_by_frequency(g.frequency).pledged || '' %></td>
+					<% end -%>				
+				</tr>
+			<% end -%>
+		</table>
+	<% end -%>
+
+	<%= link_to 'New Report', new_assignment_report_path(@assignment) %>
 </div>
 
 <div class="clear"></div>
