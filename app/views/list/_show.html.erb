@@ -1,3 +1,75 @@
-<% for a in assignments %>
-	<li><%= a.user.display_name %></li>
-<% end %>
+<%
+	@goals = [Goal.new(:frequency => 12), Goal.new(:frequency => 0)]
+-%>
+<div class="grid_10 prefix_1 suffix_1" align='center'>
+	<%= form_for :fields do |f| %>
+		<table>
+			<% for g in @goals -%>
+				<tr>
+					<td>
+						<%= g.title %>
+						<li>
+							<b>In-Hand</b>
+							<% name = "#{g.frequency}_inhand_pct" -%>
+							<%= check_box :fields, name, :checked => '1' == (@fields[name] ||= '0') %>
+							Percent
+							<% name = "#{g.frequency}_inhand_amt" -%>
+							<%= check_box :fields, name, :checked => '1' == (@fields[name] ||= '0') %>
+							Amount
+						</li>
+						<li>
+							<b>Pledged</b>
+							<% name = "#{g.frequency}_pledged_pct" -%>
+							<%= check_box :fields, name, :checked => '1' == (@fields[name] ||= '0') %>
+							Percent
+							<% name = "#{g.frequency}_pledged_amt" -%>
+							<%= check_box :fields, name, :checked => '1' == (@fields[name] ||= '0') %>
+							Amount
+						</li>
+					</td>
+				</tr>
+			<% end -%>
+			<% for rf in @period.report_fields -%>
+				<tr>
+					<td>
+						<%= rf.name %>
+						<% name = "field_#{rf.id}" -%>
+						<%= check_box :fields, name, :checked => (@fields[name] ||= '0') %>
+					</td>
+				</tr>
+			<% end -%>
+		</table>
+		<%= submit_tag 'View' %>
+		<%= submit_tag 'Download Excel' %>
+		<%= submit_tag 'Download CSV' %>
+	<% end %>
+</div>
+<div class='clear'></div>
+
+<div class="grid_12">
+	<table class='description'>
+		<tr>
+			<th>Name</th>
+			<% for g in @goals -%>
+				<% if @fields["#{g.frequency}_inhand_pct"] == '1' -%>
+					<th><%= g.title %> In-Hand Pct</th>
+				<% end -%>
+				<% if @fields["#{g.frequency}_inhand_amt"] == '1' -%>
+					<th><%= g.title %> In-Hand Amt</th>
+				<% end -%>
+				<% if @fields["#{g.frequency}_pledged_pct"] == '1' -%>
+					<th><%= g.title %> Pledged Pct</th>
+				<% end -%>
+				<% if @fields["#{g.frequency}_pledged_amt"] == '1' -%>
+					<th><%= g.title %> Pledged Amt</th>
+				<% end -%>
+			<% end -%>
+		</tr>
+		<% for a in assignments -%>
+			<tr>
+				<td><%= a.user.display_name %></td>
+			</tr>
+		<% end -%>
+	</table>
+</div>
+<div class='clear'></div>

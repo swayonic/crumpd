@@ -7,6 +7,7 @@ Mpd::Application.routes.draw do
 			#resources :team_members, :only => [:show, :create, :destroy]
 			member do
 				get 'list'
+				post 'list'
 			end
 		end
 		resources :groups, :except => [:index, :new], :shallow => true do
@@ -15,6 +16,7 @@ Mpd::Application.routes.draw do
 			#resources :group_members, :only => [:show, :create, :destroy]
 			member do
 				get 'list'
+				post 'list'
 			end
 		end
 		resources :admins, :as => 'period_admins', :only => [:show, :create, :destroy]
@@ -24,6 +26,7 @@ Mpd::Application.routes.draw do
 			get 'show_fields'
 			post 'update_fields'
 			get 'list'
+			post 'list'
 		end
 	end
 

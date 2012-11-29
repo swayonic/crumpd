@@ -47,6 +47,8 @@ class PeriodsController < HomeController
 			render 'shared/unauthorized'
 			return
 		end
+
+		@fields = params[:fields] || Hash.new
 	end
 
 end
