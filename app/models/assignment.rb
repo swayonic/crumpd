@@ -30,7 +30,7 @@ class Assignment < ActiveRecord::Base
 
 	def can_view?(u)
 		return true if can_edit?(u)
-		return true if team and team.leaders.include?(u)
+		#return true if team and team.leaders.include?(u)
 		return true if group and group.coaches.include?(u)
 		return false
 	end

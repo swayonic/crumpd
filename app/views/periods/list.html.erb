@@ -1,0 +1,7 @@
+<%= page_header "List - #{@period.name} (Coaching Period)" do %>
+List -
+<%= link_to @period.name, @period %>
+(Coaching Period)
+<% end %>
+
+<%= render :partial => 'list/show', :locals => {:assignments => @period.assignments} %>

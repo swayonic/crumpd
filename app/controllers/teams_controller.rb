@@ -71,4 +71,13 @@ class TeamsController < HomeController
 		redirect_to @team.period
   end
 
+	# GET /teams/1/list
+	def list
+		@team = Team.find(params[:id])
+		if !@team.can_view_list?(@sso)
+			render 'shared/unauthorized'
+			return
+		end
+	end
+
 end

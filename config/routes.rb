@@ -5,11 +5,17 @@ Mpd::Application.routes.draw do
 			resources :leaders, :as => 'team_leaders', :only => [:show, :create, :destroy]
 			# Assignments
 			#resources :team_members, :only => [:show, :create, :destroy]
+			member do
+				get 'list'
+			end
 		end
 		resources :groups, :except => [:index, :new], :shallow => true do
 			resources :coaches, :as => 'group_coaches', :only => [:show, :create, :destroy]
 			# Assignments
 			#resources :group_members, :only => [:show, :create, :destroy]
+			member do
+				get 'list'
+			end
 		end
 		resources :admins, :as => 'period_admins', :only => [:show, :create, :destroy]
 		
@@ -17,6 +23,7 @@ Mpd::Application.routes.draw do
 		member do
 			get 'show_fields'
 			post 'update_fields'
+			get 'list'
 		end
 	end
 
@@ -45,7 +52,7 @@ Mpd::Application.routes.draw do
 	match 'login' => 'home#do_login', :via => :post
 	match 'logout' => 'home#logout'
 	root :to => 'home#index'
-
+  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

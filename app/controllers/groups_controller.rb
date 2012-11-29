@@ -86,4 +86,13 @@ class GroupsController < HomeController
 		render :text => 'Group Coach destroyed.'
 	end
 
+	# GET /groups/1/list
+	def list
+		@group = Group.find(params[:id])
+		if !@group.can_view_list?(@sso)
+			render 'shared/unauthorized'
+			return
+		end
+	end
+
 end

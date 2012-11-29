@@ -9,14 +9,19 @@ class Team < ActiveRecord::Base
 
 	def can_view?(u)
 		return true if can_edit?(u)
-		return true if leaders.include?(u)
-		return true if members.include?(u)
+		#return true if leaders.include?(u)
+		#return true if members.include?(u)
 	end
 
 	def can_edit?(u)
 		return true if u.is_admin
 		return true if period.admins.include?(u)
 		return false
+	end
+	
+	def can_view_list?(u)
+		return true if u.is_admin
+		return true if period.admins.include?(u)
 	end
 
 end

@@ -20,4 +20,9 @@ class Group < ActiveRecord::Base
 		return false
 	end
 
+	def can_view_list?(u)
+		return true if u.is_admin
+		return true if period.admins.include?(u)
+		return true if coaches.include?(u)
+	end
 end

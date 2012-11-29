@@ -59,6 +59,11 @@
 			<% end -%>
 		</ul>
 	<% end -%>
+	<% if @team.can_view_list?(@sso) -%>
+		<%= link_to 'Detailed listing', list_team_url(@team) %>
+		<br>
+		<br>
+	<% end -%>
 	<% if @team.can_edit?(@sso) -%>
 		<%= form_for @new_assn, :url => create_team_assignments_url do |f| -%>
 			<%= f.hidden_field :team_id %>

@@ -1,0 +1,7 @@
+<%= page_header "List - #{@team.name} (Team)" do %>
+List -
+<%= link_to @team.name, @team %>
+(Team)
+<% end %>
+
+<%= render :partial => 'list/show', :locals => {:assignments => @team.assignments} %>
