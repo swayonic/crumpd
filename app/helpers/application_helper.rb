@@ -35,4 +35,9 @@ module ApplicationHelper
 
 		@javascripts.uniq! #So you can add them multiple times
 	end
+
+	def tooltip(text)
+		render :partial => 'shared/tooltip', :locals => {:text => text}
+	end
+
 end

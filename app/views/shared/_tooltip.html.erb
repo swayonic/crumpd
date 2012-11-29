@@ -1,0 +1,8 @@
+<% if !text.nil? and !text.blank? -%>
+	<%= image_tag 'icons/silk/comment.png', :title => text, :class => 'tooltip' %>
+	<script text='javascript'>
+		$(function(){
+			jQuery(".tooltip").tipTip();
+		});
+	</script>
+<% end -%>

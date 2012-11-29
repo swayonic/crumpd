@@ -19,10 +19,12 @@
 				<%= fields_for "goal_#{line.frequency}", line do |l| %>
 					<tr>
 						<td><b><%= Goal.title(line.frequency) %> in-hand</b></td>
+						<td></td>
 						<td><%= l.text_field :inhand, :size => 4 %></td>
 					</tr>
 					<tr>
 						<td><b><%= Goal.title(line.frequency) %> pledged</b></td>
+						<td></td>
 						<td><%= l.text_field :pledged, :size => 4 %></td>
 					</tr>
 				<% end -%>
@@ -39,6 +41,9 @@
 							<% else -%>
 								<%= line.report_field.name %>
 							<% end -%>
+						</td>
+						<td>
+							<%= tooltip line.report_field.description %>
 						</td>
 						<td>
 							<% if line.report_field.is_number? -%>
