@@ -11,7 +11,11 @@ class Assignment < ActiveRecord::Base
 
 	# TODO: validate group and team in same period
 
-	#(onetime_goal and onetime_goal != 0) ? (Float(onetime_pledged) / onetime_goal).round(4) : 0
+	def latest_report
+		return nil if reports.count == 0
+		return reports.first
+	end
+
 	def goal_total(f)
 		total = 0
 		for g in self.goals.select{|g| g.frequency == f}
@@ -24,8 +28,16 @@ class Assignment < ActiveRecord::Base
 		pledges.select{|p| p.frequency == f}.map{|p| p.amount}.sum
 	end
 
+	def goal_pledged_pct(f)
+		goal_total(f) > 0 ? (Float(goal_pledged(f))*100/goal_total(f)).round(2) : 0
+	end
+
 	def goal_inhand(f)
 		pledges.in_hand.select{|p| p.frequency == f}.map{|p| p.amount}.sum
+	end
+	
+	def goal_inhand_pct(f)
+		goal_total(f) > 0 ? (Float(goal_inhand(f))*100/goal_total(f)).round(2) : 0
 	end
 
 	def can_view?(u)

@@ -93,6 +93,10 @@ class GroupsController < HomeController
 			render 'shared/unauthorized'
 			return
 		end
+
+		@period = @group.period
+		@fields = params[:fields] || Hash.new
+		@sort = params[:sort] || Hash.new
 	end
 
 end

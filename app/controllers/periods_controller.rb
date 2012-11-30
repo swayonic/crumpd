@@ -49,6 +49,7 @@ class PeriodsController < HomeController
 		end
 
 		@fields = params[:fields] || Hash.new
+		@sort = params[:sort] || Hash.new
 	end
 
 end

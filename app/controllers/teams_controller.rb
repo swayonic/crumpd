@@ -78,6 +78,10 @@ class TeamsController < HomeController
 			render 'shared/unauthorized'
 			return
 		end
+
+		@period = @team.period
+		@fields = params[:fields] || Hash.new
+		@sort = params[:sort] || Hash.new
 	end
 
 end
