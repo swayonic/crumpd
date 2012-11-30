@@ -1,0 +1,44 @@
+<% 
+	headers["Content-Disposition"] = "attachment; filename=\"#{@title}.xls\""
+	@goals = [Goal.new(:frequency => 12), Goal.new(:frequency => 0)]
+-%>
+<table>
+	<tr><td><b><%= @title %></b></td></tr>
+	<tr><td><%= Time.now %></td></tr>
+	<tr></tr>
+
+	<tr>
+		<th>Name</th>
+		<% for g in @goals -%>
+			<% if @fields["#{g.frequency}_goal"] == '1' -%>
+				<th><%= g.title %></th>
+			<% end -%>
+			<% if @fields["#{g.frequency}_inhand_pct"] == '1' -%>
+				<th><%= "#{g.title} In-Hand Pct" %></th>
+			<% end -%>
+			<% if @fields["#{g.frequency}_inhand_amt"] == '1' -%>
+				<th><%= "#{g.title} In-Hand Amt" %></th>
+			<% end -%>
+			<% if @fields["#{g.frequency}_pledged_pct"] == '1' -%>
+				<th><%= "#{g.title} Pledged Pct" %></th>
+			<% end -%>
+			<% if @fields["#{g.frequency}_pledged_amt"] == '1' -%>
+				<th><%= "#{g.title} Pledged Amt" %></th>
+			<% end -%>
+		<% end -%>
+		<% for rf in @period.report_fields -%>
+			<% if @fields["field_#{rf.id}"] == '1' -%>
+				<th><%= rf.name %></th>
+			<% end -%>
+		<% end -%>
+	</tr>
+
+	<% array = build_list_data(@assignments) -%>
+	<% for line in array -%>
+		<tr>
+			<% for entry in line -%>
+				<td><%= entry %></td>
+			<% end -%>
+		</tr>
+	<% end -%>
+</table>

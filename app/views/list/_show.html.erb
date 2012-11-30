@@ -46,7 +46,7 @@
 		</table>
 		<%= submit_tag 'View' %>
 		<%= submit_tag 'Download Excel' %>
-		<%= submit_tag 'Download CSV' %>
+		<%# = submit_tag 'Download CSV' %>
 	<% end %>
 </div>
 <div class='clear'></div>
@@ -79,7 +79,7 @@
 			<% end -%>
 		</tr>
 
-		<% array = build_list_data(assignments) -%>
+		<% array = build_list_data(@assignments) -%>
 		<% for line in array -%>
 			<tr>
 				<% for entry in line -%>

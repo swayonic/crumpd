@@ -48,8 +48,24 @@ class PeriodsController < HomeController
 			return
 		end
 
+		@assignments = @period.assignments
 		@fields = params[:fields] || Hash.new
 		@sort = params[:sort] || Hash.new
+
+		if params[:commit] == 'Download Excel'
+			@title = "#{@period.name} Complete List"
+			render "list/show.xls", :content_type => "application/xls"
+			return
+		end
+
+		respond_to do |format|
+			format.html
+			format.csv do
+				CSV.generate do |csv|
+				end
+			end
+			format.xls
+		end
 	end
 
 end

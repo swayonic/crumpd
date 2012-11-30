@@ -95,6 +95,7 @@ class GroupsController < HomeController
 		end
 
 		@period = @group.period
+		@assignments = @group.assignments
 		@fields = params[:fields] || Hash.new
 		@sort = params[:sort] || Hash.new
 	end

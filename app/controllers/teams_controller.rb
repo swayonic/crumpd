@@ -80,6 +80,7 @@ class TeamsController < HomeController
 		end
 
 		@period = @team.period
+		@assignments = @team.assignments
 		@fields = params[:fields] || Hash.new
 		@sort = params[:sort] || Hash.new
 	end
