@@ -98,6 +98,12 @@ class GroupsController < HomeController
 		@assignments = @group.assignments
 		@fields = params[:fields] || Hash.new
 		@sort = params[:sort] || Hash.new
+		
+		if params[:commit] == 'Download Excel'
+			@title = "#{@period.name} - #{@group.name} (Coaching Group)"
+			render "list/show.xls", :content_type => "application/xls"
+			return
+		end
 	end
 
 end

@@ -3,8 +3,9 @@ module ListHelper
 	def list_header_sort_link(title, id = nil)
 		id ||= title
 
+		sort = (id == @sort[:column])
 		direction = (id == @sort[:column] && @sort[:direction] == 'asc') ? 'desc' : 'asc'
-		render :partial => 'list/header_link', :locals => {:title => title, :id => id, :direction => direction}
+		render :partial => 'list/header_link', :locals => {:title => title, :id => id, :sort => sort, :direction => direction}
 	end
 	
 	# Creates the array of data to be presented

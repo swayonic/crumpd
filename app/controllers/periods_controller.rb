@@ -57,15 +57,6 @@ class PeriodsController < HomeController
 			render "list/show.xls", :content_type => "application/xls"
 			return
 		end
-
-		respond_to do |format|
-			format.html
-			format.csv do
-				CSV.generate do |csv|
-				end
-			end
-			format.xls
-		end
 	end
 
 end

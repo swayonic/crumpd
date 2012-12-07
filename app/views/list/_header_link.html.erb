@@ -7,4 +7,11 @@
 		"
 	>
 	<%= title %>
+	<% if sort -%>
+		<% if direction == 'asc' -%>
+			<%= image_tag 'icons/silk/arrow_up.png' %>
+		<% else -%>
+			<%= image_tag 'icons/silk/arrow_down.png' %>
+		<% end -%>
+	<% end -%>
 </a>
