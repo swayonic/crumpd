@@ -1,6 +1,7 @@
 class HomeController < ApplicationController
 	#	CAS railtie
-	#before_filter RubyCAS::Filter
+	#before_filter RubyCAS::Filter, :except => :index
+	#before_filter RubyCAS::GaatewayFilter, :only => :index
 	before_filter :fake_cas, :except => [:login, :do_login]
 
 	def index

@@ -4,5 +4,4 @@ class ReportGoalLine < ActiveRecord::Base
 	belongs_to :report
 
 	validates :frequency, :inhand, :pledged, :presence => true, :numericality => true
-
 end

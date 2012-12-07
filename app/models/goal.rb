@@ -5,6 +5,10 @@ class Goal < ActiveRecord::Base
 
 	@@frequencies = {'0' => 'One-time', '1' => 'Annual', '12' => 'Monthly'}
 
+	def self.pct(a, t)
+		t > 0 ? (Float(a)*100/t) : 0
+	end
+
 	def self.title(f)
 		return @@frequencies[String(f)] || "#{f} times yearly"
 	end
@@ -12,4 +16,5 @@ class Goal < ActiveRecord::Base
 	def title
 		return Goal.title(frequency)
 	end
+
 end

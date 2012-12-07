@@ -16,6 +16,11 @@ module ListHelper
 			report = a.latest_report
 
 			line << a.user.display_name
+			if a.latest_report.nil?
+				line << 'None'
+			else
+				line << a.latest_report.created_at
+			end
 			
 			for g in @goals
 				if @fields["#{g.frequency}_goal"] == '1'
@@ -24,19 +29,51 @@ module ListHelper
 				end
 				if @fields["#{g.frequency}_inhand_pct"] == '1'
 					sort = line.size if @sort[:column] == "#{g.frequency}_inhand_pct"
-					line << a.goal_inhand_pct(g.frequency) 
+					if report
+						if l = report.goal_lines.find_by_frequency(g.frequency)
+							line << Goal.pct(l.inhand, a.goal_total(g.frequency))
+						else
+							line << 0
+						end
+					else
+						line << nil
+					end
 				end
 				if @fields["#{g.frequency}_inhand_amt"] == '1'
 					sort = line.size if @sort[:column] == "#{g.frequency}_inhand_amt"
-					line << a.goal_inhand(g.frequency)
+					if report
+						if l = report.goal_lines.find_by_frequency(g.frequency)
+							line << l.inhand
+						else
+							line << 0
+						end
+					else
+						line << nil
+					end
 				end
 				if @fields["#{g.frequency}_pledged_pct"] == '1'
 					sort = line.size if @sort[:column] == "#{g.frequency}_pledged_pct"
-					line << a.goal_pledged_pct(g.frequency)
+					if report
+						if l = report.goal_lines.find_by_frequency(g.frequency)
+							line << Goal.pct(l.pledged, a.goal_total(g.frequency))
+						else
+							line << 0
+						end
+					else
+						line << nil
+					end
 				end
 				if @fields["#{g.frequency}_pledged_amt"] == '1'
 					sort = line.size if @sort[:column] == "#{g.frequency}_pledged_amt"
-					line << a.goal_pledged(g.frequency)
+					if report
+						if l = report.goal_lines.find_by_frequency(g.frequency)
+							line << l.pledged
+						else
+							line << 0
+						end
+					else
+						line << nil
+					end
 				end
 			end
 			for rf in @period.report_fields

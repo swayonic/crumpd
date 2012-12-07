@@ -55,6 +55,7 @@
 	<table class='description'>
 		<tr>
 			<th><%= list_header_sort_link 'Name', 'name' %></th>
+			<th>Last Report</th>
 			<% for g in @goals -%>
 				<% if @fields["#{g.frequency}_goal"] == '1' -%>
 					<th><%= list_header_sort_link g.title, "#{g.frequency}_goal" %></th>

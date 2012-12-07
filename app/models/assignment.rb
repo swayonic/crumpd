@@ -29,7 +29,7 @@ class Assignment < ActiveRecord::Base
 	end
 
 	def goal_pledged_pct(f)
-		goal_total(f) > 0 ? (Float(goal_pledged(f))*100/goal_total(f)).round(2) : 0
+		Goal.pct(goal_pledged(f), goal_total(f))
 	end
 
 	def goal_inhand(f)
@@ -37,7 +37,7 @@ class Assignment < ActiveRecord::Base
 	end
 	
 	def goal_inhand_pct(f)
-		goal_total(f) > 0 ? (Float(goal_inhand(f))*100/goal_total(f)).round(2) : 0
+		Goal.pct(goal_inhand(f), goal_total(f))
 	end
 
 	def can_view?(u)
