@@ -7,7 +7,7 @@
 	<%= yield :stylesheets %>
 <!-- JAVASCRIPTS -->
   <%= javascript_include_tag "application" %>
-  <%= javascript_include_tag "jquery.tipTip" %>
+  <%#= javascript_include_tag "jquery.tipTip" %>
 	<% if @javascripts -%>
 		<% for script in @javascripts -%>
 			<%= javascript_include_tag script %>
