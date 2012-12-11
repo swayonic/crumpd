@@ -34,7 +34,7 @@ class PledgesController < HomeController
 		redirect_to :action => :index, :assignment_id => @pledge.assignment.id
 	end
 
-	# PUT /pledges/1/toggle
+	# GET /pledges/1/toggle
 	def toggle
 		@pledge = Pledge.find(params[:id])
 		if !@pledge.assignment.can_edit_pledges?(@sso)

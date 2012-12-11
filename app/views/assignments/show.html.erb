@@ -51,6 +51,36 @@
 
 <div class='grid_8'>
 	<% if @assignment.reports.count > 0 -%>
+
+		<% for g in @assignment.goals -%>
+			<% add_javascript 'raphael' -%>
+			<% add_javascript 'g.raphael' -%>
+			<% add_javascript 'g.line' -%>
+
+			<div align=center><%= g.title %> Goal (%)</div>
+			<div id='goal_<%= g.id %>_history' style="width:620px;height:100px"></div>
+			<script>
+				$(document).ready(function() {
+					var r = Raphael('goal_<%= g.id %>_history');
+<%
+x = Array.new
+index = 0
+y1 = Array.new
+y2 = Array.new
+for r in @assignment.reports.reverse
+	if l = r.goal_lines.find_by_frequency(g.frequency)
+		x << index
+		y1 << Goal.pct(l.inhand, g.amount)
+		y2 << Goal.pct(l.pledged + l.inhand, g.amount)
+	end
+	index = index + 1
+end
+%>
+					r.linechart(20,10,600,80, <%= x %>, [<%= y1 %>,<%= y2 %>], {shade: true, axis: '0 0 0 1'} );
+				});
+			</script>
+		<% end -%>
+
 		<table class='description'>
 		  <tr>
 				<th>Report</th>

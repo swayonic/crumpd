@@ -16,7 +16,7 @@ class Assignment < ActiveRecord::Base
 		return reports.first
 	end
 
-	def goal_total(f)
+	def goal_amt(f)
 		total = 0
 		for g in self.goals.select{|g| g.frequency == f}
 			total = g.amount
@@ -25,11 +25,11 @@ class Assignment < ActiveRecord::Base
 	end
 
 	def goal_pledged(f)
-		pledges.select{|p| p.frequency == f}.map{|p| p.amount}.sum
+		pledges.not_in_hand.select{|p| p.frequency == f}.map{|p| p.amount}.sum
 	end
 
 	def goal_pledged_pct(f)
-		Goal.pct(goal_pledged(f), goal_total(f))
+		Goal.pct(goal_pledged(f), goal_amt(f))
 	end
 
 	def goal_inhand(f)
@@ -37,7 +37,15 @@ class Assignment < ActiveRecord::Base
 	end
 	
 	def goal_inhand_pct(f)
-		Goal.pct(goal_inhand(f), goal_total(f))
+		Goal.pct(goal_inhand(f), goal_amt(f))
+	end
+
+	def goal_total(f)
+		pledges.select{|p| p.frequency == f}.map{|p| p.amount}.sum
+	end
+	
+	def goal_total_pct(f)
+		Goal.pct(goal_total(f), goal_amt(f))
 	end
 
 	def can_view?(u)

@@ -16,7 +16,7 @@ class ReportsController < HomeController
     @report = @assignment.reports.new
 
 		for g in @assignment.goals
-			l = @report.goal_lines.new(:frequency => g.frequency)
+			l = @report.goal_lines.new(:frequency => g.frequency, :pledged => @assignment.goal_pledged(g.frequency), :inhand => @assignment.goal_inhand(g.frequency))
 		end
 
 		for f in @assignment.period.report_fields

@@ -26,13 +26,13 @@ module ListHelper
 			for g in @goals
 				if @fields["#{g.frequency}_goal"] == '1'
 					sort = line.size if @sort[:column] == "#{g.frequency}_goal"
-					line << a.goal_total(g.frequency)
+					line << a.goal_amt(g.frequency)
 				end
 				if @fields["#{g.frequency}_inhand_pct"] == '1'
 					sort = line.size if @sort[:column] == "#{g.frequency}_inhand_pct"
 					if report
 						if l = report.goal_lines.find_by_frequency(g.frequency)
-							line << Goal.pct(l.inhand, a.goal_total(g.frequency))
+							line << Goal.pct(l.inhand, a.goal_amt(g.frequency))
 						else
 							line << 0
 						end
@@ -56,7 +56,7 @@ module ListHelper
 					sort = line.size if @sort[:column] == "#{g.frequency}_pledged_pct"
 					if report
 						if l = report.goal_lines.find_by_frequency(g.frequency)
-							line << Goal.pct(l.pledged, a.goal_total(g.frequency))
+							line << Goal.pct(l.pledged, a.goal_amt(g.frequency))
 						else
 							line << 0
 						end

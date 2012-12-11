@@ -1,8 +1,40 @@
-<i>TODO: graphs</i><br>
-<% for g in @assignment.goals -%>
-	<b><%= g.title %></b>: 
-		<%= @assignment.goal_pledged(g.frequency) %> pledged,
-		<%= @assignment.goal_inhand(g.frequency) %> in-hand
-		out of <%= g.amount %>
-	<br>
-<% end -%>
+<% add_javascript 'raphael' -%>
+<% add_javascript 'g.raphael' -%>
+<% add_javascript 'g.bar' -%>
+
+<div id='pledges_progress' style="width:300px;height:70px"></div>
+<script>
+	$(document).ready(function() {
+		var r = Raphael('pledges_progress');
+<%
+y1 = Array.new
+y2 = Array.new
+titles = Array.new
+for g in @assignment.goals
+	y1 << @assignment.goal_inhand_pct(g.frequency)
+	y2 << @assignment.goal_pledged_pct(g.frequency)
+	titles << g.title
+end
+-%>
+		fin = function() {
+			if (this.bars[0].value > 0 || this.bars[1].value > 0) {
+				this.flag = r.popup(this.bars[0].x, this.bars[1].y, this.bars[0].value + "% In-Hand, " + this.bars[1].value + "% Pledged");
+			}
+		};
+//		fin = function () {
+//			this.flag = r.popup(this.bar.x, this.bar.y, this.bar.value || "0").insertBefore(this);
+//		};
+		fout = function() {
+			this.flag.animate({opacity:0}, 300, function () {this.remove();});
+		};
+		<% if titles.count == 2 -%>
+			r.text(50,30, "<%= titles[0] %>");
+			r.text(50,55, "<%= titles[1] %>");
+		<% elsif titles.count == 1 -%>
+			r.text(50,30, "<%= titles[0] %>");
+		<% end -%>
+		r.hbarchart(100,20,200,50,
+			[<%= y1 %>,<%= y2 %>],
+			{type:'soft', stacked:true} ).hoverColumn(fin, fout);
+	});
+</script>
