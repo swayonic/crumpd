@@ -6,12 +6,14 @@
 	<%= stylesheet_link_tag    "application", :media => 'all'  %>
 	<%= yield :stylesheets %>
 <!-- JAVASCRIPTS -->
-  <%= javascript_include_tag "application" %>
-  <%#= javascript_include_tag "jquery.tipTip" %>
+	<%# I'm including the files I need manually, because the order matters -%>
+  <%#= javascript_include_tag "application" %>
+  <%= javascript_include_tag "jquery" %>
+  <%= javascript_include_tag "jquery_ujs" %>
+  <%= javascript_include_tag "jquery.tipTip" %>
 	<% if @javascripts -%>
 		<% for script in @javascripts -%>
-			<%# I don't think this is necessary anymore. -%>
-			<%#= javascript_include_tag script %>
+			<%= javascript_include_tag script %>
 		<% end -%>
 	<% end -%>
 	<%= yield :javascripts %>
