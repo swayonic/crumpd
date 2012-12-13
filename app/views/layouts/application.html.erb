@@ -10,7 +10,8 @@
   <%#= javascript_include_tag "jquery.tipTip" %>
 	<% if @javascripts -%>
 		<% for script in @javascripts -%>
-			<%= javascript_include_tag script %>
+			<%# I don't think this is necessary anymore. -%>
+			<%#= javascript_include_tag script %>
 		<% end -%>
 	<% end -%>
 	<%= yield :javascripts %>
