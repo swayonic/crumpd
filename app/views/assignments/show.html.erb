@@ -50,7 +50,7 @@
 </div>
 
 <div class='grid_8'>
-	<% if @assignment.reports.count > 0 -%>
+	<% if @assignment.reports.count > 1 -%>
 
 		<% for g in @assignment.goals -%>
 			<% add_javascript 'raphael' -%>
@@ -80,6 +80,8 @@ end
 				});
 			</script>
 		<% end -%>
+	<% end -%>
+	<% if @assignment.reports.count > 0 -%>
 
 		<table class='description'>
 		  <tr>
