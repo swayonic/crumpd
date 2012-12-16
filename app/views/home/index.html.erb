@@ -1,6 +1,13 @@
 <%= page_header 'MPD Home' %>
 
 <div class="grid_10 prefix_1 suffix_1">
+	Session: <%= h session.inspect %>
+	<br>
+	<br>
+	ENV: <%= h ENV.inspect %>
+	<br>
+	<br>
+
 	<% if @sso.assignments.count > 0 -%>
 		<h2>My Assignments</h2>
 		<ul>

@@ -39,4 +39,4 @@ gem 'jquery-rails'
 # gem 'debugger'
 
 # For CAS Authentication
-#gem 'rubycas-client-rails'
+gem 'rubycas-client-rails'

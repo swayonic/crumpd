@@ -65,6 +65,6 @@ module Mpd
 		config.assets.initialize_on_precompile = false
 
 		# CAS railtie
-		#config.rubycas.cas_base_url = "https://signin.ccci.org/cas/"
+		config.rubycas.cas_base_url = "https://signin.ccci.org/cas/"
   end
 end
