@@ -8,6 +8,7 @@ class HomeController < ApplicationController
 	end
 
 	def index
+		@controller = self
 		if @sso.is_admin
 			@periods = Period.order('start DESC')
 		else
@@ -29,6 +30,9 @@ class HomeController < ApplicationController
 	end
 
 	def logout
+		if ENV['RAILS_ENV'] == 'production'
+			RubyCAS::Filter.logout(self)
+		end
 		session[:username] = nil
 		redirect_to :action => :index
 	end

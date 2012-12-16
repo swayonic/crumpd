@@ -6,9 +6,9 @@
 			</td>
 			<td>
 				<% if ENV['RAILS_ENV'] == 'production' -%>
-					<%= link_to 'Login', CASClient::Frameworks::Rails::Filter.login_url %>
+					<%= link_to 'Login', RubyCAS::Filter.login_url(@controller) %>
 					|
-					<%= link_to 'Logout', CASClient::Frameworks::Rails::Filter.logout_url %>
+					<%= link_to 'Logout', logout_url %>
 				<% else %>
 					<% if @sso.nil? -%>
 						<%= link_to 'Log In', login_url %>
