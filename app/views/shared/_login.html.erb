@@ -5,11 +5,17 @@
 				<%= link_to image_tag("safelogo.png"), root_url %></a>
 			</td>
 			<td>
-				<% if @sso.nil? -%>
-					<%= link_to 'Log In', login_url %>
-				<% else -%>
-					<%= @sso.display_name %> |
-					<%= link_to 'Log Out', logout_url %>
+				<% if ENV['RAILS_ENV'] == 'production' -%>
+					<%= link_to 'Login', CASClient::Frameworks::Rails::Filter.login_url(home) %>
+					|
+					<%= link_to 'Logout', CASClient::Frameworks::Rails::Filter.logout_url(home) %>
+				<% else %>
+					<% if @sso.nil? -%>
+						<%= link_to 'Log In', login_url %>
+					<% else -%>
+						<%= @sso.display_name %> |
+						<%= link_to 'Log Out', logout_url %>
+					<% end -%>
 				<% end -%>
 			</td>
 		</tr>
