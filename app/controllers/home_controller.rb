@@ -2,7 +2,7 @@ class HomeController < ApplicationController
 	#	CAS railtie
 	if ENV['RAILS_ENV'] == 'production'
 		before_filter RubyCAS::Filter, :except => :index
-		@sso = User.first
+		before_filter :fake_cas, :except => [:login, :do_login]
 	else
 		before_filter :fake_cas, :except => [:login, :do_login]
 	end
@@ -43,7 +43,9 @@ class HomeController < ApplicationController
 			render 'shared/unauthorized'
 			return false
 		else
-			@sso = User.find(session[:username])
+			# TODO Fix
+			#@sso = User.find(session[:username])
+			@sso = User.first
 			return true
 		end
 	end
