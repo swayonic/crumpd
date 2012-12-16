@@ -8,7 +8,6 @@ class HomeController < ApplicationController
 	end
 
 	def index
-		@controller = self
 		if @sso.is_admin
 			@periods = Period.order('start DESC')
 		else
@@ -42,6 +41,8 @@ class HomeController < ApplicationController
 
 	private
 	def fake_cas
+		# How do I access this in a view?
+		@controller = self
 		if session[:username] == nil
 			@sso = nil
 			render 'shared/unauthorized'
