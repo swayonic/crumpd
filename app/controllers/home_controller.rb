@@ -41,16 +41,14 @@ class HomeController < ApplicationController
 
 	private
 	def fake_cas
-		# How do I access this in a view?
 		@controller = self
 		if session[:username] == nil
 			@sso = nil
 			render 'shared/unauthorized'
 			return false
 		else
-			# TODO Fix
-			#@sso = User.find(session[:username])
-			@sso = User.first
+			#NOTE: This might break if CAS sets the username
+			@sso = User.find(session[:username])
 			return true
 		end
 	end

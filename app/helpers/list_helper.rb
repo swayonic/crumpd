@@ -91,7 +91,8 @@ module ListHelper
 			data << line
 		end
 
-		data = data.sort_by{|line| line[sort]} if sort > 0
+		#Deal with nil's in the data
+		data = data.sort{|a,b| (a[sort] and b[sort]) ? a[sort] <=> b[sort] : (a[sort] ? 1 : -1)} if sort > 0
 		data = data.reverse if @sort[:direction] == 'desc'
 		return data
 	end

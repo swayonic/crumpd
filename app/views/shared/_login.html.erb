@@ -5,7 +5,7 @@
 				<%= link_to image_tag("safelogo.png"), root_url %></a>
 			</td>
 			<td>
-				<% if true or ENV['RAILS_ENV'] == 'production' -%>
+				<% if ENV['RAILS_ENV'] == 'production' -%>
 					<%= link_to 'Login', RubyCAS::Filter.login_url(@controller) %>
 					|
 					<%= link_to 'Logout', logout_url %>
