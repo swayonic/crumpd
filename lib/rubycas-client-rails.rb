@@ -246,10 +246,7 @@ module RubyCAS
             controller.send(:head, 401)
           end
         else
-					# LCY 2012/12/20 I don't like this behavior
-          #redirect_to_cas_for_authentication(controller)
-					render 'shared/unauthorized'
-					return
+          redirect_to_cas_for_authentication(controller)
         end
       end
       
