@@ -1,9 +1,9 @@
 development:
   adapter: postgresql
   encoding: unicode
-  database: mpd_development
+  database: crumpd
   pool: 5
-  username: luke
+  username: postgres
   password:
 
 test:
