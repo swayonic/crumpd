@@ -8,7 +8,6 @@ class HomeController < ApplicationController
 
 	def index
 		if @sso.is_admin
-		@sso = User.first
 			@periods = Period.order('start DESC')
 		else
 			@periods = @sso.periods
@@ -30,6 +29,7 @@ class HomeController < ApplicationController
 
 	def logout
 		if Rails.env.production?
+			session[:username] = nil # Can't hurt
 			RubyCAS::Filter.logout(self)
 		else
 			session[:username] = nil
