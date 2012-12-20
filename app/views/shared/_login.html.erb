@@ -6,7 +6,7 @@
 			</td>
 			<td>
 				<% if ENV['RAILS_ENV'] == 'production' -%>
-					<%= link_to 'Login', RubyCAS::Filter.login_url(@controller) %>
+					<%= link_to 'Login', RubyCAS::Filter.login_url(controller) %>
 					|
 					<%= link_to 'Logout', logout_url %>
 				<% else %>

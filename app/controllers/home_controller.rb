@@ -48,7 +48,7 @@ class HomeController < ApplicationController
 
 	private
 	def fake_cas
-		@controller = self
+		#@controller = self
 		if session[:username] == nil
 			@sso = nil
 			render 'shared/unauthorized'
