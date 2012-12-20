@@ -1,8 +1,8 @@
 class HomeController < ApplicationController
 	#	CAS railtie
 	if ENV['RAILS_ENV'] == 'production'
-		before_filter RubyCAS::Filter, :except => :index
-		before_filter RubyCAS::GatewayFilter, :only => :index
+		before_filter RubyCAS::Filter #, :except => :index
+#		before_filter RubyCAS::GatewayFilter, :only => :index
 #		before_filter :fake_cas, :except => [:login, :do_login]
 	else
 		before_filter :fake_cas, :except => [:login, :do_login]
