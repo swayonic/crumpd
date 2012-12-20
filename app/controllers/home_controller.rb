@@ -2,16 +2,23 @@ class HomeController < ApplicationController
 	#	CAS railtie
 	if ENV['RAILS_ENV'] == 'production'
 		before_filter RubyCAS::Filter, :except => :index
-		before_filter :fake_cas, :except => [:login, :do_login]
+#		before_filter :fake_cas, :except => [:login, :do_login]
 	else
 		before_filter :fake_cas, :except => [:login, :do_login]
 	end
 
 	def index
+		#TMP: Checking the session keys
+		if ENV['RAILS_ENV'] == 'production'
+			@sso = User.first
+			@periods = Period.order('start DESC')
+		else
 		if @sso.is_admin
+		@sso = User.first
 			@periods = Period.order('start DESC')
 		else
 			@periods = @sso.periods
+		end
 		end
 	end
 
