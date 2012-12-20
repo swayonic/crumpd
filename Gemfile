@@ -39,4 +39,5 @@ gem 'jquery-rails'
 # gem 'debugger'
 
 # For CAS Authentication
-gem 'rubycas-client-rails'
+#gem 'rubycas-client-rails', '0.1.1' #This version doesn't exist on RubyGems.com
+gem 'rubycas-client', '~> 2.3.9.rc1'
