@@ -2,6 +2,7 @@ class HomeController < ApplicationController
 	#	CAS railtie
 	if ENV['RAILS_ENV'] == 'production'
 		before_filter RubyCAS::Filter, :except => :index
+		before_filter RubyCAS::Filter::GatewayFilter, :only => :index
 #		before_filter :fake_cas, :except => [:login, :do_login]
 	else
 		before_filter :fake_cas, :except => [:login, :do_login]
@@ -48,13 +49,11 @@ class HomeController < ApplicationController
 
 	private
 	def fake_cas
-		#@controller = self
 		if session[:username] == nil
 			@sso = nil
 			render 'shared/unauthorized'
 			return false
 		else
-			#NOTE: This might break if CAS sets the username
 			@sso = User.find(session[:username])
 			return true
 		end
