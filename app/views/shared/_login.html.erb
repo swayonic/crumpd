@@ -5,17 +5,12 @@
 				<%= link_to image_tag("safelogo.png"), root_url %></a>
 			</td>
 			<td>
-				<% if ENV['RAILS_ENV'] == 'production' -%>
-					<%= link_to 'Login', RubyCAS::Filter.login_url(controller) %>
+				<% if @sso.nil? -%>
+					<%= link_to 'Login', @login_url %>
+				<% else -%>
+					<%= @sso.display_name %>
 					|
-					<%= link_to 'Logout', logout_url %>
-				<% else %>
-					<% if @sso.nil? -%>
-						<%= link_to 'Log In', login_url %>
-					<% else -%>
-						<%= @sso.display_name %> |
-						<%= link_to 'Log Out', logout_url %>
-					<% end -%>
+					<%= link_to 'Logout', 'home#logout' %>
 				<% end -%>
 			</td>
 		</tr>

@@ -1,7 +1,7 @@
 # Version 0.1.1 (github.com/rubycas/rubycas-client-rails)
 #		Installed local to this application because RubyGems doesn't include the
 #		newest version of this gem.
-#		2012/12/20 LCY
+#		Added 2012/12/20 by LCY
 
 require 'casclient'
 
@@ -246,7 +246,9 @@ module RubyCAS
             controller.send(:head, 401)
           end
         else
-          redirect_to_cas_for_authentication(controller)
+					# LCY 2012/12/20 I don't like this behavior
+          #redirect_to_cas_for_authentication(controller)
+					controller.send(:head, 401)
         end
       end
       

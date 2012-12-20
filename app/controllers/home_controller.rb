@@ -1,25 +1,17 @@
 class HomeController < ApplicationController
 	#	CAS railtie
-	if ENV['RAILS_ENV'] == 'production'
-		before_filter RubyCAS::Filter #, :except => :index
-#		before_filter RubyCAS::GatewayFilter, :only => :index
-#		before_filter :fake_cas, :except => [:login, :do_login]
-	else
-		before_filter :fake_cas, :except => [:login, :do_login]
+	if Rails.env.production?
+		before_filter RubyCAS::Filter, :except => :index
+		before_filter RubyCAS::GatewayFilter, :only => :index
 	end
+	before_filter :sso_auth, :except => [:login, :do_login]
 
 	def index
-		#TMP: Checking the session keys
-		if ENV['RAILS_ENV'] == 'production'
-			@sso = User.first
-			@periods = Period.order('start DESC')
-		else
 		if @sso.is_admin
 		@sso = User.first
 			@periods = Period.order('start DESC')
 		else
 			@periods = @sso.periods
-		end
 		end
 	end
 
@@ -37,31 +29,37 @@ class HomeController < ApplicationController
 	end
 
 	def logout
-		if ENV['RAILS_ENV'] == 'production'
+		if Rails.env.production?
 			RubyCAS::Filter.logout(self)
+		else
+			session[:username] = nil
+			redirect_to :action => :index
 		end
-		session[:username] = nil
-		redirect_to :action => :index
-	end
-
-	def unauthorized
 	end
 
 	private
-	def fake_cas
-		if session[:username] == nil
-			@sso = nil
+	def sso_auth
+		@sso = nil
+		if Rails.env.production?
+			@login_url = RubyCAS::Filter.login_url(self)
+			#TODO
+#			@sso = User.find_by_account_no(session[:cas_extra_attributes][:designation]) if session[:cas_extra_attributes] and session[:cas_extra_attributes][:designation]
+			@sso = User.first if session[:cas_extra_attributes] and session[:cas_extra_attributes][:designation]
+		else #Development mode
+			@login_url = '/login'
+			@sso = User.find(session[:username]) if session[:username]
+		end
+
+		if @sso.nil?
 			render 'shared/unauthorized'
 			return false
-		else
-			@sso = User.find(session[:username])
-			return true
 		end
+		return true
 	end
 
 	def admin_only
 		if @sso.nil? or !@sso.is_admin
-			render :partial => 'shared/unauthorized'
+			render 'shared/unauthorized'
 			return false
 		end
 		return true
