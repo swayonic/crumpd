@@ -43,7 +43,7 @@ class HomeController < ApplicationController
 		if Rails.env.production?
 			@login_url = RubyCAS::Filter.login_url(self)
 			if session[:cas_extra_attributes] and session[:cas_extra_attributes][:designation]
-				if !@user = User.find_by_account_no(session[:cas_extra_attributes][:designation])
+				if !@user = User.find_by_account_number(session[:cas_extra_attributes][:designation])
 					# Create a temporary user with the given CAS attributes
 					# Possibly, in the future, I might want to add this person to the database
 					@user = User.new(
