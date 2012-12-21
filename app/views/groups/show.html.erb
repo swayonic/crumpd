@@ -10,10 +10,10 @@
 		</tr>
 		<tr>
 			<td>Coaching Period</td>
-			<td><%= link_to_if @group.period.can_view?(@sso), @group.period.name, @group.period %></td>
+			<td><%= link_to_if @group.period.can_view?(@user), @group.period.name, @group.period %></td>
 		</tr>
 	</table>
-	<% if @group.can_edit?(@sso) -%>
+	<% if @group.can_edit?(@user) -%>
 		<%= link_to 'Edit', edit_group_url(@group) %>
 	<% end -%>
 
@@ -27,15 +27,15 @@
 		<ul>
 			<% for c in @group.group_coaches.sort_by{ |c| [c.user.last_name, c.user.first_name]} -%>
 				<li>
-					<%= link_to_if c.user.can_view?(@sso), c.user.display_name, c.user %>
-					<% if @group.can_edit?(@sso) -%>
+					<%= link_to_if c.user.can_view?(@user), c.user.display_name, c.user %>
+					<% if @group.can_edit?(@user) -%>
 						<%= link_to image_tag('icons/silk/delete.png'), c, method: :delete, data: { confirm: 'Are you sure you want to remove this coach?' } %>
 					<% end -%>
 				</li>
 			<% end -%>
 		</ul>
 	<% end -%>
-	<% if @group.can_edit?(@sso) -%>
+	<% if @group.can_edit?(@user) -%>
 		<%= form_for [@group, @new_coach] do |f| -%>
 			<%= f.text_field :user_id, :size => 12 %>
 			<%= f.submit 'Add Coach' %>
@@ -51,20 +51,20 @@
 		<ul>
 			<% for a in @group.assignments.sort_by{ |a| [a.user.last_name, a.user.first_name]} -%>
 				<li>
-					<%= link_to_if a.can_view?(@sso), a.user.display_name, a %>
-					<% if a.can_edit?(@sso) -%>
+					<%= link_to_if a.can_view?(@user), a.user.display_name, a %>
+					<% if a.can_edit?(@user) -%>
 						<%= link_to image_tag('icons/silk/delete.png'), group_assignment_url(a), method: :delete, data: { confirm: 'Are you sure you want to remove this group member?' } %>
 					<% end -%>
 				</li>
 			<% end -%>
 		</ul>
 	<% end %>
-	<% if @group.can_view_list?(@sso) -%>
+	<% if @group.can_view_list?(@user) -%>
 		<%= link_to 'Detailed listing', list_group_url(@group) %>
 		<br>
 		<br>
 	<% end -%>
-	<% if @group.can_edit?(@sso) -%>
+	<% if @group.can_edit?(@user) -%>
 		<%= form_for @new_assn, :url => create_group_assignments_url do |f| -%>
 			<%= f.hidden_field :group_id %>
 			<%= f.text_field :user_id, :size => 12 %>

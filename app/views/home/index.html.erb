@@ -1,17 +1,10 @@
 <%= page_header 'MPD Home' %>
 
 <div class="grid_10 prefix_1 suffix_1">
-	Session: <%= h session.inspect %>
-	<br>
-	<br>
-	ENV: <%= h ENV.inspect %>
-	<br>
-	<br>
-
-	<% if @sso.assignments.count > 0 -%>
+	<% if @user.assignments.count > 0 -%>
 		<h2>My Assignments</h2>
 		<ul>
-			<% for a in @sso.assignments -%>
+			<% for a in @user.assignments -%>
 				<li>
 				 	<%= link_to a.period.name, a %>
 					<% if a.team -%>
@@ -25,19 +18,19 @@
 		</ul>
 	<% end -%>
 
-	<% if @sso.teams_as_leader.count > 0 -%>
+	<% if @user.teams_as_leader.count > 0 -%>
 		<h2>My Teams</h2>
 		<ul>
-			<% for t in @sso.teams_as_leader -%>
+			<% for t in @user.teams_as_leader -%>
 				<li><%= link_to t.name, t %></li>
 			<% end -%>
 		</ul>
 	<% end -%>
 
-	<% if @sso.groups_as_coach.count > 0 -%>
+	<% if @user.groups_as_coach.count > 0 -%>
 		<h2>My Coaching Groups</h2>
 		<ul>
-			<% for g in @sso.groups_as_coach -%>
+			<% for g in @user.groups_as_coach -%>
 				<li><%= link_to g.name, g %></li>
 			<% end -%>
 		</ul>
@@ -55,6 +48,10 @@
 				</li>
 			<% end -%>
 		</ul>
+	<% end -%>
+
+	<% if @user.new_record? -%>
+		<i>You have no roles associated with this MPD tool.</i>
 	<% end -%>
 </div>
 <div class="clear"></div>

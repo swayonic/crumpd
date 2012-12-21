@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  attr_accessible :account_number, :email, :first_name, :is_admin, :last_name, :phone
+  attr_accessible :first_name, :last_name, :email, :account_number, :is_admin
 
 	has_many :assignments
 	has_many :group_coaches
@@ -14,12 +14,6 @@ class User < ActiveRecord::Base
 
 	validates :email, :format => { 
 		:with => /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/,
-		:allow_nil => true,
-		:allow_blank => true,
-		:message => "Invalid format"
-		}
-	validates :phone, :format => { 
-		:with => /^[0-9-]+$/,
 		:allow_nil => true,
 		:allow_blank => true,
 		:message => "Invalid format"

@@ -3,7 +3,7 @@ class AssignmentsController < HomeController
 	# GET /assignments/1
 	def show
 		@assignment = Assignment.find(params[:id])
-		if !@assignment.can_view?(@sso)
+		if !@assignment.can_view?(@user)
 			render 'shared/unauthorized'
 			return
 		end
@@ -13,7 +13,7 @@ class AssignmentsController < HomeController
 	def edit
 		@assignment = Assignment.find(params[:id])
 		@new_goal = Goal.new
-		if !@assignment.can_edit?(@sso)
+		if !@assignment.can_edit?(@user)
 			render 'shared/unauthorized'
 			return
 		end
@@ -21,7 +21,7 @@ class AssignmentsController < HomeController
 
 	def update
 		@assignment = Assignment.find(params[:id])
-		if !@assignment.can_edit?(@sso)
+		if !@assignment.can_edit?(@user)
 			render 'shared/unauthorized'
 			return
 		end
@@ -61,7 +61,7 @@ class AssignmentsController < HomeController
 	# POST /assignments/create_team
 	def create_team
 		assn = Assignment.new(params[:assignment])
-		if !assn.can_edit?(@sso)
+		if !assn.can_edit?(@user)
 			render 'shared/unauthorized'
 			return
 		end
@@ -100,7 +100,7 @@ class AssignmentsController < HomeController
 	# DELETE /assignments/1/team
 	def team
 		assn = Assignment.find(params[:id])
-		if !assn.can_edit?(@sso)
+		if !assn.can_edit?(@user)
 			render 'shared/unauthorized'
 			return
 		end
@@ -128,7 +128,7 @@ class AssignmentsController < HomeController
 	# POST /assignments/create_group
 	def create_group
 		assn = Assignment.new(params[:assignment])
-		if !assn.can_edit?(@sso)
+		if !assn.can_edit?(@user)
 			render 'shared/unauthorized'
 			return
 		end
@@ -167,7 +167,7 @@ class AssignmentsController < HomeController
 	# DELETE /assignments/1/group
 	def group
 		assn = Assignment.find(params[:id])
-		if !assn.can_edit?(@sso)
+		if !assn.can_edit?(@user)
 			render 'shared/unauthorized'
 			return
 		end

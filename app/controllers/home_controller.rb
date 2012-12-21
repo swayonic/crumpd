@@ -4,13 +4,13 @@ class HomeController < ApplicationController
 		before_filter RubyCAS::Filter, :except => :index
 		before_filter RubyCAS::GatewayFilter, :only => :index
 	end
-	before_filter :sso_auth, :except => [:login, :do_login]
+	before_filter :cas_auth, :except => [:login, :do_login]
 
 	def index
-		if @sso.is_admin
+		if @user.is_admin
 			@periods = Period.order('start DESC')
 		else
-			@periods = @sso.periods
+			@periods = @user.periods
 		end
 	end
 
@@ -38,19 +38,27 @@ class HomeController < ApplicationController
 	end
 
 	private
-	def sso_auth
-		@sso = nil
+	def cas_auth
+		@user = nil
 		if Rails.env.production?
 			@login_url = RubyCAS::Filter.login_url(self)
-			#TODO
-#			@sso = User.find_by_account_no(session[:cas_extra_attributes][:designation]) if session[:cas_extra_attributes] and session[:cas_extra_attributes][:designation]
-			@sso = User.first if session[:cas_extra_attributes] and session[:cas_extra_attributes][:designation]
+			if session[:cas_extra_attributes] and session[:cas_extra_attributes][:designation]
+				if !@user = User.find_by_account_no(session[:cas_extra_attributes][:designation])
+					# Create a temporary user with the given CAS attributes
+					# Possibly, in the future, I might want to add this person to the database
+					@user = User.new(
+						:first_name => session[:cas_extra_attributes][:firstName],
+						:last_name => session[:cas_extra_attributes][:lastName],
+						:email => session[:cas_extra_attributes][:email],
+						:account_number => session[:cas_extra_attributes][:designation])
+				end
+			end
 		else #Development mode
 			@login_url = '/login'
-			@sso = User.find(session[:username]) if session[:username]
+			@user = User.find(session[:username]) if session[:username]
 		end
 
-		if @sso.nil?
+		if @user.nil?
 			render 'shared/unauthorized'
 			return false
 		end
@@ -58,7 +66,7 @@ class HomeController < ApplicationController
 	end
 
 	def admin_only
-		if @sso.nil? or !@sso.is_admin
+		if @user.nil? or !@user.is_admin
 			render 'shared/unauthorized'
 			return false
 		end

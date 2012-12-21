@@ -1,0 +1,40 @@
+sitrack tables I'm interested in:
+
+--- sitrack_tracking
+- It looks like this keeps track of somebody on the way towards starting their
+- intern/stint year - paperwork, etc
+internType
+teamLeader
+caringRegion
+asgTeam
+asgCountry
+regionOfOrigin ?
+
+--- sitrack_mpd
+- This is MPD information. How is this data being written currently? Do I want
+- to update this table remotely from my tool, so that it stays current?
+coachName
+coachEmail
+monthlyGoal
+oneTimeGoal
+monthlyRaised
+oneTimeRaised
+totalGoal
+totalRaised
+percentRaised
+goalYear
+accountBalance
+
+--- ministryPerson
+- Here's the big data table on people's information in sitrack. I think all I
+- really want is name, account no, and email, but anything else is in here.
+personID
+accountNo
+lastName
+firstName
+middleName
+preferredName
+region
+fk_ssmUserId
+
+

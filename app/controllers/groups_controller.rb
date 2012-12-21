@@ -3,7 +3,7 @@ class GroupsController < HomeController
   # GET /groups/1
   def show
     @group = Group.find(params[:id])
-		if !@group.can_view?(@sso)
+		if !@group.can_view?(@user)
 			render 'shared/unauthorized'
 			return
 		end
@@ -19,7 +19,7 @@ class GroupsController < HomeController
   # GET /groups/1/edit
   def edit
     @group = Group.find(params[:id])
-		if !@group.can_edit?(@sso)
+		if !@group.can_edit?(@user)
 			render 'shared/unauthorized'
 			return
 		end
@@ -29,7 +29,7 @@ class GroupsController < HomeController
   # POST /periods/1/groups
   def create
     @period = Period.find(params[:period_id])
-		if !@period.can_edit?(@sso)
+		if !@period.can_edit?(@user)
 			render 'shared/unauthorized'
 			return
 		end
@@ -48,7 +48,7 @@ class GroupsController < HomeController
   # PUT /groups/1
   def update
     @group = Group.find(params[:id])
-		if !@group.can_edit?(@sso)
+		if !@group.can_edit?(@user)
 			render 'shared/unauthorized'
 			return
 		end
@@ -63,7 +63,7 @@ class GroupsController < HomeController
   # DELETE /groups/1
   def destroy
     @group = Group.find(params[:id])
-		if !@group.period.can_edit?(@sso)
+		if !@group.period.can_edit?(@user)
 			render 'shared/unauthorized'
 			return
 		end
@@ -76,7 +76,7 @@ class GroupsController < HomeController
 	# DELETE /group_coaches/1
 	def destroy_coach
 		@coach = GroupCoach.find(params[:id])
-		if !@coach.group.can_edit?(@sso)
+		if !@coach.group.can_edit?(@user)
 			render 'shared/unauthorized'
 			return
 		end
@@ -89,7 +89,7 @@ class GroupsController < HomeController
 	# GET /groups/1/list
 	def list
 		@group = Group.find(params[:id])
-		if !@group.can_view_list?(@sso)
+		if !@group.can_view_list?(@user)
 			render 'shared/unauthorized'
 			return
 		end

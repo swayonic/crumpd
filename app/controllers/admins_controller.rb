@@ -3,7 +3,7 @@ class AdminsController < HomeController
 	# POST /periods/1/admins
 	def create
 		@period = Period.find(params[:period_id])
-		if !@period.can_edit?(@sso)
+		if !@period.can_edit?(@user)
 			render 'shared/unauthorized'
 			return
 		end
@@ -26,7 +26,7 @@ class AdminsController < HomeController
 	# DELETE /admins/1?return=url
 	def destroy
 		@admin = PeriodAdmin.find(params[:id])
-		if !@admin.period.can_edit?(@sso)
+		if !@admin.period.can_edit?(@user)
 			render 'shared/unauthorized'
 			return
 		end

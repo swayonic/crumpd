@@ -3,16 +3,29 @@ class ReportsController < HomeController
 	# GET /assignments/1/reports
   def index
 		@assignment = Assignment.find(params[:assignment_id])
+		if !@assignment.can_view?(@user)
+			render 'shared/unauthorized'
+			return
+		end
   end
 
   # GET /reports/1
   def show
     @report = Report.find(params[:id])
+		if !@report.assignment.can_view?(@user)
+			render 'shared/unauthorized'
+			return
+		end
   end
 
   # GET /assignments/1/reports/new
   def new
 		@assignment = Assignment.find(params[:assignment_id])
+		if !@assignment.can_edit?(@user)
+			render 'shared/unauthorized'
+			return
+		end
+
     @report = @assignment.reports.new
 
 		for g in @assignment.goals
@@ -28,6 +41,10 @@ class ReportsController < HomeController
   # GET /reports/1/edit
   def edit
     @report = Report.find(params[:id])
+		if !@report.assignment.can_edit?(@user)
+			render 'shared/unauthorized'
+			return
+		end
 		
 		for g in @report.assignment.goals
 			if @report.goal_lines.find_by_frequency(g.frequency).nil?
@@ -45,6 +62,10 @@ class ReportsController < HomeController
   # POST /assignments/1/reports
   def create
 		@assignment = Assignment.find(params[:assignment_id])
+		if !@assignment.can_edit?(@user)
+			render 'shared/unauthorized'
+			return
+		end
     @report = @assignment.reports.new(params[:report])
 
 		params.each do |key, value|
@@ -70,6 +91,10 @@ class ReportsController < HomeController
   # PUT /reports/1
   def update
 		@report = Report.find(params[:id])
+		if !@report.assignment.can_edit?(@user)
+			render 'shared/unauthorized'
+			return
+		end
 		valid = true
 		
 
@@ -109,6 +134,10 @@ class ReportsController < HomeController
   # DELETE /reports/1.json
   def destroy
     @report = Report.find(params[:id])
+		if !@report.assignment.can_edit?(@user)
+			render 'shared/unauthorized'
+			return
+		end
     @report.destroy
 
     respond_to do |format|

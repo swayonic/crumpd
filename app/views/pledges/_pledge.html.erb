@@ -3,7 +3,7 @@
 	<td><%= p.name %></td>
 	<td><%= p.amount %></td>
 	<td><%= Goal.title(p.frequency) %></td>
-	<% if @assignment.can_edit?(@sso) -%>
+	<% if @assignment.can_edit?(@user) -%>
 		<td style='text-align:center;'>
 			<% if p.is_in_hand -%>
 				<%= link_to image_tag('icons/silk/accept.png'), toggle_pledge_url(p), :method => :put %>

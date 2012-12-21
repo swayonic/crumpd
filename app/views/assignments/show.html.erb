@@ -6,7 +6,7 @@
 	<table class="description">
 		<tr>
 			<td>User</td>
-			<td><%= link_to_if @assignment.user.can_view?(@sso), @assignment.user.display_name, @assignment.user %>
+			<td><%= link_to_if @assignment.user.can_view?(@user), @assignment.user.display_name, @assignment.user %>
 		</tr>
 		<tr>
 			<td>Team</td>
@@ -14,7 +14,7 @@
 				<% if @assignment.team.nil? -%>
 					<i>None</i>
 				<% else -%>
-					<%= link_to_if @assignment.team.can_view?(@sso), @assignment.team.name, @assignment.team %>
+					<%= link_to_if @assignment.team.can_view?(@user), @assignment.team.name, @assignment.team %>
 				<% end -%>
 			</td>
 		</tr>
@@ -24,7 +24,7 @@
 				<% if @assignment.group.nil? -%>
 					<i>None</i>
 				<% else -%>
-					<%= link_to_if @assignment.group.can_view?(@sso), @assignment.group.name, @assignment.group %>
+					<%= link_to_if @assignment.group.can_view?(@user), @assignment.group.name, @assignment.group %>
 				<% end -%>
 			</td>
 		</tr>
@@ -35,13 +35,13 @@
 			</tr>
 		<% end -%>
 	</table>
-	<% if @assignment.can_edit?(@sso) -%>
+	<% if @assignment.can_edit?(@user) -%>
 		<%= link_to 'Edit', edit_assignment_url(@assignment) %>
 	<% end -%>
 	
 	<br>
 	<br>
-	<% if @assignment.can_view_pledges?(@sso) -%>
+	<% if @assignment.can_view_pledges?(@user) -%>
 		<h3>Progress</h3>
 		<%= link_to 'View Pledges', assignment_pledges_url(@assignment) %><br>
 		<%= render :partial => 'pledges/progress_size4' %>

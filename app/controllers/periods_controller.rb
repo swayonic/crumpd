@@ -3,7 +3,7 @@ class PeriodsController < HomeController
   # GET /periods/1
   def show
     @period = Period.find(params[:id])
-		if !@period.can_view?(@sso)
+		if !@period.can_view?(@user)
 			render 'shared/unauthorized'
 			return
 		end
@@ -21,7 +21,7 @@ class PeriodsController < HomeController
 	# GET /periods/1/show_fields
 	def show_fields
 		@period = Period.find(params[:id])
-		if !@period.can_view?(@sso)
+		if !@period.can_view?(@user)
 			render 'shared/unauthorized'
 			return
 		end
@@ -30,7 +30,7 @@ class PeriodsController < HomeController
 	# POST /periods/1/update_fields
 	def update_fields
 		@period = Period.find(params[:id])
-		if !@period.can_edit?(@sso)
+		if !@period.can_edit?(@user)
 			render 'shared/unauthorized'
 			return
 		end
@@ -43,7 +43,7 @@ class PeriodsController < HomeController
 	# GET /periods/1/list
 	def list
 		@period = Period.find(params[:id])
-		if !@period.can_view?(@sso)
+		if !@period.can_view?(@user)
 			render 'shared/unauthorized'
 			return
 		end

@@ -5,12 +5,12 @@
 				<%= link_to image_tag("safelogo.png"), root_url %></a>
 			</td>
 			<td>
-				<% if @sso.nil? -%>
+				<% if @user.nil? -%>
 					<%= link_to 'Login', @login_url %>
 				<% else -%>
-					<%= @sso.display_name %>
+					<%= @user.display_name %>
 					|
-					<%= link_to 'Logout', 'home#logout' %>
+					<%= link_to 'Logout', :controller => :home, :action => :logout %>
 				<% end -%>
 			</td>
 		</tr>
