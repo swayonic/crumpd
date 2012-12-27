@@ -1,2 +1,0 @@
-module ReportFieldLinesHelper
-end

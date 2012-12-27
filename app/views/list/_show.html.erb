@@ -4,8 +4,6 @@
 -%>
 <div class="grid_10 prefix_1 suffix_1" align='center'>
 	<%= form_for :fields, :html => {:id => 'fields_form'} do |f| %>
-		<%= hidden_field :sort, :column, :value => (@sort[:column] ||= 'name') %>
-		<%= hidden_field :sort, :direction, :value => (@sort[:direction] ||= 'asc') %>
 		<table>
 			<% for g in @goals -%>
 				<tr>
@@ -53,42 +51,13 @@
 <div class='clear'></div>
 
 <div class="grid_12">
-	<table class='description'>
-		<tr>
-			<th><%= list_header_sort_link 'Name', 'name' %></th>
-			<th>Last Report</th>
-			<% for g in @goals -%>
-				<% if @fields["#{g.frequency}_goal"] == '1' -%>
-					<th><%= list_header_sort_link g.title, "#{g.frequency}_goal" %></th>
-				<% end -%>
-				<% if @fields["#{g.frequency}_inhand_pct"] == '1' -%>
-					<th><%= list_header_sort_link "#{g.title} In-Hand Pct", "#{g.frequency}_inhand_pct" %></th>
-				<% end -%>
-				<% if @fields["#{g.frequency}_inhand_amt"] == '1' -%>
-					<th><%= list_header_sort_link "#{g.title} In-Hand Amt", "#{g.frequency}_inhand_amt" %></th>
-				<% end -%>
-				<% if @fields["#{g.frequency}_pledged_pct"] == '1' -%>
-					<th><%= list_header_sort_link "#{g.title} Pledged Pct", "#{g.frequency}_pledged_pct" %></th>
-				<% end -%>
-				<% if @fields["#{g.frequency}_pledged_amt"] == '1' -%>
-					<th><%= list_header_sort_link "#{g.title} Pledged Amt", "#{g.frequency}_pledged_amt" %></th>
-				<% end -%>
-			<% end -%>
-			<% for rf in @period.report_fields -%>
-				<% if @fields["field_#{rf.id}"] == '1' -%>
-					<th><%= list_header_sort_link rf.name, "field_#{rf.id}" %></th>
-				<% end -%>
-			<% end -%>
-		</tr>
-
-		<% array = build_list_data(@assignments) -%>
-		<% for line in array -%>
-			<tr>
-				<% for entry in line -%>
-					<td><%= entry %></td>
-				<% end -%>
-			</tr>
-		<% end -%>
+	<table id='assignmentList' class='tablesorter-blue'>
+		<%= render :partial => 'list/data' %>
 	</table>
+	<script type='text/javascript'>
+		$(document).ready(function() {
+			$('#assignmentList').tablesorter();
+		});
+	</script>
 </div>
 <div class='clear'></div>

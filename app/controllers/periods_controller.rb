@@ -50,7 +50,6 @@ class PeriodsController < HomeController
 
 		@assignments = @period.assignments
 		@fields = params[:fields] || Hash.new
-		@sort = params[:sort] || Hash.new
 
 		if params[:commit] == 'Download Excel'
 			@title = "#{@period.name} Complete List"

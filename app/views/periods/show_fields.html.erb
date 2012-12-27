@@ -12,7 +12,8 @@ Report Fields (<%= link_to @period.name, @period %>)
 		</i>
 	</ul>
 	<%= form_for :fields, :url => update_fields_period_url(@period) do |f| %>
-		<table class='description'>
+		<table id='fieldsTable' class='tablesorter'>
+		<thead>
 			<tr>
 				<th>Index</th>
 				<th>Name</th>
@@ -21,6 +22,8 @@ Report Fields (<%= link_to @period.name, @period %>)
 				<th>Required</th>
 				<th>Description</th>
 			</tr>
+		</thead>
+		<tbody>
 			<% for rf in @period.report_fields %>
 				<%= fields_for "field_#{rf.id}", rf do |g| %>
 					<tr>
@@ -33,7 +36,9 @@ Report Fields (<%= link_to @period.name, @period %>)
 					</tr>
 				<% end %>
 			<% end %>
+		</tbody>
 		</table>
+
 		<%= f.submit 'Save' %>
 		<%= link_to 'Back', @period %>
 	<% end %>

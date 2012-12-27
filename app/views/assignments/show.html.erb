@@ -53,10 +53,6 @@
 	<% if @assignment.reports.count > 1 -%>
 
 		<% for g in @assignment.goals -%>
-			<% add_javascript 'raphael' -%>
-			<% add_javascript 'g.raphael' -%>
-			<% add_javascript 'g.line' -%>
-
 			<div align=center><%= g.title %> Goal (%)</div>
 			<div id='goal_<%= g.id %>_history' style="width:620px;height:100px"></div>
 			<script>

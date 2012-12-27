@@ -97,7 +97,6 @@ class GroupsController < HomeController
 		@period = @group.period
 		@assignments = @group.assignments
 		@fields = params[:fields] || Hash.new
-		@sort = params[:sort] || Hash.new
 		
 		if params[:commit] == 'Download Excel'
 			@title = "#{@period.name} - #{@group.name} (Coaching Group)"

@@ -82,7 +82,6 @@ class TeamsController < HomeController
 		@period = @team.period
 		@assignments = @team.assignments
 		@fields = params[:fields] || Hash.new
-		@sort = params[:sort] || Hash.new
 		
 		if params[:commit] == 'Download Excel'
 			@title = "#{@period.name} - #{@team.name} (Team)"
