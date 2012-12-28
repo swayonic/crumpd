@@ -6,7 +6,6 @@ class ReportField < ActiveRecord::Base
 	validates_associated :report_field_lines #If we change the field, let's make sure the associated lines are still valid
 
 	validates_each :list_index do |record, attr, value|
-		puts 'validating...', value
 		if value.nil? or value.blank? or ReportField.find_all_by_list_index_and_period_id(value, record.period_id).count > 0
 			record.list_index = ReportField.where(:period_id => record.period_id).maximum(:list_index) + 1
 		end
@@ -18,6 +17,13 @@ class ReportField < ActiveRecord::Base
 			['Decimal', 'D'],
 			['String', 'S'],
 			['Text', 'T'] ]
+	end
+
+	def field_type_pretty
+		for option in ReportField.type_array
+			return option[0] if option[1] == field_type
+		end
+		return nil
 	end
 
 	def is_integer?

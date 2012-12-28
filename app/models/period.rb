@@ -2,6 +2,7 @@ class Period < ActiveRecord::Base
   attr_accessible :end, :name, :start
 
 	has_many :assignments
+	has_many :reports, :through => :assignments
 	has_many :groups, :order => "name"
 	has_many :teams, :order => "name"
 	has_many :period_admins

@@ -35,7 +35,14 @@ class PeriodsController < HomeController
 			return
 		end
 
-		flash.notice = params.inspect
+		for field in @period.report_fields
+			# TODO: sanitize input
+			id = "field_#{field.id}"
+			if params[id]
+				params[id].delete('remove')
+				field.update_attributes(params[id])
+			end
+		end
 
 		redirect_to :action => :show_fields, :id => params[:id]
 	end

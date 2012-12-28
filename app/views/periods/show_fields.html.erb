@@ -3,19 +3,19 @@ Report Fields (<%= link_to @period.name, @period %>)
 <% end -%>
 <%= flash_header %>
 
-<div class="grid_10 prefix_1 suffix_1">
+<div class="grid_12">
 	<b>NOTE:</b>
 	<ul>
 		<i>
 		<li>Lines are automatically added for goal progress, two for each goal (e.g. "Monthly pledged" and "Monthly in-hand").</li>
-		<li>You cannot edit existing fields if a report has already been created for this period, since this could lead to data corruption. If you must make a change, you can delete the field and add it again, but you will lose all information that had been entered for that field.</li>
+		<li>You cannot edit the 'Type' of an existing field if a report has already been created for this period, since this could lead to data corruption. If you must make a change, you can delete the field and add it again, but you will lose all information that had been entered for that field.</li>
 		</i>
 	</ul>
 	<%= form_for :fields, :url => update_fields_period_url(@period) do |f| %>
-		<table id='fieldsTable' class='tablesorter'>
+		<table id='fieldsTable' class='description'>
 		<thead>
 			<tr>
-				<th>Index</th>
+				<th></th>
 				<th>Name</th>
 				<th>Delete</th>
 				<th>Type</th>
@@ -26,11 +26,21 @@ Report Fields (<%= link_to @period.name, @period %>)
 		<tbody>
 			<% for rf in @period.report_fields %>
 				<%= fields_for "field_#{rf.id}", rf do |g| %>
-					<tr>
-						<td><%= g.text_field :list_index, :size => 1 %></td>
-						<td><%= g.text_field :name, :size => 8 %></td>
-						<td><%= check_box "field_#{rf.id}", :remove %></td>
-						<td><%= g.select :field_type, options_for_select(ReportField.type_array, rf.field_type) %></td>
+					<% html_id = "field_#{rf.id}" -%>
+					<tr id="<%= html_id %>_row">
+						<td>
+							<%= g.hidden_field :list_index %>
+							<a href='javascript:void(0);' onclick="reorder('<%= html_id %>', 'up');"><%= image_tag 'icons/silk/arrow_up.png' %></a>
+							<a href='javascript:void(0);' onclick="reorder('<%= html_id %>', 'down');"><%= image_tag 'icons/silk/arrow_down.png' %></a>
+						</td>
+						<td><%= g.text_field :name, :size => 20 %></td>
+						<td><%= check_box "field_#{rf.id}", :remove, :class => 'remove_field_box' %></td>
+						<td>
+							<% if @period.reports.empty? -%>
+								<%= g.select :field_type, options_for_select(ReportField.type_array, rf.field_type) %></td>
+							<% else -%>
+								<%= rf.field_type_pretty %>
+							<% end -%>
 						<td><%= g.check_box :required %></td>
 						<td><%= g.text_area :description, :rows => 2 %></td>
 					</tr>
@@ -45,3 +55,68 @@ Report Fields (<%= link_to @period.name, @period %>)
 </div>
 
 <div class="clear"></div>
+		
+<script type='text/javascript'>
+function reorder(id, dir)
+{
+	id = id + '_row';
+	var rows = $('#fieldsTable tr');
+	var index = rows.length; //invalid
+	for (var i = 1; i < rows.length; i++)
+	{
+		if (rows[i].id == id)
+		{
+			index = i;
+			break;
+		}
+	}
+	if (index == rows.length) return; //invalid
+
+	if (dir == 'up')
+	{
+		if (index == 1)
+		{
+			//alert("can't!");
+			return;
+		}
+		rows[index].cells[0].childNodes[1].value = index - 1;
+		rows[index - 1].cells[0].childNodes[1].value = index;
+		var otherId = rows[index - 1].id;
+		$('#'+otherId).insertAfter('#'+id);
+	}
+	else if (dir == 'down')
+	{
+		if (index == rows.length - 1)
+		{
+			//alert("can't!");
+			return;
+		}
+		rows[index].cells[0].childNodes[1].value = index + 1;
+		rows[index + 1].cells[0].childNodes[1].value = index;
+		var otherId = rows[index + 1].id;
+		$('#'+id).insertAfter('#'+otherId);
+	}
+};
+
+function toggleDelete()
+{
+	var checked = this.checked;
+	var rowId = this.id.substr(0,7)+'_row';
+	var inputs = $('#'+rowId+' input, #'+rowId+' textarea');
+	for (var i=0; i<inputs.length; i++)
+	{
+		if (!inputs[i].hidden && inputs[i].id != this.id)
+			inputs[i].disabled = checked;
+	}
+}
+
+$(document).ready(function()
+{
+	var boxes = $('.remove_field_box');
+	for (var i=0; i < boxes.length; i++)
+	{
+		boxes[i].onchange = toggleDelete;
+	}
+});
+</script>
+
