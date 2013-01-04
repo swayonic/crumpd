@@ -112,9 +112,9 @@ function addRow()
 	}
 	id = id + '_row';
 	$('#fieldsTable tr :last')[0].id = id;
-	$('#'+row).html(html);
-	$('#'+row).cells[0].innerNodes[1].value = $('#fieldsTable tr').length-1;
-	$('#'+id)[0].onchange = toggleDelete;
+	$('#'+id).html(html);
+	$('#'+id)[0].cells[0].childNodes[1].value = $('#fieldsTable tr').length-1;
+	$('#'+id+' .remove_field_box')[0].onchange = toggleDelete;
 }
 
 $(document).ready(function()

@@ -23,7 +23,7 @@ Mpd::Application.routes.draw do
 		
 		#resources :report_fields
 		member do
-			get 'show_fields'
+			get 'fields'
 			post 'update_fields'
 			get 'list'
 			post 'list'

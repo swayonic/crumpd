@@ -18,8 +18,8 @@ class PeriodsController < HomeController
 		@new_admin.period = @period
   end
 
-	# GET /periods/1/show_fields
-	def show_fields
+	# GET /periods/1/fields
+	def fields
 		@period = Period.find(params[:id])
 		if !@period.can_view?(@user)
 			render 'shared/unauthorized'
@@ -36,17 +36,31 @@ class PeriodsController < HomeController
 		end
 
 		flash.notice = params.inspect
+		# TODO: sanitize input
 
+		# Update old fields
 		for field in @period.report_fields
-			# TODO: sanitize input
 			id = "field_#{field.id}"
 			if params[id]
-				params[id].delete('remove')
-				field.update_attributes(params[id])
+				if params[id].delete('remove') == '1'
+					field.destroy
+				else
+					field.update_attributes(params[id])
+				end
 			end
 		end
 
-		redirect_to :action => :show_fields, :id => params[:id]
+		# Add new fields
+		params.each do |key, hash|
+			if key =~ /^newfield\_(\d+)/
+				if hash.delete('remove') != '1'
+					field = @period.report_fields.build(hash)
+					field.save
+				end
+			end
+		end
+
+		redirect_to :action => :fields, :id => params[:id]
 	end
 
 	# GET /periods/1/list
