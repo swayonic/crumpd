@@ -44,13 +44,14 @@ class HomeController < ApplicationController
 			@login_url = RubyCAS::Filter.login_url(self)
 			if session[:cas_extra_attributes] and session[:cas_extra_attributes][:designation]
 				if !@user = User.find_by_account_number(session[:cas_extra_attributes][:designation])
-					# Create a temporary user with the given CAS attributes
-					# Possibly, in the future, I might want to add this person to the database
+					# Create a user with the given CAS attributes
 					@user = User.new(
 						:first_name => session[:cas_extra_attributes][:firstName],
 						:last_name => session[:cas_extra_attributes][:lastName],
 						:email => session[:cas_extra_attributes][:email],
 						:account_number => session[:cas_extra_attributes][:designation])
+					# Add this person to the database
+					@user.save
 				end
 			end
 		else #Development mode

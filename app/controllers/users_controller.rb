@@ -1,4 +1,8 @@
 class UsersController < HomeController
+	if Rails.env.development?
+		# Used in the development login screen
+		skip_before_filter :cas_auth, :only => :autocomplete
+	end
 
   # GET /users/1
   def show
@@ -61,4 +65,21 @@ class UsersController < HomeController
 
 		redirect_to users_url # DNE
   end
+
+	# GET /users/autocomplete?term=...
+	def autocomplete
+		results = Array.new
+		
+		# TODO
+		# Do I need to filter?
+		# This is slow
+		for user in User.all
+			string = "#{user.display_name} (#{user.account_number})"
+			if string.downcase =~ /#{params[:term].downcase}/
+				results << {:id => user.id, :label => string, :value => user.display_name}
+			end
+		end
+
+		render :json => results.to_json
+	end
 end

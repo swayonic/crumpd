@@ -21,7 +21,8 @@
 		</ul>
 	<% end -%>
 	<%= form_for [@period, @new_admin] do |f| -%>
-		<%= f.text_field :user_id, :size => 12 %>
+		<%= f.hidden_field :user_id %>
+		<%= autocomplete_field :admin, :name, autocomplete_users_url, :id_element => '#period_admin_user_id', :size => 12 %>
 		<%= f.submit 'Add Admin' %>
 	<% end -%>
 </div>
@@ -46,7 +47,8 @@
 			<% end -%>
 		</ul>
 	<% end -%>
-	<%= form_for [@period, @new_team] do |f| -%>
+	<%# Will be automated -%>
+	<% form_for [@period, @new_team] do |f| -%>
 		<%= f.text_field :name, :size => 12 %>
 		<%= f.submit %>
 	<% end -%>
@@ -73,7 +75,8 @@
 			<% end -%>
 		</ul>
 	<% end -%>
-	<%= form_for [@period, @new_group] do |f| -%>
+	<%# Will be automated -%>
+	<% form_for [@period, @new_group] do |f| -%>
 		<%= f.text_field :name, :size => 12 %>
 		<%= f.submit %>
 	<% end -%>

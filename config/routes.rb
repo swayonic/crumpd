@@ -49,7 +49,9 @@ Mpd::Application.routes.draw do
 		resources :goals
 	end
   
-  resources :users, :except => :index
+  resources :users, :except => :index do
+		get :autocomplete, :on => :collection
+	end
   
 	match 'login' => 'home#login', :via => :get
 	match 'login' => 'home#do_login', :via => :post

@@ -63,6 +63,8 @@ GEM
       activesupport (= 3.2.8)
       bundler (~> 1.0)
       railties (= 3.2.8)
+    rails3-jquery-autocomplete (1.0.10)
+      rails (~> 3.0)
     railties (3.2.8)
       actionpack (= 3.2.8)
       activesupport (= 3.2.8)
@@ -96,5 +98,6 @@ DEPENDENCIES
   jquery-rails
   pg
   rails (= 3.2.8)
+  rails3-jquery-autocomplete
   rubycas-client (~> 2.3.9.rc1)
   uglifier (>= 1.0.3)
