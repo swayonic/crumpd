@@ -8,7 +8,7 @@
 		<td><%= g.text_field :name, :size => 20 %></td>
 		<td><%= check_box id, :remove, :class => 'remove_field_box' %></td>
 		<td>
-			<% if @period.reports.empty? -%>
+			<% if @period.reports.empty? or rf.new_record? -%>
 				<%= g.select :field_type, options_for_select(ReportField.type_array, rf.field_type) %></td>
 			<% else -%>
 				<%= rf.field_type_pretty %>
