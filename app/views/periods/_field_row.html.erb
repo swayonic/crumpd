@@ -1,0 +1,19 @@
+<%= fields_for id, rf do |g| %>
+	<tr id="<%= id %>_row">
+		<td>
+			<%= g.hidden_field :list_index %>
+			<a href='javascript:void(0);' onclick="reorder('<%= id %>', 'up');"><%= image_tag 'icons/silk/arrow_up.png' %></a>
+			<a href='javascript:void(0);' onclick="reorder('<%= id %>', 'down');"><%= image_tag 'icons/silk/arrow_down.png' %></a>
+		</td>
+		<td><%= g.text_field :name, :size => 20 %></td>
+		<td><%= check_box id, :remove, :class => 'remove_field_box' %></td>
+		<td>
+			<% if @period.reports.empty? -%>
+				<%= g.select :field_type, options_for_select(ReportField.type_array, rf.field_type) %></td>
+			<% else -%>
+				<%= rf.field_type_pretty %>
+			<% end -%>
+		<td><%= g.check_box :required %></td>
+		<td><%= g.text_area :description, :rows => 2 %></td>
+	</tr>
+<% end %>

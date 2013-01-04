@@ -35,6 +35,8 @@ class PeriodsController < HomeController
 			return
 		end
 
+		flash.notice = params.inspect
+
 		for field in @period.report_fields
 			# TODO: sanitize input
 			id = "field_#{field.id}"

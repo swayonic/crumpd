@@ -5,12 +5,6 @@ class ReportField < ActiveRecord::Base
 	has_many :report_field_lines
 	validates_associated :report_field_lines #If we change the field, let's make sure the associated lines are still valid
 
-	validates_each :list_index do |record, attr, value|
-		if value.nil? or value.blank? or ReportField.find_all_by_list_index_and_period_id(value, record.period_id).count > 0
-			record.list_index = ReportField.where(:period_id => record.period_id).maximum(:list_index) + 1
-		end
-	end
-
 	def self.type_array
 		return [
 			['Integer', 'I'],

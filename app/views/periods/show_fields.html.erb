@@ -25,36 +25,24 @@ Report Fields (<%= link_to @period.name, @period %>)
 		</thead>
 		<tbody>
 			<% for rf in @period.report_fields %>
-				<%= fields_for "field_#{rf.id}", rf do |g| %>
-					<% html_id = "field_#{rf.id}" -%>
-					<tr id="<%= html_id %>_row">
-						<td>
-							<%= g.hidden_field :list_index %>
-							<a href='javascript:void(0);' onclick="reorder('<%= html_id %>', 'up');"><%= image_tag 'icons/silk/arrow_up.png' %></a>
-							<a href='javascript:void(0);' onclick="reorder('<%= html_id %>', 'down');"><%= image_tag 'icons/silk/arrow_down.png' %></a>
-						</td>
-						<td><%= g.text_field :name, :size => 20 %></td>
-						<td><%= check_box "field_#{rf.id}", :remove, :class => 'remove_field_box' %></td>
-						<td>
-							<% if @period.reports.empty? -%>
-								<%= g.select :field_type, options_for_select(ReportField.type_array, rf.field_type) %></td>
-							<% else -%>
-								<%= rf.field_type_pretty %>
-							<% end -%>
-						<td><%= g.check_box :required %></td>
-						<td><%= g.text_area :description, :rows => 2 %></td>
-					</tr>
-				<% end %>
+				<%= render :partial => 'field_row', :locals => {:id => "field_#{rf.id}", :rf => rf} %>
 			<% end %>
 		</tbody>
 		</table>
-
+		
+		<a href='javascript:void(0);' onclick="addRow();">Add Field</a>
 		<%= f.submit 'Save' %>
 		<%= link_to 'Back', @period %>
 	<% end %>
 </div>
 
 <div class="clear"></div>
+
+<div style='display:none;'>
+	<table>
+	<%= render :partial => 'field_row', :locals => {:id => 'blankfield', :rf => ReportField.new} %>
+	</table>
+</div>
 		
 <script type='text/javascript'>
 function reorder(id, dir)
@@ -101,13 +89,32 @@ function reorder(id, dir)
 function toggleDelete()
 {
 	var checked = this.checked;
-	var rowId = this.id.substr(0,7)+'_row';
-	var inputs = $('#'+rowId+' input, #'+rowId+' textarea');
+	var rowId = this.id.substr(0,this.id.length-7)+'_row';
+	var inputs = $('#'+rowId+' input, #'+rowId+' textarea, #'+rowId+ ' select');
 	for (var i=0; i<inputs.length; i++)
 	{
 		if (!inputs[i].hidden && inputs[i].id != this.id)
 			inputs[i].disabled = checked;
 	}
+}
+
+function addRow()
+{
+	$('#blankfield_row').clone().insertAfter('#fieldsTable tr :last');
+	var html = $('#fieldsTable tr :last').html();
+	var id = 'newfield_'+newFieldId;
+	newFieldId++;
+	var idx = html.indexOf('blankfield');
+	while (idx > 0)
+	{
+		html = html.replace('blankfield', id);
+		idx = html.indexOf('blankfield');
+	}
+	id = id + '_row';
+	$('#fieldsTable tr :last')[0].id = id;
+	$('#'+row).html(html);
+	$('#'+row).cells[0].innerNodes[1].value = $('#fieldsTable tr').length-1;
+	$('#'+id)[0].onchange = toggleDelete;
 }
 
 $(document).ready(function()
@@ -117,6 +124,7 @@ $(document).ready(function()
 	{
 		boxes[i].onchange = toggleDelete;
 	}
+	newFieldId = 1;
 });
 </script>
 
