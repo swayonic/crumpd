@@ -10,6 +10,8 @@ class Period < ActiveRecord::Base
 	has_many :admins, :through => :period_admins, :source => :user, :order => 'last_name, first_name'
 	has_many :report_fields, :order => 'list_index'
 
+	scope :updated, where(:keep_updated => true)
+
 	def name
 		"#{region.display_name} #{year}"
 	end

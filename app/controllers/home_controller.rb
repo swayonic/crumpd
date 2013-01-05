@@ -4,7 +4,7 @@ class HomeController < ApplicationController
 		before_filter RubyCAS::Filter, :except => :index
 		before_filter RubyCAS::GatewayFilter, :only => :index
 	end
-	before_filter :cas_auth, :except => [:login, :do_login]
+	before_filter :cas_auth, :except => [:login, :do_login, :datadump]
 
 	def index
 		if @user.is_admin
@@ -35,6 +35,12 @@ class HomeController < ApplicationController
 			session[:username] = nil
 			redirect_to :action => :index
 		end
+	end
+
+	# For testing of the data dump
+	def datadump
+		render :json => params.to_json
+		return
 	end
 
 	private

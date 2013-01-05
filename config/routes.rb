@@ -56,6 +56,7 @@ Mpd::Application.routes.draw do
 	match 'login' => 'home#login', :via => :get
 	match 'login' => 'home#do_login', :via => :post
 	match 'logout' => 'home#logout'
+	match 'datadump' => 'home#datadump'
 	root :to => 'home#index'
   
   # The priority is based upon order of creation:
