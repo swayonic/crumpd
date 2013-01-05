@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
 	has_many :groups_as_coach, :through => :group_coaches, :source => :group, :order => "name"
 	has_many :teams_as_member, :through => :assignments, :source => :team, :order => "name"
 	has_many :teams_as_leader, :through => :team_leaders, :source => :team, :order => "name"
-	has_many :periods, :through => :period_admins, :order => "start DESC"
+	has_many :periods, :through => :period_admins
 
 	validates :email, :format => { 
 		:with => /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/,

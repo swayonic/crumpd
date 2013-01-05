@@ -42,9 +42,6 @@
 			<% for p in @periods -%>
 				<li>
 					<%= link_to p.name, p %>
-					<% if p.start and p.end -%>
-						(<%= p.start.strftime('%b %e, %Y') %> - <%= p.end.strftime('%b %e, %Y') %>)
-					<% end -%>
 				</li>
 			<% end -%>
 		</ul>

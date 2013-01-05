@@ -8,7 +8,7 @@ class HomeController < ApplicationController
 
 	def index
 		if @user.is_admin
-			@periods = Period.order('start DESC')
+			@periods = Period.all.sort_by{|p| [p.year, p.region.title]}
 		else
 			@periods = @user.periods
 		end
