@@ -38,3 +38,62 @@ region
 fk_ssmUserId
 
 
+==========
+=
+= Data transfer protocol
+=
+==========
+
+1 - Get a list of caringRegions(sitrack_tracking)
+2 - Choose participating caringRegions
+3 - Send http POST request with the list of caringRegions and years
+4 - Compile data on sitrack site
+	a - sitrack_tracking
+		filter by caringRegion, status and internType (what do those fields do?)
+		give me:
+			application_id
+			person_id
+			status?
+			internType?
+			teamLeader
+			caringRegion
+			asgTeam
+	b - sitrack_mpd
+		grab by application_id and/or person_id from sitrack_tracking
+		filter results further by goalYear
+		give me:
+			application_id
+			person_id
+			coachName
+			monthlyGoal
+			oneTimeGoal
+			goalYear
+	c - ministry_person (if that is where the person_id in the other tables points)
+		get people who:
+			are in the list of people sent in the POST request
+			from sitrack_tracking
+		give me:
+			personID
+			accountNo
+			lastName
+			firstName
+			preferredName
+	d - all together, that's:
+		accountNo
+		firstName
+		lastName
+		preferredName
+		caringRegion
+		goalYear
+		status?
+		internType?
+		asgTeam
+		teamLeader
+		coachName
+		monthlyGoal
+		oneTimeGoal
+
+5. Send as a JSON object
+6. Parse data on CruMpd side and update tables
+7. Create a dump_record
+

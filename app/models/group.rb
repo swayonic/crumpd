@@ -1,11 +1,11 @@
 class Group < ActiveRecord::Base
-  attr_accessible :name, :period_id
+  attr_accessible :period_id, :name, :coach_name
 
 	belongs_to :period
 	has_many :group_coaches
-	has_many :coaches, :through => :group_coaches, :source => :user, :order => "last_name, first_name"
+	has_many :coaches, :through => :group_coaches, :source => :user, :order => 'last_name, first_name'
 	has_many :assignments
-	has_many :members, :through => :assignments, :source => :user, :order => "last_name, first_name"
+	has_many :members, :through => :assignments, :source => :user, :order => 'last_name, first_name'
 
 	def can_view?(u)
 		return true if can_edit?(u)

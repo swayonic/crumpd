@@ -1,5 +1,5 @@
 class Assignment < ActiveRecord::Base
-  attr_accessible :user_id, :period_id, :team_id, :group_id
+  attr_accessible :user_id, :period_id, :team_id, :group_id, :intern_type, :status
 
 	belongs_to :user
 	belongs_to :period

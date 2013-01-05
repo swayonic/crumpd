@@ -35,7 +35,6 @@ class PeriodsController < HomeController
 			return
 		end
 
-		flash.notice = params.inspect
 		# TODO: sanitize input
 
 		# Update old fields

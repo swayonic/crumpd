@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  attr_accessible :first_name, :last_name, :email, :account_number, :is_admin
+  attr_accessible :account_number, :first_name, :last_name, :preferred_name, :email, :is_admin
 
 	has_many :assignments
 	has_many :group_coaches
@@ -20,7 +20,11 @@ class User < ActiveRecord::Base
 		}
 
 	def display_name
-		"#{first_name} #{last_name}"
+		if preferred_name.nil?
+			return "#{first_name} #{last_name}"
+		else
+			return "#{preferred_name} #{last_name}"
+		end
 	end
 
 	# TODO: Is there a way to do this with fewer queries?
