@@ -1,5 +1,39 @@
 class PeriodsController < HomeController
 
+	# GET /periods
+	def index
+		if !@user.is_admin?
+			render 'shared/unauthorized'
+			return
+		end
+		@periods = Period.all
+		@new_period = Period.new
+		@regions = Region.all
+		@years = 2012..Date.today.year
+	end
+
+	# POST /periods
+	def create
+		if !@user.is_admin?
+			render 'shared/unauthorized'
+			return
+		end
+
+		#TODO: sanitize input
+		if p = Period.find_by_region_id_and_year(params[:period][:region_id], params[:period][:year])
+			flash.alert = "The period #{p.name} already exists"
+		else
+			@period = Period.new(params[:period])
+			if @period.save
+				flash.notice = "Period #{@period.name} created"
+			else
+				flash.alert = 'An error occurred while saving'
+			end
+		end
+
+		redirect_to :action => :index
+	end
+
   # GET /periods/1
   def show
     @period = Period.find(params[:id])

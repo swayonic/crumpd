@@ -36,10 +36,10 @@
 		</ul>
 	<% end -%>
 
-	<% if @periods.count > 0 -%>
+	<% if @user.periods.count > 0 -%>
 		<h2>Coaching Periods</h2>	
 		<ul>
-			<% for p in @periods -%>
+			<% for p in @user.periods -%>
 				<li>
 					<%= link_to p.name, p %>
 				</li>
@@ -47,9 +47,13 @@
 		</ul>
 	<% end -%>
 
-	<% if @user.new_record? -%>
-		<i>You have no roles associated with this MPD tool.</i>
+	<% if @user.is_admin? -%>
+		<h2>Admin Tools</h2>
+		<ul>
+			<li><%= link_to 'Coaching Periods Home', periods_url %></li>
+		</ul>
 	<% end -%>
+
 </div>
 <div class="clear"></div>
 

@@ -1,0 +1,44 @@
+<%= page_header 'Coaching Periods' %>
+<%= flash_header %>
+
+<div class='grid_5 prefix_1'>
+	<ul>
+		<% for p in @periods -%>
+			<li>
+				<%= link_to p.name, p %>
+				<% if !p.keep_updated -%>
+					<i>(Not Kept Up-to-date)</i>
+				<% end -%>
+			</li>
+		<% end -%>
+	</ul>
+</div>
+<div class='grid_5 suffix_1'>
+	<h2>Create new Period</h2>
+	<%= form_for @new_period do |f| -%>
+		<table style='description'>
+			<tr>
+				<td><%= f.label :region %></td>
+				<td><%= f.select :region_id, @regions.map{|r| [r.title, r.id]} %></td>
+			</tr>
+			<tr>
+				<td><%= f.label :year %></td>
+				<td><%= f.select :year, @years %></td>
+			</tr>
+			<tr>
+				<td>
+					<%= f.label :keep_updated %>
+					<%= tooltip 'If checked, SiTrack will be periodically pinged to keep the data up-to-date' %>
+				</td>
+				<td><%= f.check_box :keep_updated %></td>
+			</tr>
+			<tr>
+				<td colspan=2>
+					<%= f.submit %>
+				</td>
+			</tr>
+		</table>
+	<% end -%>
+</div>
+
+<div class='clear'></div>

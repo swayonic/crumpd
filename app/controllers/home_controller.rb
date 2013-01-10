@@ -7,11 +7,6 @@ class HomeController < ApplicationController
 	before_filter :cas_auth, :except => [:login, :do_login, :datadump]
 
 	def index
-		if @user.is_admin
-			@periods = Period.all.sort_by{|p| [p.year, p.region.title]}
-		else
-			@periods = @user.periods
-		end
 	end
 
 	def login
