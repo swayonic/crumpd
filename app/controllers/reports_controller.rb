@@ -41,17 +41,18 @@ class ReportsController < HomeController
   # GET /reports/1/edit
   def edit
     @report = Report.find(params[:id])
-		if !@report.assignment.can_edit?(@user)
+		assignment = @report.assignment
+		if !assignment.can_edit?(@user)
 			render 'shared/unauthorized'
 			return
 		end
 		
-		for g in @report.assignment.goals
+		for g in assignment.goals
 			if @report.goal_lines.find_by_frequency(g.frequency).nil?
 				l = @report.goal_lines.new(:frequency => g.frequency)
 			end
 		end
-		for f in @report.assignment.period.report_fields
+		for f in assignment.period.report_fields
 			if @report.field_lines.find_by_report_field_id(f.id).nil?
 				l = @report.field_lines.new
 				l.report_field = f

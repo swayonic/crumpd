@@ -32,7 +32,7 @@
 
 			<tr><td>&nbsp;</td></tr>
 
-			<% for line in @report.field_lines -%>
+			<% for line in @report.field_lines.sort_by{|l| l.report_field.list_index} -%>
 				<%= fields_for "field_#{line.report_field.id}", line do |l| %>
 					<tr>
 						<td>
@@ -60,6 +60,7 @@
 		</table>
 
 		<%= f.submit %>
+		<%= link_to 'Back', assignment_url(@report.assignment) %>
 		
 	<% end %>
 </div>

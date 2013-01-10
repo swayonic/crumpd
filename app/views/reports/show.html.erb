@@ -16,9 +16,15 @@
 
 		<tr><td>&nbsp;</td></tr>
 
-		<% for line in @report.field_lines -%>
+		<% for line in @report.field_lines.sort_by{|l| l.report_field.list_index} -%>
 			<tr>
-				<td><b><%= line.report_field.name %></b></td>
+				<td>
+					<% if line.report_field.is_required? -%>
+						<b><%= line.report_field.name %></b>
+					<% else -%>
+						<%= line.report_field.name %>
+					<% end -%>
+				</td>
 				<td><%= line.value %></td>
 			</tr>
 		<% end -%>

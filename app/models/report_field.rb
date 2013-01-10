@@ -20,6 +20,10 @@ class ReportField < ActiveRecord::Base
 		return nil
 	end
 
+	def is_required?
+		required
+	end
+
 	def is_integer?
 		field_type == 'I'
 	end
