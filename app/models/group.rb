@@ -8,13 +8,21 @@ class Group < ActiveRecord::Base
 	has_many :members, :through => :assignments, :source => :user, :order => 'last_name, first_name'
 
 	def can_view?(u)
-		return true if can_edit?(u)
+		return true if u.is_admin
+		return true if period.admins.include?(u)
 		return true if coaches.include?(u)
 		return true if members.include?(u)
 		return false
 	end
 
 	def can_edit?(u)
+		return false if period.keep_updated
+		return true if u.is_admin
+		return true if period.admins.include?(u)
+		return false
+	end
+
+	def can_edit_coaches?(u)
 		return true if u.is_admin
 		return true if period.admins.include?(u)
 		return false
@@ -24,5 +32,6 @@ class Group < ActiveRecord::Base
 		return true if u.is_admin
 		return true if period.admins.include?(u)
 		return true if coaches.include?(u)
+		return false
 	end
 end

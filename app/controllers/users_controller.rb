@@ -66,7 +66,7 @@ class UsersController < HomeController
 		redirect_to users_url # DNE
   end
 
-	# GET /users/autocomplete?term=...
+	# GET /users/autocomplete
 	def autocomplete
 		results = Array.new
 		

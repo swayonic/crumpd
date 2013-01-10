@@ -13,6 +13,7 @@ class TeamsController < HomeController
 		
 		@new_assn = Assignment.new
 		@new_assn.team = @team
+		@new_assn.period = @team.period
   end
 
   # GET /teams/1/edit

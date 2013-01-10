@@ -14,6 +14,7 @@ class GroupsController < HomeController
 		
 		@new_assn = Assignment.new
 		@new_assn.group = @group
+		@new_assn.period = @group.period
   end
 
   # GET /groups/1/edit

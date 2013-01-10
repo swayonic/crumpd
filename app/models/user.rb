@@ -29,6 +29,8 @@ class User < ActiveRecord::Base
 
 	# TODO: Is there a way to do this with fewer queries?
 	def can_view?(u)
+		return false #I'm disabling this for now
+
 		return true if can_edit?(u)
 		periods.each do |p|
 			return true if p.admins.include?(u)
@@ -57,6 +59,8 @@ class User < ActiveRecord::Base
 	end
 
 	def can_edit?(u)
+		return false #I'm disabling this for now
+
 		return true if u.is_admin
 		return true if u == self
 		return false

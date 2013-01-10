@@ -2,7 +2,7 @@ Mpd::Application.routes.draw do
 
   resources :periods, :shallow => true do
 		resources :teams, :except => [:index, :new], :shallow => true do
-			resources :leaders, :as => 'team_leaders', :only => [:show, :create, :destroy]
+			#resources :leaders, :as => 'team_leaders', :only => [:show, :create, :destroy]
 			# Assignments
 			#resources :team_members, :only => [:show, :create, :destroy]
 			member do

@@ -35,9 +35,10 @@
 			<% end -%>
 		</ul>
 	<% end -%>
-	<% if @group.can_edit?(@user) -%>
+	<% if @group.can_edit_coaches?(@user) -%>
 		<%= form_for [@group, @new_coach] do |f| -%>
-			<%= f.text_field :user_id, :size => 12 %>
+			<%= f.hidden_field :user_id %>
+				<%= autocomplete_field 'auto', 'name', autocomplete_users_url, :id_element => '#group_coach_user_id', :size => 12 %>
 			<%= f.submit 'Add Coach' %>
 		<% end -%>
 	<% end -%>
@@ -48,26 +49,28 @@
 	<% if @group.members.nil? or @group.members.count == 0 -%>
 		<i>None</i>
 	<% else -%>
+		<% if @group.can_view_list?(@user) -%>
+			<%= link_to 'Detailed listing', list_group_url(@group) %>
+			<br>
+			<br>
+		<% end -%>
 		<ul>
 			<% for a in @group.assignments.sort_by{ |a| [a.user.last_name, a.user.first_name]} -%>
 				<li>
 					<%= link_to_if a.can_view?(@user), a.user.display_name, a %>
-					<% if a.can_edit?(@user) -%>
+					<% if @group.can_edit?(@user) and a.can_edit?(@user) -%>
 						<%= link_to image_tag('icons/silk/delete.png'), group_assignment_url(a), method: :delete, data: { confirm: 'Are you sure you want to remove this group member?' } %>
 					<% end -%>
 				</li>
 			<% end -%>
 		</ul>
 	<% end %>
-	<% if @group.can_view_list?(@user) -%>
-		<%= link_to 'Detailed listing', list_group_url(@group) %>
-		<br>
-		<br>
-	<% end -%>
 	<% if @group.can_edit?(@user) -%>
 		<%= form_for @new_assn, :url => create_group_assignments_url do |f| -%>
+			<%= f.hidden_field :period_id %>
 			<%= f.hidden_field :group_id %>
-			<%= f.text_field :user_id, :size => 12 %>
+			<%= f.hidden_field :user_id %>
+				<%= autocomplete_field 'auto', 'name', autocomplete_users_url, :id_element => '#assignment_user_id', :size => 12 %>
 			<%= f.submit 'Add Member' %>
 		<% end -%>
 	<% end -%>

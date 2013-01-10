@@ -8,12 +8,14 @@ class Team < ActiveRecord::Base
 	has_many :leaders, :through => :team_leaders, :source => :user, :order => 'last_name, first_name'
 
 	def can_view?(u)
-		return true if can_edit?(u)
-		#return true if leaders.include?(u)
-		#return true if members.include?(u)
+		return true if u.is_admin
+		return true if period.admins.include?(u)
+		return true if members.include?(u)
+		return false
 	end
 
 	def can_edit?(u)
+		return false if period.keep_updated
 		return true if u.is_admin
 		return true if period.admins.include?(u)
 		return false
@@ -22,6 +24,7 @@ class Team < ActiveRecord::Base
 	def can_view_list?(u)
 		return true if u.is_admin
 		return true if period.admins.include?(u)
+		return false
 	end
 
 end

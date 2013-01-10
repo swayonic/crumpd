@@ -14,16 +14,20 @@
 		<ul>
 			<% for a in @period.period_admins.sort_by{ |a| [a.user.last_name, a.user.first_name]} -%>
 				<li>
-					<%= link_to a.user.display_name, a.user %>
-					<%= link_to image_tag('icons/silk/delete.png'), a, method: :delete, data: { confirm: 'Are you sure you want to remove this admin?' } %>
+					<%= link_to_if a.user.can_view?(@user), a.user.display_name, a.user %>
+					<% if @period.can_edit_admins?(@user) -%>
+						<%= link_to image_tag('icons/silk/delete.png'), a, method: :delete, data: { confirm: 'Are you sure you want to remove this admin?' } %>
+					<% end -%>
 				</li>
 			<% end -%>
 		</ul>
 	<% end -%>
-	<%= form_for [@period, @new_admin] do |f| -%>
-		<%= f.hidden_field :user_id %>
-		<%= autocomplete_field :admin, :name, autocomplete_users_url, :id_element => '#period_admin_user_id', :size => 12 %>
-		<%= f.submit 'Add Admin' %>
+	<% if @period.can_edit_admins?(@user) -%>
+		<%= form_for [@period, @new_admin] do |f| -%>
+			<%= f.hidden_field :user_id %>
+			<%= autocomplete_field :admin, :name, autocomplete_users_url, :id_element => '#period_admin_user_id', :size => 12 %>
+			<%= f.submit 'Add Admin' %>
+		<% end -%>
 	<% end -%>
 </div>
 
@@ -35,22 +39,16 @@
 		<ul>
 			<% for t in @period.teams -%>
 				<li>
-					<%= link_to t.name, t %>,
-					<% if t.leaders.nil? or t.leaders.count == 0 -%>
-						Leaders: <i>None</i>
-					<% elsif t.leaders.count == 1 -%>
-						Leader: <%= t.leaders.first.display_name %>
-					<% else -%>
-						Leaders: <%= t.leaders.first.display_name -%><% for index in 1..t.leaders.count-1 -%>, <%= t.leaders[index].display_name -%><% end -%>
-					<% end -%>
+					<%= link_to t.name, t %>
 				</li>
 			<% end -%>
 		</ul>
 	<% end -%>
-	<%# Will be automated -%>
-	<% form_for [@period, @new_team] do |f| -%>
-		<%= f.text_field :name, :size => 12 %>
-		<%= f.submit %>
+	<% if @period.can_edit?(@user) -%>
+		<%= form_for [@period, @new_team] do |f| -%>
+			<%= f.text_field :name, :size => 12 %>
+			<%= f.submit %>
+		<% end -%>
 	<% end -%>
 </div>
 
@@ -75,10 +73,11 @@
 			<% end -%>
 		</ul>
 	<% end -%>
-	<%# Will be automated -%>
-	<% form_for [@period, @new_group] do |f| -%>
-		<%= f.text_field :name, :size => 12 %>
-		<%= f.submit %>
+	<% if @period.can_edit?(@user) -%>
+		<%= form_for [@period, @new_group] do |f| -%>
+			<%= f.text_field :name, :size => 12 %>
+			<%= f.submit %>
+		<% end -%>
 	<% end -%>
 </div>
 
