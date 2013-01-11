@@ -1,12 +1,17 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.8'
-
-# Bundle edge Rails instead:
+gem 'rails', '3.2.11'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 #gem 'mysql2'
 gem 'pg'
+
+gem 'jquery-rails'
+gem 'rails3-jquery-autocomplete'
+
+# For CAS Authentication
+#gem 'rubycas-client-rails', '0.1.1' #This version doesn't exist on RubyGems.com
+gem 'rubycas-client', '~> 2.3.9.rc1'
 
 
 # Gems used only for assets and not required
@@ -20,9 +25,6 @@ group :assets do
 
   gem 'uglifier', '>= 1.0.3'
 end
-
-gem 'jquery-rails'
-gem 'rails3-jquery-autocomplete'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
@@ -39,6 +41,3 @@ gem 'rails3-jquery-autocomplete'
 # To use debugger
 # gem 'debugger'
 
-# For CAS Authentication
-#gem 'rubycas-client-rails', '0.1.1' #This version doesn't exist on RubyGems.com
-gem 'rubycas-client', '~> 2.3.9.rc1'
