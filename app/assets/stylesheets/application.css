@@ -10,7 +10,6 @@
  *
  *= require_self
  *= require_tree .
- *= require vendor
  */
 
 body {
@@ -49,3 +48,6 @@ table.description th {
 	font-weight: bold;
 	text-align: center;
 }
+
+/* No, JQuery, I don't want this */
+.ui-helper-hidden-accessible { display:none; }

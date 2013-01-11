@@ -3,7 +3,7 @@ class ReportsController < HomeController
 	# GET /assignments/1/reports
   def index
 		@assignment = Assignment.find(params[:assignment_id])
-		if !@assignment.can_view?(@user)
+		if !@assignment.can_view_reports?(@user)
 			render 'shared/unauthorized'
 			return
 		end
@@ -12,7 +12,7 @@ class ReportsController < HomeController
   # GET /reports/1
   def show
     @report = Report.find(params[:id])
-		if !@report.assignment.can_view?(@user)
+		if !@report.assignment.can_view_reports?(@user)
 			render 'shared/unauthorized'
 			return
 		end
@@ -21,7 +21,7 @@ class ReportsController < HomeController
   # GET /assignments/1/reports/new
   def new
 		@assignment = Assignment.find(params[:assignment_id])
-		if !@assignment.can_edit?(@user)
+		if !@assignment.can_edit_reports?(@user)
 			render 'shared/unauthorized'
 			return
 		end
@@ -42,7 +42,7 @@ class ReportsController < HomeController
   def edit
     @report = Report.find(params[:id])
 		assignment = @report.assignment
-		if !assignment.can_edit?(@user)
+		if !assignment.can_edit_reports?(@user)
 			render 'shared/unauthorized'
 			return
 		end
@@ -63,7 +63,7 @@ class ReportsController < HomeController
   # POST /assignments/1/reports
   def create
 		@assignment = Assignment.find(params[:assignment_id])
-		if !@assignment.can_edit?(@user)
+		if !@assignment.can_edit_reports?(@user)
 			render 'shared/unauthorized'
 			return
 		end
@@ -92,7 +92,7 @@ class ReportsController < HomeController
   # PUT /reports/1
   def update
 		@report = Report.find(params[:id])
-		if !@report.assignment.can_edit?(@user)
+		if !@report.assignment.can_edit_reports?(@user)
 			render 'shared/unauthorized'
 			return
 		end
@@ -132,18 +132,14 @@ class ReportsController < HomeController
   end
 
   # DELETE /reports/1
-  # DELETE /reports/1.json
   def destroy
     @report = Report.find(params[:id])
-		if !@report.assignment.can_edit?(@user)
+		if !@report.assignment.can_edit_reports?(@user)
 			render 'shared/unauthorized'
 			return
 		end
     @report.destroy
-
-    respond_to do |format|
-      format.html { redirect_to reports_url }
-      format.json { head :no_content }
-    end
+		
+		redirect_to reports_url
   end
 end

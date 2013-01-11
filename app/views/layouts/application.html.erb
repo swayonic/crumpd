@@ -8,6 +8,11 @@
 <!-- JAVASCRIPTS -->
   <%= javascript_include_tag "application" %>
 	<%= yield :javascripts %>
+	<script>
+		$(function() {
+			$(document).tooltip();	//Enable tooltips for all items with a title
+		});
+	</script>
 <!-- METATAGS -->
   <%= csrf_meta_tags %>
 </head>

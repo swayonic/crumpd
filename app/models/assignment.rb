@@ -76,5 +76,16 @@ class Assignment < ActiveRecord::Base
 		return true if period.admins.include?(u)
 		return false
 	end
+	
+	def can_view_reports?(u)
+		can_view?(u)
+	end
+	
+	def can_edit_reports?(u)
+		return true if u.is_admin
+		return true if u == self.user
+		return true if period.admins.include?(u)
+		return false
+	end
 
 end

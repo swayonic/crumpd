@@ -26,11 +26,8 @@
 				<td><%= f.select :year, @years %></td>
 			</tr>
 			<tr>
-				<td>
-					<%= f.label :keep_updated %>
-					<%= tooltip 'If checked, SiTrack will be periodically pinged to keep the data up-to-date' %>
-				</td>
-				<td><%= f.check_box :keep_updated %></td>
+				<td>Updated</td>
+				<td><%= f.check_box :keep_updated, :title => 'If checked, SiTrack will be periodically pinged to keep the data up-to-date' %></td>
 			</tr>
 			<tr>
 				<td colspan=2>
