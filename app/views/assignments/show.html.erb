@@ -42,7 +42,7 @@
 	<br>
 	<br>
 	<% if @assignment.can_view_pledges?(@user) -%>
-		<h3>Progress</h3>
+		<h3>Pledges</h3>
 		<%= link_to 'View Pledges', assignment_pledges_url(@assignment) %><br>
 		<%= render :partial => 'pledges/progress_size4' %>
 	<% end -%>
@@ -50,49 +50,50 @@
 </div>
 
 <div class='grid_8'>
-	<% if @assignment.reports.count > 1 -%>
+	<h2>Reports</h2>
+	<table>
+		<tr>
+			<td><%= button_to 'New Report', new_assignment_report_path(@assignment), :method => :get if @assignment.can_edit_reports?(@user) %></td>
+			<td><%= button_to 'Report Details', list_assignment_reports_path(@assignment) if @assignment.reports.count > 0 %></td>
+		</tr>
+	</table>
 
-		<% for g in @assignment.goals -%>
-			<div align=center><%= g.title %> Goal (%)</div>
-			<div id='goal_<%= g.id %>_history' style="width:620px;height:100px"></div>
+	<% if @assignment.reports.count > 0 -%>
+		<table id='reportsTable' class='description'>
+			<tr>
+				<td></td>
+				<% for g in @assignment.goals -%>
+					<th><%= g.title %> in-hand</th>
+					<th><%= g.title %> pledged</th>
+				<% end -%>
+			</tr>
+			<% for r in @assignment.reports.reverse -%>
+				<tr>
+					<th>
+						<%= link_to r.created_at.strftime('%b %e'), r %>
+					</th>
+					<% for g in @assignment.goals -%>
+						<% if l = r.goal_lines.find_by_frequency(g.frequency) -%>
+							<td><%= Goal.pct(l.inhand, @assignment.goal_amt(g.frequency)) %></td>
+							<td><%= Goal.pct(l.pledged, @assignment.goal_amt(g.frequency)) %></td>
+						<% end -%>
+					<% end -%>
+				</tr>
+			<% end -%>
+		</table>
+		<% if @assignment.reports.count > 1 -%>
 			<script>
 				$(document).ready(function() {
-					var r = Raphael('goal_<%= g.id %>_history');
-<%
-x = Array.new
-index = 0
-y1 = Array.new
-y2 = Array.new
-for r in @assignment.reports.reverse
-	if l = r.goal_lines.find_by_frequency(g.frequency)
-		x << index
-		y1 << Goal.pct(l.inhand, g.amount)
-		y2 << Goal.pct(l.pledged + l.inhand, g.amount)
-	end
-	index = index + 1
-end
-%>
-					r.linechart(20,10,600,80, <%= x %>, [<%= y1 %>,<%= y2 %>], {shade: true, axis: '0 0 0 1'} );
+					$('#reportsTable').visualize({type: 'line', height:'150px', parseDirection:'y'});
 				});
 			</script>
+			<br>
+			<br>
+			<br>
 		<% end -%>
-	<% end -%>
-	<% if @assignment.reports.count > 0 -%>
-		<h3>Reports</h3>
-		<ul>
-			<% @assignment.reports.each do |report| -%>
-				<li>
-					<%= link_to report.created_at.strftime('%b %e, %Y %H:%M:%S'), report %>
-					<% if report.updated_at != report.created_at -%>
-						<i>Updated <%= report.updated_at.strftime('%b %e, %Y') %></i>
-					<% end -%>
-				</li>
-			<% end -%>
-		</ul>
-		<%= button_to 'New Report', new_assignment_report_path(@assignment), :method => :get if @assignment.can_edit_reports?(@user) %>
-		<%= button_to 'Report Details', list_assignment_reports_path(@assignment) %>
 	<% end -%>
 
 </div>
+
 
 <div class="clear"></div>
