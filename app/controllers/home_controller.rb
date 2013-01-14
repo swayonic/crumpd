@@ -53,9 +53,9 @@ class HomeController < ApplicationController
 						:account_number => session[:cas_extra_attributes][:designation])
 					# Add this person to the database
 					@user.save
-					logger.debug "Adding user from login attributes: #{user.inspect}"
+					logger.info "Adding user from login attributes: #{user.inspect}"
 				else
-					logger.debug "Matched account number:'#{@user.account_number}' to user:'#{@user.display_name}'"
+					logger.info "Matched account number:'#{@user.account_number}' to user:'#{@user.display_name}'"
 				end
 			end
 		else #Development mode
