@@ -64,8 +64,7 @@
 					<% elsif g.coaches.count == 1 -%>
 						Coach: <%= g.coaches.first.display_name %>
 					<% else -%>
-						Coaches: <%= g.coaches.first.display_name -%>
-						<% for index in 2..g.coaches.count -%>, <%= g.coaches[index-1].display_name -%><% end -%>
+						Coaches: <%= g.coaches.first.display_name -%><% for index in 2..g.coaches.count -%>, <%= g.coaches[index-1].display_name -%><% end -%>
 					<% end -%>
 				</li>
 			<% end -%>

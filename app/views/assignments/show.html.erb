@@ -1,4 +1,8 @@
-<%= page_header @assignment.user.display_name + ' - ' + @assignment.period.name %>
+<%= page_header @assignment.user.display_name + ' - ' + @assignment.period.name do %>
+<%= @assignment.user.display_name %>
+-
+<%= link_to_if @assignment.period.can_view?(@user), @assignment.period.name, @assignment.period %>
+<% end %>
 <%= flash_header %>
 
 <div class="grid_4">
@@ -67,6 +71,13 @@
 					<th><%= g.title %> pledged</th>
 				<% end -%>
 			</tr>
+			<tr style='display:none;'>
+				<th></th>
+				<% for g in @assignment.goals -%>
+					<td></td>
+					<td></td>
+				<% end -%>
+			</tr>
 			<% for r in @assignment.reports.reverse -%>
 				<tr>
 					<th>
@@ -75,7 +86,7 @@
 					<% for g in @assignment.goals -%>
 						<% if l = r.goal_lines.find_by_frequency(g.frequency) -%>
 							<td><%= Goal.pct(l.inhand, @assignment.goal_amt(g.frequency)) %></td>
-							<td><%= Goal.pct(l.pledged, @assignment.goal_amt(g.frequency)) %></td>
+							<td><%= Goal.pct(l.inhand + l.pledged, @assignment.goal_amt(g.frequency)) %></td>
 						<% end -%>
 					<% end -%>
 				</tr>

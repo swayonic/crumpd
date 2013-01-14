@@ -50,8 +50,7 @@
 		<i>None</i>
 	<% else -%>
 		<% if @group.can_view_list?(@user) -%>
-			<%= link_to 'Detailed listing', list_group_url(@group) %>
-			<br>
+			<%= button_to 'Detailed listing', list_group_url(@group), :method => :get %>
 			<br>
 		<% end -%>
 		<ul>

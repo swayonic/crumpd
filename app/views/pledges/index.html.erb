@@ -8,9 +8,6 @@ Pledges
 <%= flash_header %>
 
 <div class="grid_4">
-	<h3>Progress</h3>
-	<%= render :partial => 'progress_size4' %>
-	
 	<% if @assignment.can_edit_pledges?(@user) -%>
 		<br>
 		<br>
@@ -40,6 +37,10 @@ Pledges
 			<%= f.submit 'Add pledge' %>
 		<% end -%>
 	<% end -%>
+	<br>
+	<br>
+	<h3>Progress</h3>
+	<%= render :partial => 'progress_size4' %>
 </div>
 
 <div class="grid_8">

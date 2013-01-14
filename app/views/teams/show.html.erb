@@ -34,8 +34,7 @@
 		<i>None</i>
 	<% else -%>
 		<% if @team.can_view_list?(@user) -%>
-			<%= link_to 'Detailed listing', list_team_url(@team) %>
-			<br>
+			<%= button_to 'Detailed listing', list_team_url(@team), :method => :get %>
 			<br>
 		<% end -%>
 
