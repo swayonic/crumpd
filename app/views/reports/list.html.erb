@@ -1,0 +1,18 @@
+<%= page_header "Reports - #{@assignment.user.display_name}" do %>
+Reports -
+<%= link_to @assignment.user.display_name, @assignment %>
+<% end %>
+
+<%= render :partial => 'list/form' %>
+
+<div class="grid_12">
+	<table id='reportList' class='tablesorter-blue'>
+		<%= render :partial => 'list_data' %>
+	</table>
+	<script type='text/javascript'>
+		$(document).ready(function() {
+			$('#reportList').tablesorter();
+		});
+	</script>
+</div>
+<div class='clear'></div>

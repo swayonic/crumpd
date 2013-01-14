@@ -2,9 +2,9 @@
 	<tr>
 		<th>Name</th>
 		<th>Last Report</th>
-		<% for g in @goals -%>
+		<% for g in Goal.defaults -%>
 			<% if @fields["#{g.frequency}_goal"] == '1' -%>
-				<th><%= g.title %></th>
+				<th><%= g.title %> Goal</th>
 			<% end -%>
 			<% if @fields["#{g.frequency}_inhand_pct"] == '1' -%>
 				<th><%= "#{g.title} In-Hand Pct" %></th>
@@ -33,7 +33,7 @@
 		<tr>
 			<td><%= a.user.display_name %></td>
 			<td><%= r.nil? ? 'None' : r.created_at %></td>
-			<% for g in @goals -%>
+			<% for g in Goal.defaults -%>
 				<% if @fields["#{g.frequency}_goal"] == '1' -%>
 					<td><% a.goal_amt(g.frequency) %></td>
 				<% end -%>

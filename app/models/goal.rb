@@ -17,4 +17,9 @@ class Goal < ActiveRecord::Base
 		return Goal.title(frequency)
 	end
 
+	# The default goals - valid for all stint/intern assignment
+	def self.defaults
+		[Goal.new(:frequency => 12), Goal.new(:frequency => 0)]
+	end
+
 end

@@ -61,7 +61,7 @@ class HomeController < ApplicationController
 		else #Development mode
 			@login_url = '/login'
 			@user = User.find(session[:username]) if session[:username]
-			logger.debug "Matched user_id:'#{session[:username]}' to user:'#{@user.display_name}'"
+			logger.debug "Matched user_id:'#{session[:username]}' to user:'#{@user.display_name}'" if @user
 		end
 
 		if @user.nil?

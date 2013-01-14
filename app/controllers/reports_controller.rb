@@ -1,14 +1,5 @@
 class ReportsController < HomeController
   
-	# GET /assignments/1/reports
-  def index
-		@assignment = Assignment.find(params[:assignment_id])
-		if !@assignment.can_view_reports?(@user)
-			render 'shared/unauthorized'
-			return
-		end
-  end
-
   # GET /reports/1
   def show
     @report = Report.find(params[:id])
@@ -83,7 +74,7 @@ class ReportsController < HomeController
 		end
 
     if @report.save
-			redirect_to @report, notice: 'Report was successfully created.'
+			redirect_to @report.assignment, notice: 'Report was successfully created.'
 		else
 			render action: "new"
 		end
@@ -125,7 +116,7 @@ class ReportsController < HomeController
 		valid = false if !@report.update_attributes(params[:report])
 		
 		if valid
-			redirect_to @report, notice: 'Report was successfully updated.'
+			redirect_to @report.assignment, notice: 'Report was successfully updated.'
 		else
 			render action: "edit"
 		end
@@ -138,8 +129,35 @@ class ReportsController < HomeController
 			render 'shared/unauthorized'
 			return
 		end
+		a = @report.assignment
     @report.destroy
 		
-		redirect_to reports_url
+		redirect_to a
   end
+	
+	# GET /assignments/1/reports/list
+  def list
+		@assignment = Assignment.find(params[:assignment_id])
+		if !@assignment.can_view_reports?(@user)
+			render 'shared/unauthorized'
+			return
+		end
+
+		@period = @assignment.period
+		@fields = params[:fields]
+		if !@fields
+			@fields = Hash.new
+			# Start with these
+			for g in Goal.defaults
+				@fields["#{g.frequency}_inhand_pct"] = '1'
+			end
+		end
+		
+		if params[:commit] == 'Download Excel'
+			@title = "Reports - #{@assignment.user.display_name}"
+			render "list.xls", :content_type => "application/xls"
+			return
+		end
+  end
+
 end

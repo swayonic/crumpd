@@ -1,10 +1,9 @@
 <% 
 	headers["Content-Disposition"] = "attachment; filename=\"#{@title}.xls\""
-	@goals = [Goal.new(:frequency => 12), Goal.new(:frequency => 0)]
 -%>
 <table>
 	<tr><td><b><%= @title %></b></td></tr>
 	<tr><td><%= Time.now %></td></tr>
 	<tr></tr>
-	<%= render :partial => 'list/data.html' %>
+	<%= render :partial => 'list_data.html' %>
 </table>

@@ -2,10 +2,8 @@
 <%= flash_header %>
 
 <div class="grid_4">
-	<%= link_to 'Show all people', list_period_url(@period) %>
-	<br>
-	<%= link_to 'Edit report fields', fields_period_url(@period) %>
-	<br>
+	<%= button_to 'Show all people', list_period_url(@period), :method => :get %>
+	<%= button_to 'Edit report fields', fields_period_url(@period), :method => :get %>
 	<br>
 	<h2 width="100%" align="center">Administrators</h2>
 	<% if @period.admins.nil? or @period.admins.count == 0 -%>
@@ -67,7 +65,7 @@
 						Coach: <%= g.coaches.first.display_name %>
 					<% else -%>
 						Coaches: <%= g.coaches.first.display_name -%>
-						<% for index in 2..g.coaches.count -%>, <%= g.coaches[index].display_name -%><% end -%>
+						<% for index in 2..g.coaches.count -%>, <%= g.coaches[index-1].display_name -%><% end -%>
 					<% end -%>
 				</li>
 			<% end -%>
