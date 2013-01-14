@@ -1,10 +1,6 @@
 <%= page_header 'MPD Home' %>
 
 <div class="grid_10 prefix_1 suffix_1">
-	<b>User info:</b> <%= @user.inspect %>
-	<br>
-	<br>
-
 	<% if @user.assignments.count > 0 -%>
 		<h2>My Assignments</h2>
 		<ul>
