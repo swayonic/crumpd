@@ -18,6 +18,7 @@ class ReportsController < HomeController
 		end
 
     @report = @assignment.reports.new
+		@report.date = Date.today
 
 		for g in @assignment.goals
 			l = @report.goal_lines.new(:frequency => g.frequency, :pledged => @assignment.goal_pledged(g.frequency), :inhand => @assignment.goal_inhand(g.frequency))
@@ -74,7 +75,7 @@ class ReportsController < HomeController
 		end
 
     if @report.save
-			redirect_to @report.assignment, notice: 'Report was successfully created.'
+			redirect_to @report, notice: 'Report was successfully created.'
 		else
 			render action: "new"
 		end
@@ -88,7 +89,6 @@ class ReportsController < HomeController
 			return
 		end
 		valid = true
-		
 
 		params.each do |key, value|
 			if key =~ /^goal_(\d+)$/
@@ -113,10 +113,11 @@ class ReportsController < HomeController
 			end
 		end
 
+		@report.updated_by = @user.id
 		valid = false if !@report.update_attributes(params[:report])
 		
 		if valid
-			redirect_to @report.assignment, notice: 'Report was successfully updated.'
+			redirect_to @report, notice: 'Report was successfully updated.'
 		else
 			render action: "edit"
 		end

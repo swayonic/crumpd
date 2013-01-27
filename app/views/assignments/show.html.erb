@@ -71,17 +71,10 @@
 					<th><%= g.title %> pledged</th>
 				<% end -%>
 			</tr>
-			<tr style='display:none;'>
-				<th></th>
-				<% for g in @assignment.goals -%>
-					<td></td>
-					<td></td>
-				<% end -%>
-			</tr>
 			<% for r in @assignment.reports.reverse -%>
 				<tr>
 					<th>
-						<%= link_to r.created_at.strftime('%b %e'), r %>
+						<%= link_to r.date.strftime('%b %e'), r %>
 					</th>
 					<% for g in @assignment.goals -%>
 						<% if l = r.goal_lines.find_by_frequency(g.frequency) -%>
@@ -95,7 +88,7 @@
 		<% if @assignment.reports.count > 1 -%>
 			<script>
 				$(document).ready(function() {
-					$('#reportsTable').visualize({type: 'line', height:'150px', parseDirection:'y'});
+					$('#reportsTable').visualize({type: 'bar', height:'150px', parseDirection:'y'});
 				});
 			</script>
 			<br>

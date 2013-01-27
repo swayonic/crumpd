@@ -101,7 +101,7 @@ class GroupsController < HomeController
 		
 		if params[:commit] == 'Download Excel'
 			@title = "#{@period.name} - #{@group.name} (Coaching Group)"
-			render "list/show.xls", :content_type => "application/xls"
+			render 'assignments/list.xls', :content_type => 'application/xls'
 			return
 		end
 	end

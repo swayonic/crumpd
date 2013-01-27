@@ -86,7 +86,7 @@ class TeamsController < HomeController
 		
 		if params[:commit] == 'Download Excel'
 			@title = "#{@period.name} - #{@team.name} (Team)"
-			render "list/show.xls", :content_type => "application/xls"
+			render 'assignments/list.xls', :content_type => 'application/xls'
 			return
 		end
 	end

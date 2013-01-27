@@ -109,7 +109,7 @@ class PeriodsController < HomeController
 
 		if params[:commit] == 'Download Excel'
 			@title = "#{@period.name} Complete List"
-			render "list/show.xls", :content_type => "application/xls"
+			render 'assignments/list.xls', :content_type => 'application/xls'
 			return
 		end
 	end

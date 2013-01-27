@@ -35,15 +35,15 @@
 			<td><%= r.nil? ? 'None' : r.created_at %></td>
 			<% for g in Goal.defaults -%>
 				<% if @fields["#{g.frequency}_goal"] == '1' -%>
-					<td><% a.goal_amt(g.frequency) %></td>
+					<td>$<% a.goal_amt(g.frequency) %></td>
 				<% end -%>
 				<% if @fields["#{g.frequency}_inhand_pct"] == '1' -%>
 					<td>
 					<% if r -%>
 						<% if l = r.goal_lines.find_by_frequency(g.frequency) -%>
-							<%= Goal.pct(l.inhand, a.goal_amt(g.frequency)) %>
+							<%= Goal.pct(l.inhand, a.goal_amt(g.frequency)) %>%
 						<% else -%>
-							0
+							0%
 						<% end -%>
 					<% end -%>
 				<% end -%>
@@ -51,9 +51,9 @@
 					<td>
 					<% if r -%>
 						<% if l = r.goal_lines.find_by_frequency(g.frequency) -%>
-							<%= l.inhand %>
+							$<%= l.inhand %>
 						<% else -%>
-							0
+							$0
 						<% end -%>
 					<% end -%>
 				<% end -%>
@@ -61,9 +61,9 @@
 					<td>
 					<% if r -%>
 						<% if l = r.goal_lines.find_by_frequency(g.frequency) -%>
-							<%= Goal.pct(l.pledged, a.goal_amt(g.frequency)) %>
+							<%= Goal.pct(l.pledged, a.goal_amt(g.frequency)) %>%
 						<% else -%>
-							0
+							0%
 						<% end -%>
 					<% end -%>
 				<% end -%>
@@ -71,9 +71,9 @@
 					<td>
 					<% if r -%>
 						<% if l = r.goal_lines.find_by_frequency(g.frequency) -%>
-							<%= l.pledged %>
+							$<%= l.pledged %>
 						<% else -%>
-							0
+							$0
 						<% end -%>
 					<% end -%>
 				<% end -%>

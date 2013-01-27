@@ -15,6 +15,13 @@
 	  <% end %>
 
 		<table style='description'>
+			<tr>
+				<td><b>Report Date</b></td>
+				<td><%= f.date_select :date %></td>
+			</tr>
+
+			<tr><td>&nbsp;</td></tr>
+
 			<% for line in @report.goal_lines -%>
 				<%= fields_for "goal_#{line.frequency}", line do |l| %>
 					<tr>
