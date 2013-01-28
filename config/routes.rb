@@ -3,8 +3,6 @@ Mpd::Application.routes.draw do
   resources :periods, :shallow => true do
 		resources :teams, :except => [:index, :new], :shallow => true do
 			#resources :leaders, :as => 'team_leaders', :only => [:show, :create, :destroy]
-			# Assignments
-			#resources :team_members, :only => [:show, :create, :destroy]
 			member do
 				get 'list'
 				post 'list'
@@ -12,8 +10,6 @@ Mpd::Application.routes.draw do
 		end
 		resources :groups, :except => [:index, :new], :shallow => true do
 			resources :coaches, :as => 'group_coaches', :only => [:show, :create, :destroy]
-			# Assignments
-			#resources :group_members, :only => [:show, :create, :destroy]
 			member do
 				get 'list'
 				post 'list'

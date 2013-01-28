@@ -3,7 +3,7 @@ class ReportsController < HomeController
   # GET /reports/1
   def show
     @report = Report.find(params[:id])
-		if !@report.assignment.can_view_reports?(@user)
+		if !@report.assignment.can_view_reports?(@cas_user)
 			render 'shared/unauthorized'
 			return
 		end
@@ -12,7 +12,7 @@ class ReportsController < HomeController
   # GET /assignments/1/reports/new
   def new
 		@assignment = Assignment.find(params[:assignment_id])
-		if !@assignment.can_edit_reports?(@user)
+		if !@assignment.can_edit_reports?(@cas_user)
 			render 'shared/unauthorized'
 			return
 		end
@@ -34,7 +34,7 @@ class ReportsController < HomeController
   def edit
     @report = Report.find(params[:id])
 		assignment = @report.assignment
-		if !assignment.can_edit_reports?(@user)
+		if !assignment.can_edit_reports?(@cas_user)
 			render 'shared/unauthorized'
 			return
 		end
@@ -55,7 +55,7 @@ class ReportsController < HomeController
   # POST /assignments/1/reports
   def create
 		@assignment = Assignment.find(params[:assignment_id])
-		if !@assignment.can_edit_reports?(@user)
+		if !@assignment.can_edit_reports?(@cas_user)
 			render 'shared/unauthorized'
 			return
 		end
@@ -84,7 +84,7 @@ class ReportsController < HomeController
   # PUT /reports/1
   def update
 		@report = Report.find(params[:id])
-		if !@report.assignment.can_edit_reports?(@user)
+		if !@report.assignment.can_edit_reports?(@cas_user)
 			render 'shared/unauthorized'
 			return
 		end
@@ -113,7 +113,7 @@ class ReportsController < HomeController
 			end
 		end
 
-		@report.updated_by = @user.id
+		@report.updated_by = @cas_user.id
 		valid = false if !@report.update_attributes(params[:report])
 		
 		if valid
@@ -126,7 +126,7 @@ class ReportsController < HomeController
   # DELETE /reports/1
   def destroy
     @report = Report.find(params[:id])
-		if !@report.assignment.can_edit_reports?(@user)
+		if !@report.assignment.can_edit_reports?(@cas_user)
 			render 'shared/unauthorized'
 			return
 		end
@@ -139,7 +139,7 @@ class ReportsController < HomeController
 	# GET /assignments/1/reports/list
   def list
 		@assignment = Assignment.find(params[:assignment_id])
-		if !@assignment.can_view_reports?(@user)
+		if !@assignment.can_view_reports?(@cas_user)
 			render 'shared/unauthorized'
 			return
 		end

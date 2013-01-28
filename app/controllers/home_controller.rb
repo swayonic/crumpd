@@ -40,31 +40,31 @@ class HomeController < ApplicationController
 
 	private
 	def cas_auth
-		@user = nil
+		@cas_user = nil
 		if Rails.env.production?
 			@login_url = RubyCAS::Filter.login_url(self)
 			if session[:cas_extra_attributes] and session[:cas_extra_attributes][:designation]
-				if !@user = User.find_by_account_number(session[:cas_extra_attributes][:designation])
+				if !@cas_user = User.find_by_account_number(session[:cas_extra_attributes][:designation])
 					# Create a user with the given CAS attributes
-					@user = User.new(
+					@cas_user = User.new(
 						:first_name => session[:cas_extra_attributes][:firstName],
 						:last_name => session[:cas_extra_attributes][:lastName],
 						:email => session[:cas_extra_attributes][:email],
 						:account_number => session[:cas_extra_attributes][:designation])
 					# Add this person to the database
-					@user.save
-					logger.info "Adding user from login attributes: #{@user.inspect}"
+					@cas_user.save
+					logger.info "Adding user from login attributes: #{@cas_user.inspect}"
 				else
-					logger.info "Matched account number:'#{@user.account_number}' to user:'#{@user.display_name}'"
+					logger.info "Matched account number:'#{@cas_user.account_number}' to user:'#{@cas_user.display_name}'"
 				end
 			end
 		else #Development mode
 			@login_url = '/login'
-			@user = User.find(session[:username]) if session[:username]
-			logger.debug "Matched user_id:'#{session[:username]}' to user:'#{@user.display_name}'" if @user
+			@cas_user = User.find(session[:username]) if session[:username]
+			logger.debug "Matched user_id:'#{session[:username]}' to user:'#{@cas_user.display_name}'" if @cas_user
 		end
 
-		if @user.nil?
+		if @cas_user.nil?
 			render 'shared/unauthorized'
 			return false
 		end
@@ -72,7 +72,7 @@ class HomeController < ApplicationController
 	end
 
 	def admin_only
-		if @user.nil? or !@user.is_admin
+		if @cas_user.nil? or !@cas_user.is_admin
 			render 'shared/unauthorized'
 			return false
 		end

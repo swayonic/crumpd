@@ -11,20 +11,27 @@
     </div>
   <% end %>
 
-	<div class="field">
-		<%= f.label :first_name %><br />
-		<%= f.text_field :first_name %>
-	</div>
-	<div class="field">
-		<%= f.label :last_name %><br />
-		<%= f.text_field :last_name %>
-	</div>
-	<div class="field">
-		<%= f.label :email %><br />
-		<%= f.number_field :email %>
-	</div>
-
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+	<table class='description'>
+		<tr>
+			<td><b>First Name</b></td>
+			<td><%= f.text_field :first_name %></td>
+		</tr>
+		<tr>
+			<td>Preferred Name</td>
+			<td><%= f.text_field :preferred_name %></td>
+		</tr>
+		<tr>
+			<td><b>Last Name</b></td>
+			<td><%= f.text_field :last_name %></td>
+		</tr>
+		<tr>
+			<td><b>Email Address</b></td>
+			<td><%= f.text_field :email %></td>
+		</tr>
+		<tr>
+			<th colspan=2>
+				<%= f.submit %>
+			</th>
+		</tr>
+	</table>
+<% end -%>

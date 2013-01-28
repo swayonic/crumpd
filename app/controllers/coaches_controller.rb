@@ -3,7 +3,7 @@ class CoachesController < HomeController
 	# POST /groups/1/coaches
 	def create
 		@group = Group.find(params[:group_id])
-		if !@group.can_edit_coaches?(@user)
+		if !@group.can_edit_coaches?(@cas_user)
 			render 'shared/unauthorized'
 			return
 		end
@@ -26,7 +26,7 @@ class CoachesController < HomeController
 	# DELETE /coaches/1?return=url
 	def destroy
 		@coach = GroupCoach.find(params[:id])
-		if !@coach.group.can_edit_coaches?(@user)
+		if !@coach.group.can_edit_coaches?(@cas_user)
 			render 'shared/unauthorized'
 			return
 		end

@@ -2,7 +2,7 @@ class PeriodsController < HomeController
 
 	# GET /periods
 	def index
-		if !@user.is_admin?
+		if !@cas_user.is_admin?
 			render 'shared/unauthorized'
 			return
 		end
@@ -14,7 +14,7 @@ class PeriodsController < HomeController
 
 	# POST /periods
 	def create
-		if !@user.is_admin?
+		if !@cas_user.is_admin?
 			render 'shared/unauthorized'
 			return
 		end
@@ -37,7 +37,7 @@ class PeriodsController < HomeController
   # GET /periods/1
   def show
     @period = Period.find(params[:id])
-		if !@period.can_view?(@user)
+		if !@period.can_view?(@cas_user)
 			render 'shared/unauthorized'
 			return
 		end
@@ -55,7 +55,7 @@ class PeriodsController < HomeController
 	# GET /periods/1/fields
 	def fields
 		@period = Period.find(params[:id])
-		if !@period.can_view?(@user)
+		if !@period.can_view?(@cas_user)
 			render 'shared/unauthorized'
 			return
 		end
@@ -64,7 +64,7 @@ class PeriodsController < HomeController
 	# POST /periods/1/update_fields
 	def update_fields
 		@period = Period.find(params[:id])
-		if !@period.can_edit?(@user)
+		if !@period.can_edit?(@cas_user)
 			render 'shared/unauthorized'
 			return
 		end
@@ -99,7 +99,7 @@ class PeriodsController < HomeController
 	# GET /periods/1/list
 	def list
 		@period = Period.find(params[:id])
-		if !@period.can_view?(@user)
+		if !@period.can_view?(@cas_user)
 			render 'shared/unauthorized'
 			return
 		end

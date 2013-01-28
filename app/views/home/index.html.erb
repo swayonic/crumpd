@@ -1,59 +1,8 @@
 <%= page_header 'MPD Home' %>
 
 <div class="grid_10 prefix_1 suffix_1">
-	<% if @user.assignments.count > 0 -%>
-		<h2>My Assignments</h2>
-		<ul>
-			<% for a in @user.assignments -%>
-				<li>
-				 	<%= link_to a.period.name, a %>
-					<% if a.team -%>
-						<br>Team: <%= link_to a.team.name, a.team %>
-					<% end -%>
-					<% if a.group -%>
-						<br>Coaching group: <%= link_to a.group.name, a.group %>
-					<% end -%>
-				</li>
-			<% end -%>
-		</ul>
-	<% end -%>
-
-	<% if @user.teams_as_leader.count > 0 -%>
-		<h2>My Teams</h2>
-		<ul>
-			<% for t in @user.teams_as_leader -%>
-				<li><%= link_to t.name, t %></li>
-			<% end -%>
-		</ul>
-	<% end -%>
-
-	<% if @user.groups_as_coach.count > 0 -%>
-		<h2>My Coaching Groups</h2>
-		<ul>
-			<% for g in @user.groups_as_coach -%>
-				<li><%= link_to g.name, g %></li>
-			<% end -%>
-		</ul>
-	<% end -%>
-
-	<% if @user.periods.count > 0 -%>
-		<h2>Coaching Periods</h2>	
-		<ul>
-			<% for p in @user.periods -%>
-				<li>
-					<%= link_to p.name, p %>
-				</li>
-			<% end -%>
-		</ul>
-	<% end -%>
-
-	<% if @user.is_admin? -%>
-		<h2>Admin Tools</h2>
-		<ul>
-			<li><%= link_to 'Coaching Periods Home', periods_url %></li>
-		</ul>
-	<% end -%>
-
+	<% @user = @cas_user -%>
+	<%= render :partial => 'users/roles' %>
 </div>
 <div class="clear"></div>
 

@@ -7,7 +7,7 @@ class UsersController < HomeController
   # GET /users/1
   def show
     @user = User.find(params[:id])
-		if !@user.can_view?(@user)
+		if !@user.can_view?(@cas_user)
 			render 'shared/unauthorized'
 			return
 		end
@@ -21,7 +21,7 @@ class UsersController < HomeController
   # GET /users/1/edit
   def edit
     @user = User.find(params[:id])
-		if !@user.can_edit?(@user)
+		if !@user.can_edit?(@cas_user)
 			render 'shared/unauthorized'
 			return
 		end
@@ -41,7 +41,7 @@ class UsersController < HomeController
   # PUT /users/1
   def update
     @user = User.find(params[:id])
-		if !@user.can_edit?(@user)
+		if !@user.can_edit?(@cas_user)
 			render 'shared/unauthorized'
 			return
 		end
@@ -56,7 +56,7 @@ class UsersController < HomeController
   # DELETE /users/1
   def destroy
     @user = User.find(params[:id])
-		if !@user.can_edit?(@user)
+		if !@user.can_edit?(@cas_user)
 			render 'shared/unauthorized'
 			return
 		end

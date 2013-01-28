@@ -1,0 +1,35 @@
+<% if @user.assignments.count > 0 -%>
+	<h3>Assignments</h3>
+	<ul>
+		<% for a in @user.assignments -%>
+			<li><%= link_to_if a.can_view?(@cas_user), a.period.name, a %>
+			<ul>
+				<% if a.team %><li>Team: <%= link_to_if a.team.can_view?(@cas_user), a.team.name, a.team %></li><% end %>
+				<% if a.group %><li>Coaching Group: <%= link_to_if a.group.can_view?(@cas_user), a.group.name, a.group %></li><% end %>
+			</ul>
+			</li>
+		<% end -%>
+	</ul>
+<% end -%>
+<% if @user.groups_as_coach.count > 0 -%>
+	<h3>Coaching Groups</h3>
+	<ul>
+		<% for g in @user.groups_as_coach -%>
+			<li><%= link_to_if g.can_view?(@cas_user), g.name, g %></li>
+		<% end -%>
+	</ul>
+<% end -%>
+<% if @user.periods_as_admin.count > 0 -%>
+	<h3>Assignments</h3>
+	<ul>
+		<% for p in @user.periods_as_admin -%>
+			<li><%= link_to_if p.can_view?(@cas_user), p.name, p %></li>
+		<% end -%>
+	</ul>
+<% end -%>
+<% if @cas_user.is_admin? and @cas_user == @user -%>
+	<h3>Admin Tools</h3>
+	<ul>
+		<li><%= link_to 'Coaching Periods Home', periods_url %></li>
+	</ul>
+<% end -%>

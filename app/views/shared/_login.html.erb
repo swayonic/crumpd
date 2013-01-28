@@ -1,15 +1,18 @@
-<div class="grid_10 prefix_1 suffix_1 login_bar">
+<div class="grid_8 prefix_2 suffix_2 login_bar">
 	<table width="100%">
 		<tr>
 			<td>
-				<%= link_to image_tag("safelogo.png"), root_url %></a>
+				<%= link_to image_tag('logo.png'), root_url %></a>
 			</td>
-			<td>
-				<% if @user.nil? -%>
+			<td width='100%' style='text-align:right;'>
+				<br>
+				<% if @cas_user.nil? -%>
 					<%= link_to 'Login', @login_url %>
 				<% else -%>
-					<%= @user.display_name %>
-					|
+					<%= @cas_user.display_name %>
+					<br>
+					<%= link_to 'My Profile', @cas_user %>
+					<br>
 					<%= link_to 'Logout', :controller => :home, :action => :logout %>
 				<% end -%>
 			</td>

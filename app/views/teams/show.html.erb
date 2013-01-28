@@ -10,7 +10,7 @@
 		</tr>
 		<tr>
 			<td>Coaching Period</td>
-			<td><%= link_to_if @team.period.can_view?(@user), @team.period.name, @team.period %></td>
+			<td><%= link_to_if @team.period.can_view?(@cas_user), @team.period.name, @team.period %></td>
 		</tr>
 		<tr>
 			<td>Leader Name</td>
@@ -23,7 +23,7 @@
 			</td>
 		</tr>
 	</table>
-	<% if !@team.period.keep_updated and @team.can_edit?(@user) -%>
+	<% if !@team.period.keep_updated and @team.can_edit?(@cas_user) -%>
 		<%= link_to 'Edit', edit_team_url(@team) %>
 	<% end -%>
 </div>
@@ -33,7 +33,7 @@
 	<% if @team.members.nil? or @team.members.count == 0 -%>
 		<i>None</i>
 	<% else -%>
-		<% if @team.can_view_list?(@user) -%>
+		<% if @team.can_view_list?(@cas_user) -%>
 			<%= button_to 'Detailed listing', list_team_url(@team), :method => :get %>
 			<br>
 		<% end -%>
@@ -41,15 +41,18 @@
 		<ul>
 			<% for a in @team.assignments.sort_by{ |a| [a.user.last_name, a.user.first_name]} -%>
 				<li>
-					<%= link_to_if a.can_view?(@user), a.user.display_name, a %>
-					<% if @team.can_edit?(@user) and a.can_edit?(@user) -%>
+					<%= link_to_if a.user.can_view?(@cas_user), a.user.display_name, a.user %>
+					<% if a.can_view?(@cas_user) -%>
+						| <i><%= link_to 'Assignment', a %></i>
+					<% end -%>
+					<% if @team.can_edit?(@cas_user) and a.can_edit?(@cas_user) -%>
 						<%= link_to image_tag('icons/silk/delete.png'), team_assignment_url(a), method: :delete, data: { confirm: 'Are you sure you want to remove this team member?' } %>
 					<% end -%>
 				</li>
 			<% end -%>
 		</ul>
 	<% end -%>
-	<% if @team.can_edit?(@user) -%>
+	<% if @team.can_edit?(@cas_user) -%>
 		<%= form_for @new_assn, :url => create_team_assignments_url do |f| -%>
 			<%= f.hidden_field :period_id %>
 			<%= f.hidden_field :team_id %>

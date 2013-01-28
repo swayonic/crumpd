@@ -3,7 +3,7 @@ class PledgesController < HomeController
 	# GET /assignments/1/pledges
 	def index
 		@assignment = Assignment.find(params[:assignment_id])
-		if !@assignment.can_view_pledges?(@user)
+		if !@assignment.can_view_pledges?(@cas_user)
 			render 'shared/unauthorized'
 			return
 		end
@@ -15,7 +15,7 @@ class PledgesController < HomeController
 	# POST /assignment/1/pledges
 	def create
 		@assignment = Assignment.find(params[:assignment_id])
-		if !@assignment.can_edit_pledges?(@user)
+		if !@assignment.can_edit_pledges?(@cas_user)
 			render 'shared/unauthorized'
 			return
 		end
@@ -37,7 +37,7 @@ class PledgesController < HomeController
 	# GET /pledges/1/toggle
 	def toggle
 		@pledge = Pledge.find(params[:id])
-		if !@pledge.assignment.can_edit_pledges?(@user)
+		if !@pledge.assignment.can_edit_pledges?(@cas_user)
 			render 'shared/unauthorized'
 			return
 		end
@@ -56,7 +56,7 @@ class PledgesController < HomeController
 	# DELETE /pledges/1
 	def destroy
 		@pledge = Pledge.find(params[:id])
-		if !@pledge.assignment.can_edit_pledges?(@user)
+		if !@pledge.assignment.can_edit_pledges?(@cas_user)
 			render 'shared/unauthorized'
 			return
 		end

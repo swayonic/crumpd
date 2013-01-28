@@ -1,32 +1,33 @@
 <%= page_header "User - " + @user.display_name %>
 
-<div class="grid_3 suffix_1">
+<div class="grid_4">
 	<table class="description">
 		<tr>
-			<td>First Name</td>
+			<td><b>First Name</b></td>
 			<td><%= @user.first_name %></td>
 		</tr>
 		<tr>
-			<td>Last Name</td>
+			<td>Preferred Name</td>
+			<td><%= @user.preferred_name %></td>
+		</tr>
+		<tr>
+			<td><b>Last Name</b></td>
 			<td><%= @user.last_name %></td>
 		</tr>
 		<tr>
-			<td>Account Number</td>
+			<td><b>Account Number</b></td>
 			<td><%= @user.account_number %></td>
 		</tr>
 		<tr>
-			<td>Email Address</td>
+			<td><b>Email Address</b></td>
 			<td><%= @user.email %></td>
 		</tr>
 	</table>
 	<%= link_to "Edit", edit_user_path(@user) %>
 </div>
 
-<div class="grid_4">
-	<h2>Test</h2>
-</div>
-<div class="grid_4">
-	<h2>Test</h2>
+<div class="grid_8">
+	<%= render :partial => 'roles' %>
 </div>
 
 <div class="clear"></div>

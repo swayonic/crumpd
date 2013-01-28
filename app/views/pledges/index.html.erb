@@ -1,5 +1,5 @@
 <%= page_header	@assignment.user.display_name + ' - ' + @assignment.period.name + ' Pledges' do -%>
-<%= link_to_if @assignment.user.can_view?(@user), @assignment.user.display_name, @assignment.user %>
+<%= link_to_if @assignment.user.can_view?(@cas_user), @assignment.user.display_name, @assignment.user %>
 -
 <%= link_to @assignment.period.name, @assignment %>
 Pledges
@@ -8,7 +8,7 @@ Pledges
 <%= flash_header %>
 
 <div class="grid_4">
-	<% if @assignment.can_edit_pledges?(@user) -%>
+	<% if @assignment.can_edit_pledges?(@cas_user) -%>
 		<br>
 		<br>
 		<h3>New Pledge</h3>
@@ -50,7 +50,7 @@ Pledges
 			<th width=1%>Amount</th>
 			<th width=1%>Frequency</th>
 			<th width=1%>In-Hand</th>
-			<% if @assignment.can_edit?(@user) -%>
+			<% if @assignment.can_edit?(@cas_user) -%>
 				<th width=1%>Delete</th>
 			<% end -%>
 		</tr>

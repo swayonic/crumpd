@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
 	has_many :groups_as_coach, :through => :group_coaches, :source => :group, :order => "name"
 	has_many :teams_as_member, :through => :assignments, :source => :team, :order => "name"
 	has_many :teams_as_leader, :through => :team_leaders, :source => :team, :order => "name"
-	has_many :periods, :through => :period_admins
+	has_many :periods_as_admin, :through => :period_admins, :source => :period
 
 	validates :email, :format => { 
 		:with => /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/,
@@ -27,39 +27,25 @@ class User < ActiveRecord::Base
 		end
 	end
 
-	# TODO: Is there a way to do this with fewer queries?
+	# Return all periods with which this user is affiliated
+	def all_periods
+		res = Array.new
+		res.concat periods_as_admin
+		res.concat assignments.map{|a| a.period}
+		res.concat groups_as_coach.map{|g| g.period}
+		#res.concat teams_as_leader.map{|t| t.period}
+		return res.uniq
+	end
+	
 	def can_view?(u)
-		return false #I'm disabling this for now
-
-		return true if can_edit?(u)
-		periods.each do |p|
-			return true if p.admins.include?(u)
-		end
-		teams_as_leader.each do |t|
-			return true if t.period.admins.include?(u)
-			return true if t.leaders.include?(u)
-			return true if t.members.include?(u)
-		end
-		teams_as_member.each do |t|
-			return true if t.period.admins.include?(u)
-			return true if t.leaders.include?(u)
-			return true if t.members.include?(u)
-		end
-		groups_as_coach.each do |g|
-			return true if g.period.admins.include?(u)
-			return true if g.coaches.include?(u)
-			return true if g.members.include?(u)
-		end
-		groups_as_member.each do |g|
-			return true if g.period.admins.include?(u)
-			return true if g.coaches.include?(u)
-			return true if g.members.include?(u)
-		end
-		return false
+		return true
 	end
 
 	def can_edit?(u)
-		return false #I'm disabling this for now
+		# Can't edit if they are a part of an updated Period
+		for p in all_periods
+			return false if p.keep_updated?
+		end
 
 		return true if u.is_admin
 		return true if u == self
