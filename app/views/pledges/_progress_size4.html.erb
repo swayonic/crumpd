@@ -1,6 +1,6 @@
 <table class='description' width='100%'>
 	<tr>
-		<td><i>Totals</i></td>
+		<td style='text-align:right;'><i>Totals</i></td>
 		<th>Goal</th>
 		<th>In-hand</th>
 		<th>Pledged</th>
@@ -17,7 +17,7 @@
 <div width=100% style='padding-left:25px'>
 <table id='pledgePercent' class='description' width='250px'>
 	<tr>
-		<td><i>Percentages</i></td>
+		<td style='text-align:right;'><i>Percentages</i></td>
 		<th>In-hand</th>
 		<th>With pledged</th>
 	</tr>
@@ -26,6 +26,13 @@
 			<th><%= g.title %></th>
 			<td><%= @assignment.goal_inhand_pct(g.frequency) %></td>
 			<td><%= @assignment.goal_total_pct(g.frequency) %></td>
+		</tr>
+	<% end -%>
+	<% if @assignment.goals.count > 1 -%>
+		<tr>
+			<th>Combined</th>
+			<td><%= @assignment.combined_inhand_pct %></td>
+			<td><%= @assignment.combined_total_pct %></td>
 		</tr>
 	<% end -%>
 </table>

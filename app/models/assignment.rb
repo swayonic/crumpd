@@ -48,6 +48,36 @@ class Assignment < ActiveRecord::Base
 		Goal.pct(goal_total(f), goal_amt(f))
 	end
 
+	def combined_pledged_pct
+		amt = 0
+		goal = 0
+		for g in goals
+			amt = amt + goal_pledged(g.frequency) * (g.frequency == 0 ? 1 : g.frequency)
+			goal = goal + goal_amt(g.frequency) * (g.frequency == 0 ? 1 : g.frequency)
+		end
+		return Goal.pct(amt, goal)
+	end
+
+	def combined_inhand_pct
+		amt = 0
+		goal = 0
+		for g in goals
+			amt = amt + goal_inhand(g.frequency) * (g.frequency == 0 ? 1 : g.frequency)
+			goal = goal + goal_amt(g.frequency) * (g.frequency == 0 ? 1 : g.frequency)
+		end
+		return Goal.pct(amt, goal)
+	end
+	
+	def combined_total_pct
+		amt = 0
+		goal = 0
+		for g in goals
+			amt = amt + goal_total(g.frequency) * (g.frequency == 0 ? 1 : g.frequency)
+			goal = goal + goal_amt(g.frequency) * (g.frequency == 0 ? 1 : g.frequency)
+		end
+		return Goal.pct(amt, goal)
+	end
+
 	def can_view?(u)
 		return true if u.is_admin
 		return true if u == self.user

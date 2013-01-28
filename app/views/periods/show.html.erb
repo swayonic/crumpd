@@ -4,6 +4,7 @@
 <div class="grid_4">
 	<%= button_to 'Show all people', list_period_url(@period), :method => :get %>
 	<%= button_to 'Edit report fields', fields_period_url(@period), :method => :get %>
+	<%= button_to 'Edit benchmarks', benchmarks_period_url(@period), :method => :get %>
 	<br>
 	<h2 width="100%" align="center">Administrators</h2>
 	<% if @period.admins.nil? or @period.admins.count == 0 -%>

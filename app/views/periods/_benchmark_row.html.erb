@@ -1,0 +1,7 @@
+<%= fields_for id, bm do |g| %>
+	<tr id="<%= id %>_row">
+		<td><%= g.date_select :date %></td>
+		<td><%= g.text_field :percentage, :size => 4 %></td>
+		<td><%= check_box id, :remove, :class => 'remove_benchmark_box' %></td>
+	</tr>
+<% end %>

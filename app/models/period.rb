@@ -9,6 +9,7 @@ class Period < ActiveRecord::Base
 	has_many :period_admins
 	has_many :admins, :through => :period_admins, :source => :user, :order => 'last_name, first_name'
 	has_many :report_fields, :order => 'list_index'
+	has_many :bmarks, :order => 'date'
 
 	scope :updated, where(:keep_updated => true)
 

@@ -16,13 +16,13 @@ Mpd::Application.routes.draw do
 			end
 		end
 		resources :admins, :as => 'period_admins', :only => [:show, :create, :destroy]
-		
-		#resources :report_fields
 		member do
-			get 'fields'
-			post 'update_fields'
 			get 'list'
 			post 'list'
+			get 'fields'
+			post 'update_fields'
+			get 'benchmarks'
+			post 'update_benchmarks'
 		end
 	end
 
@@ -35,18 +35,15 @@ Mpd::Application.routes.draw do
 			post 'create_team' # Create w/ team
 			post 'create_group' # Create w/ group
 		end
-
 		resources :pledges, :only => [:index, :create, :destroy] do
 			put 'toggle', :on => :member
 		end
-
 		resources :reports, :except => :index do
 			collection do
 				get 'list'
 				post 'list'
 			end
 		end
-  	
 		resources :goals
 	end
   

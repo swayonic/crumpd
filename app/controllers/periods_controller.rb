@@ -95,6 +95,50 @@ class PeriodsController < HomeController
 
 		redirect_to :action => :fields, :id => params[:id]
 	end
+	
+	# GET /periods/1/benchmarks
+	def benchmarks
+		@period = Period.find(params[:id])
+		if !@period.can_view?(@cas_user)
+			render 'shared/unauthorized'
+			return
+		end
+	end
+
+	# POST /periods/1/update_benchmarks
+	def update_benchmarks
+		@period = Period.find(params[:id])
+		if !@period.can_edit?(@cas_user)
+			render 'shared/unauthorized'
+			return
+		end
+		
+		# TODO: sanitize input
+
+		# Update old benchmarks
+		for bm in @period.bmarks
+			id = "benchmark_#{bm.id}"
+			if params[id]
+				if params[id].delete('remove') == '1'
+					bm.destroy
+				else
+					bm.update_attributes(params[id])
+				end
+			end
+		end
+
+		# Add new benchmarks
+		params.each do |key, hash|
+			if key =~ /^newbenchmark\_(\d+)/
+				if hash.delete('remove') != '1'
+					bm = @period.bmarks.build(hash)
+					bm.save
+				end
+			end
+		end
+
+		redirect_to :action => :benchmarks, :id => params[:id]
+	end
 
 	# GET /periods/1/list
 	def list
