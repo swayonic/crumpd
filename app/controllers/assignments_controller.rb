@@ -7,6 +7,7 @@ class AssignmentsController < HomeController
 			render 'shared/unauthorized'
 			return
 		end
+		member_breadcrumbs
 	end
 
 	# GET /assignments/1/edit
@@ -17,6 +18,7 @@ class AssignmentsController < HomeController
 			render 'shared/unauthorized'
 			return
 		end
+		member_breadcrumbs
 	end
 
 	def update
@@ -54,6 +56,7 @@ class AssignmentsController < HomeController
 		if valid
 			redirect_to @assignment, notice: 'Assignment was successfully updated'
 		else
+			member_breadcrumbs
 			render action: 'edit'
 		end
 	end
@@ -191,6 +194,18 @@ class AssignmentsController < HomeController
 		end
 
 		redirect_to group
+	end
+
+	private
+	# Adds breadcrumbs for all member views
+	def member_breadcrumbs
+		add_breadcrumb(@assignment.period.name, url_for(@assignment.period), @assignment.period.can_view?(@cas_user))
+		if @assignment.group 
+			add_breadcrumb(@assignment.group.name, url_for(@assignment.group), @assignment.group.can_view?(@cas_user))
+		elsif @assignment.team
+			add_breadcrumb(@assignment.team.name, url_for(@assignment.team), @assignment.team.can_view?(@cas_user))
+		end
+		add_breadcrumb(@assignment.user.display_name, url_for(@assignment))
 	end
 
 end

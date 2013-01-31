@@ -14,6 +14,8 @@ class TeamsController < HomeController
 		@new_assn = Assignment.new
 		@new_assn.team = @team
 		@new_assn.period = @team.period
+
+		member_breadcrumbs
   end
 
   # GET /teams/1/edit
@@ -23,6 +25,7 @@ class TeamsController < HomeController
 			render 'shared/unauthorized'
 			return
 		end
+		member_breadcrumbs
   end
 
   # POST /periods/1/teams
@@ -55,6 +58,7 @@ class TeamsController < HomeController
 		if @team.update_attributes(params[:team])
 			redirect_to @team, notice: 'Team was successfully updated.'
 		else
+			member_breadcrumbs
 			render action: "edit"
 		end
   end
@@ -89,6 +93,14 @@ class TeamsController < HomeController
 			render 'assignments/list.xls', :content_type => 'application/xls'
 			return
 		end
+		member_breadcrumbs
+	end
+	
+	private
+	# Adds breadcrumbs for all member views
+	def member_breadcrumbs
+		add_breadcrumb(@team.period.name, url_for(@team.period), @team.period.can_view?(@cas_user))
+		add_breadcrumb(@team.name, url_for(@team))
 	end
 
 end

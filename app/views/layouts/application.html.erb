@@ -19,6 +19,7 @@
 <body>
 <div class="container_12">
 	<%= render :partial => 'shared/login' %>
+	<%= render :partial => 'shared/breadcrumbs' %>
 	<%= content_for?(:content) ? yield(:content) : yield %>
 </div>
 </body>

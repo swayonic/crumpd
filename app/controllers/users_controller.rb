@@ -13,28 +13,12 @@ class UsersController < HomeController
 		end
   end
 
-  # GET /users/new
-  def new
-    @user = User.new
-  end
-
   # GET /users/1/edit
   def edit
     @user = User.find(params[:id])
 		if !@user.can_edit?(@cas_user)
 			render 'shared/unauthorized'
 			return
-		end
-  end
-
-  # POST /users
-  def create
-    @user = User.new(params[:user])
-		
-		if @user.save
-			redirect_to @user, notice: 'User was successfully created.'
-		else
-			render action: "new"
 		end
   end
 

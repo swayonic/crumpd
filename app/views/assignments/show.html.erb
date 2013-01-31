@@ -1,8 +1,4 @@
-<%= page_header @assignment.user.display_name + ' - ' + @assignment.period.name do %>
-<%= @assignment.user.display_name %>
--
-<%= link_to_if @assignment.period.can_view?(@cas_user), @assignment.period.name, @assignment.period %>
-<% end %>
+<%= page_header @assignment.user.display_name + ' - Assignment' %>
 <%= flash_header %>
 
 <div class="grid_4">

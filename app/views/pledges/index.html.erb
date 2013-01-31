@@ -1,10 +1,4 @@
-<%= page_header	@assignment.user.display_name + ' - ' + @assignment.period.name + ' Pledges' do -%>
-<%= link_to_if @assignment.user.can_view?(@cas_user), @assignment.user.display_name, @assignment.user %>
--
-<%= link_to @assignment.period.name, @assignment %>
-Pledges
-<% end -%>
-
+<%= page_header	@assignment.user.display_name + ' - Pledges' -%>
 <%= flash_header %>
 
 <div class="grid_4">

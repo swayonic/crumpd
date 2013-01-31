@@ -1,7 +1,4 @@
-<%= page_header "Reports - #{@assignment.user.display_name}" do %>
-Reports -
-<%= link_to @assignment.user.display_name, @assignment %>
-<% end %>
+<%= page_header @assignment.user.display_name + ' - Reports List' %>
 
 <%= render :partial => 'list/form' %>
 

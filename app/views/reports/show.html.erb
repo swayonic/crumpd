@@ -1,4 +1,4 @@
-<%= page_header @report.assignment.user.display_name + ' - ' + @report.assignment.period.name + ' - Report' %>
+<%= page_header @report.assignment.user.display_name + ' - ' + @report.date.strftime('%b %e Report') %>
 <%= flash_header %>
 
 <div class="grid_10 prefix_1 suffix_1" align='center'>

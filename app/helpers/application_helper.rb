@@ -8,21 +8,9 @@ module ApplicationHelper
 		render :partial => 'shared/flash'
 	end
 
-	# If no block given, assume title is also the header
 	def page_header(title)
-		page_header(title) do
-			title
-		end
-	end
-
-	def page_header(title, &block)
-		if block_given?
-			content = capture(&block)
-		else
-			content = title
-		end
 		@page_title = title
-		render :partial => 'shared/page_header', :locals => {:title => content}
+		render :partial => 'shared/page_header', :locals => {:title => title}
 	end
 
 	def add_javascript(script)

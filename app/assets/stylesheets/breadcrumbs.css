@@ -1,0 +1,35 @@
+div.breadcrumbs {
+	height: 30px;
+	background: #123;
+}
+div.breadcrumbs ul {
+	list-style-type: none;
+}
+/* A click-able link */
+div.breadcrumbs li.link {
+	height: 20px;
+	margin: 5px;
+	float: left;
+	background: #fff;
+	padding-left: 32px;
+	padding-right: 32px;
+}
+/* A disabled link */
+div.breadcrumbs li.item {
+	height: 20px;
+	margin: 5px;
+	float: left;
+	color: #fff;
+	padding-left: 32px;
+	padding-right: 32px;
+}
+div.breadcrumbs li.divider {
+	height: 20px;
+	margin: 5px;
+	color: #fff;
+	float: left;
+}
+div.breadcrumbs a {
+	color: #000;
+}
+

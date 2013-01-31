@@ -1,0 +1,19 @@
+<div class='breadcrumbs'>
+	<ul>
+		<li class='link'><%= link_to 'Home', root_url %></li>
+		<% if !@breadcrumbs.nil? and @breadcrumbs.count > 0 -%>
+			<% for c in @breadcrumbs -%>
+				<li class='divider'>></li>
+				<% if c[2] -%>
+					<li class='link'>
+						<a href="<%= c[1] %>"><%= c[0] %></a>
+					</li>
+				<% else -%>
+					<li class='item'>
+						<%= c[0] %>
+					</li>
+				<% end -%>
+			<% end -%>
+		<% end -%>
+	</ul>
+</div>

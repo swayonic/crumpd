@@ -3,10 +3,12 @@ class ReportsController < HomeController
   # GET /reports/1
   def show
     @report = Report.find(params[:id])
-		if !@report.assignment.can_view_reports?(@cas_user)
+		@assignment = @report.assignment
+		if !@assignment.can_view_reports?(@cas_user)
 			render 'shared/unauthorized'
 			return
 		end
+		member_breadcrumbs
   end
 
   # GET /assignments/1/reports/new
@@ -28,6 +30,7 @@ class ReportsController < HomeController
 			l = @report.field_lines.new
 			l.report_field = f
 		end
+		collection_breadcrumbs
   end
 
   # GET /reports/1/edit
@@ -50,6 +53,7 @@ class ReportsController < HomeController
 				l.report_field = f
 			end
 		end
+		member_breadcrumbs
   end
 
   # POST /assignments/1/reports
@@ -77,6 +81,7 @@ class ReportsController < HomeController
     if @report.save
 			redirect_to @report, notice: 'Report was successfully created.'
 		else
+			collection_breadcrumbs
 			render action: "new"
 		end
   end
@@ -119,6 +124,7 @@ class ReportsController < HomeController
 		if valid
 			redirect_to @report, notice: 'Report was successfully updated.'
 		else
+			member_breadcrumbs
 			render action: "edit"
 		end
   end
@@ -159,6 +165,26 @@ class ReportsController < HomeController
 			render "list.xls", :content_type => "application/xls"
 			return
 		end
+		member_breadcrumbs
   end
+
+	private
+	# Adds breadcrumbs for all collection views
+	def collection_breadcrumbs
+		assignment = @assignment || @report.assignment
+		add_breadcrumb(assignment.period.name, url_for(assignment.period), assignment.period.can_view?(@cas_user))
+		if assignment.group 
+			add_breadcrumb(assignment.group.name, url_for(assignment.group), assignment.group.can_view?(@cas_user))
+		elsif assignment.team
+			add_breadcrumb(assignment.team.name, url_for(assignment.team), assignment.team.can_view?(@cas_user))
+		end
+		add_breadcrumb(assignment.user.display_name, url_for(assignment))
+	end
+
+	# Adds breadcrumbs for all member views
+	def member_breadcrumbs
+		collection_breadcrumbs
+		add_breadcrumb(@report.date.strftime('%b %e Report'), url_for(@report))
+	end
 
 end

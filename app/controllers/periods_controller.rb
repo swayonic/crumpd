@@ -50,6 +50,8 @@ class PeriodsController < HomeController
 		
 		@new_admin = PeriodAdmin.new
 		@new_admin.period = @period
+
+		member_breadcrumbs
   end
 
 	# GET /periods/1/fields
@@ -59,6 +61,7 @@ class PeriodsController < HomeController
 			render 'shared/unauthorized'
 			return
 		end
+		member_breadcrumbs
 	end
 
 	# POST /periods/1/update_fields
@@ -103,6 +106,7 @@ class PeriodsController < HomeController
 			render 'shared/unauthorized'
 			return
 		end
+		member_breadcrumbs
 	end
 
 	# POST /periods/1/update_benchmarks
@@ -156,6 +160,14 @@ class PeriodsController < HomeController
 			render 'assignments/list.xls', :content_type => 'application/xls'
 			return
 		end
+		
+		member_breadcrumbs
+	end
+
+	private
+	# Adds breadcrumbs for all member views
+	def member_breadcrumbs
+		add_breadcrumb(@period.name, url_for(@period))
 	end
 
 end

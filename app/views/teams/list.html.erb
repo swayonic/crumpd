@@ -1,7 +1,3 @@
-<%= page_header "List - #{@team.name} (Team)" do %>
-List -
-<%= link_to @team.name, @team %>
-(Team)
-<% end %>
+<%= page_header @team.name + ' - List' %>
 
 <%= render :partial => 'assignments/list' %>

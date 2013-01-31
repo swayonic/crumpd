@@ -10,6 +10,7 @@ class PledgesController < HomeController
 
 		@new_pledge = Pledge.new
 		@new_pledge.assignment = @assignment
+		all_breadcrumbs
 	end
 
 	# POST /assignment/1/pledges
@@ -64,5 +65,11 @@ class PledgesController < HomeController
 		@pledge.destroy
 
 		redirect_to :action => :index, :assignment_id => @pledge.assignment.id
+	end
+	
+	private
+	# Adds breadcrumbs for all views
+	def all_breadcrumbs
+		add_breadcrumb(@assignment.period.name, url_for(@assignment.period), @assignment.period.can_view?(@cas_user))
 	end
 end

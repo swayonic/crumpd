@@ -15,6 +15,8 @@ class GroupsController < HomeController
 		@new_assn = Assignment.new
 		@new_assn.group = @group
 		@new_assn.period = @group.period
+
+		member_breadcrumbs
   end
 
   # GET /groups/1/edit
@@ -24,7 +26,7 @@ class GroupsController < HomeController
 			render 'shared/unauthorized'
 			return
 		end
-
+		member_breadcrumbs
   end
 
   # POST /periods/1/groups
@@ -57,6 +59,7 @@ class GroupsController < HomeController
 		if @group.update_attributes(params[:group])
 			redirect_to @group, notice: 'Group was successfully updated.'
 		else
+			member_breadcrumbs
 			render action: "edit"
 		end
   end
@@ -104,6 +107,16 @@ class GroupsController < HomeController
 			render 'assignments/list.xls', :content_type => 'application/xls'
 			return
 		end
+		
+		member_breadcrumbs
 	end
+	
+	private
+	# Adds breadcrumbs for all member views
+	def member_breadcrumbs
+		add_breadcrumb(@group.period.name, url_for(@group.period), @group.period.can_view?(@cas_user))
+		add_breadcrumb(@group.name, url_for(@group))
+	end
+
 
 end

@@ -5,6 +5,7 @@ class HomeController < ApplicationController
 		before_filter RubyCAS::GatewayFilter, :only => :index
 	end
 	before_filter :cas_auth, :except => [:login, :do_login, :datadump]
+	helper_method :add_breadcrumb
 
 	def index
 	end
@@ -77,6 +78,11 @@ class HomeController < ApplicationController
 			return false
 		end
 		return true
+	end
+
+	def add_breadcrumb(text, link, allowed = true)
+		@breadcrumbs = Array.new if @breadcrumbs.nil?
+		@breadcrumbs << [text, link, allowed]
 	end
 
 end
