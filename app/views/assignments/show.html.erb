@@ -6,6 +6,7 @@
 <%= flash_header %>
 
 <div class="grid_4">
+	<!-- Details -->
 	<h2>Details</h2>
 	<table class="description">
 		<tr>
@@ -45,12 +46,64 @@
 	
 	<br>
 	<br>
-	<% if @assignment.can_view_pledges?(@cas_user) -%>
-		<h3>Pledges</h3>
-		<%= link_to 'View Pledges', assignment_pledges_url(@assignment) %><br>
-		<%= render :partial => 'pledges/progress_size4' %>
+	
+	<% if @assignment.period.bmarks.count > 0 -%>
+		<!-- Benchmarks -->
+		<h2>Benchmarks</h2>
+		<table class='description'>
+			<tr>
+				<th>Date</th>
+				<th>Amount</th>
+			</tr>
+			<% for b in @assignment.period.bmarks -%>
+				<tr>
+					<td><%= b.date.strftime('%b %e') %></td>
+					<td style='text-align:right;'><%= b.percentage %>%</td>
+				</tr>
+			<% end -%>
+		</table>
 	<% end -%>
 
+	<% if @assignment.can_view_pledges?(@cas_user) -%>
+		<!-- Pledges -->
+		<h3>Pledges</h3>
+		<%= link_to 'View/Edit Pledges', assignment_pledges_url(@assignment) %>
+		<br>
+		<br>
+		<br>
+		<div width=100% style='padding-left:25px'>
+		<table id='pledgePercent' style='display:none;' width='250px'>
+			<tr>
+				<td style='text-align:right;'><i>Percentages</i></td>
+				<th>In-hand</th>
+				<th>With pledged</th>
+			</tr>
+			<% for g in @assignment.goals -%>
+				<tr>
+					<th><%= g.title %> %</th>
+					<td><%= @assignment.goal_inhand_pct(g.frequency) %></td>
+					<td><%= @assignment.goal_total_pct(g.frequency) %></td>
+				</tr>
+			<% end -%>
+			<% if @assignment.goals.count > 1 -%>
+				<tr>
+					<th>Combined %</th>
+					<td><%= @assignment.combined_inhand_pct %></td>
+					<td><%= @assignment.combined_total_pct %></td>
+				</tr>
+			<% end -%>
+		</table>
+		<br>
+		<br>
+		<br>
+		</div>
+		<script>
+			$(document).ready(function() {
+				$('#pledgePercent').visualize({type:'bar', parseDirection:'y', height:'100px'});
+			});
+		</script>
+	<% end -%>
+	
 </div>
 
 <div class='grid_8'>
