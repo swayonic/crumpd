@@ -71,5 +71,11 @@ class PledgesController < HomeController
 	# Adds breadcrumbs for all views
 	def all_breadcrumbs
 		add_breadcrumb(@assignment.period.name, url_for(@assignment.period), @assignment.period.can_view?(@cas_user))
+		if @assignment.group 
+			add_breadcrumb(@assignment.group.name, url_for(@assignment.group), @assignment.group.can_view?(@cas_user))
+		elsif @assignment.team
+			add_breadcrumb(@assignment.team.name, url_for(@assignment.team), @assignment.team.can_view?(@cas_user))
+		end
+		add_breadcrumb(@assignment.user.display_name, url_for(@assignment))
 	end
 end
