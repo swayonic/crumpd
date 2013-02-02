@@ -1,0 +1,34 @@
+<%= hidden_field name, :user_id %>
+<div align='center'>
+	<table class='description'>
+		<tr>
+			<th colspan=3><%= title %></th>
+		</tr>
+		<tr>
+			<td>Existing User</td>
+			<td><%= radio_button name, 'new', '0', :checked => true %></td>
+			<td><%= autocomplete_field name, :name, autocomplete_users_url, :id_element => "##{name}_user_id", :size => 12 %></td>
+		</tr>
+		<tr>
+			<td>New User <%= help_tip 'Use their account number' %></td>
+			<td><%= radio_button name, 'new', '1' %></td>
+			<td><%= text_field name, :account_number, :size => 12, :disabled => true %>
+		</tr>
+	</table>
+	<%= submit_tag commit %>
+</div>
+
+<script>
+		$("[name='<%= name %>[new]']").click(function() {
+			if ($("[name='<%= name %>[new]']:checked").val() == '0')
+			{
+					$('#<%= name %>_name')[0].disabled = false;
+					$('#<%= name %>_account_number')[0].disabled = true;
+			}
+			else
+			{
+					$('#<%= name %>_name')[0].disabled = true;
+					$('#<%= name %>_account_number')[0].disabled = false;
+			}
+		});
+</script>

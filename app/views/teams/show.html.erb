@@ -39,7 +39,7 @@
 		<% end -%>
 
 		<ul>
-			<% for a in @team.assignments.sort_by{ |a| [a.user.last_name, a.user.first_name]} -%>
+			<% for a in @team.assignments.sort_by{|a| a.user.sort_name} -%>
 				<li>
 					<%= link_to_if a.user.can_view?(@cas_user), a.user.display_name, a.user %>
 					<% if a.can_view?(@cas_user) -%>
@@ -53,12 +53,13 @@
 		</ul>
 	<% end -%>
 	<% if @team.can_edit?(@cas_user) -%>
-		<%= form_for @new_assn, :url => create_team_assignments_url do |f| -%>
+		<%= form_for @new_assn do |f| -%>
 			<%= f.hidden_field :period_id %>
 			<%= f.hidden_field :team_id %>
-			<%= f.hidden_field :user_id %>
-			<%= autocomplete_field 'auto', 'name', autocomplete_users_url, :id_element => '#assignment_user_id', :size => 12 %>
-			<%= f.submit 'Add Member' %>
+			<%= render :partial => 'users/new', :locals => {
+				:name => 'add_member',
+				:title => 'New Member',
+				:commit => 'Add Member' } %>
 		<% end -%>
 	<% end -%>
 </div>

@@ -11,7 +11,7 @@
 		<i>None</i>
 	<% else -%>
 		<ul>
-			<% for a in @period.period_admins.sort_by{ |a| [a.user.last_name, a.user.first_name]} -%>
+			<% for a in @period.period_admins.sort_by{|a| a.user.sort_name} -%>
 				<li>
 					<%= link_to_if a.user.can_view?(@cas_user), a.user.display_name, a.user %>
 					<% if @period.can_edit_admins?(@cas_user) -%>
@@ -23,9 +23,10 @@
 	<% end -%>
 	<% if @period.can_edit_admins?(@cas_user) -%>
 		<%= form_for [@period, @new_admin] do |f| -%>
-			<%= f.hidden_field :user_id %>
-			<%= autocomplete_field :admin, :name, autocomplete_users_url, :id_element => '#period_admin_user_id', :size => 12 %>
-			<%= f.submit 'Add Admin' %>
+			<%= render :partial => 'users/new', :locals => {
+				:name => 'add_admin',
+				:title => 'New Admin',
+				:commit => 'Add Admin' } %>
 		<% end -%>
 	<% end -%>
 </div>

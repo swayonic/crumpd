@@ -61,43 +61,96 @@ class AssignmentsController < HomeController
 		end
 	end
 
-	# POST /assignments/create_team
-	def create_team
+	# POST /assignments/create
+	def create
 		assn = Assignment.new(params[:assignment])
 		if !assn.can_edit?(@cas_user)
 			render 'shared/unauthorized'
 			return
 		end
 
-		assns = assn.user.assignments.select{ |a| a.period and a.period.id == assn.team.period.id }
+		continue = params[:continue] || request.referrer
+		
+		if params[:add_member].nil?
+			flash_alert = 'Member not added'
+			redirect_to continue
+			return
+		end
 
+		# Adding a new user
+		if params[:add_member][:new] == '1'
+			if params[:add_member][:account_number] =~ /^\s*(\d+)\s*$/
+				if !user = User.find_by_account_number($1)
+					user = User.new
+					user.account_number = $1
+
+					# TODO: Verify with sitrack
+
+					user.save
+					redirect_to(
+						:controller => :users,
+						:action => :confirm,
+						:id => user.id,
+						:continue => url_for(
+							:action => :create,
+							'assignment[period_id]' => assn.period_id,
+							'assignment[team_id]' => assn.team_id,
+							'assignment[group_id]' => assn.group_id,
+							'add_member[new]' => '0',
+							'add_member[user_id]' => user.id,
+							'continue' => request.referrer
+							)
+						)
+					return
+				else
+					user_id = user.id
+					# Fall through to existing user
+				end
+			else
+				flash.notice = 'Member not added'
+				redirect_to continue
+				return
+			end
+
+		# Adding an existing user
+		else
+			user_id = $1 if params[:add_member][:user_id] =~ /^(\d+)$/
+		end
+
+		if user_id.nil?
+			flash.alert = 'No member selected'
+		elsif !User.find_by_id(user_id)
+			flash.alert = 'No user found'
+		else
+			assn.user_id = user_id
+		end
+
+		if assn.user_id.nil?
+			redirect_to continue
+			return
+		end
+
+		# Update group/team
+		assns = assn.user.assignments.select{ |a| a.period and a.period.id == assn.period.id }
 		if assns.count > 1
 			throw "ERROR: No user should have two assignments in the same period"
 		elsif assns.count == 1
 			a = assns.first
-			if a.team.nil?
-				a.team = assn.team
-				if a.save
-					flash.notice = 'Member added'
-				else
-					flash.alert = 'Member not added: an error occured while saving.'
-				end
-			else
-				if a.team.id == assn.team.id
-					flash.notice = 'Member already exists'
-				else
-					flash.alert = 'Member not added: this user has been assigned to a different team.'
-				end
-			end
-		else
-			if assn.save
-				flash.notice = 'Member added'
-			else
-				flash.alert = 'Member not added. An error occured while saving.'
-			end
+			
+			#NOTE: This doesn't warn the user if they switch someone's group or team
+			a.team = assn.team if assn.team
+			a.group = assn.group if assn.group
+
+			assn = a
 		end
 
-		redirect_to assn.team
+		if assn.save
+			flash.notice = 'Member added'
+		else
+			flash.alert = 'Member not added. An error occured while saving.'
+		end
+
+		redirect_to continue
 	end
 
 	# DELETE /assignments/1/team
@@ -126,45 +179,6 @@ class AssignmentsController < HomeController
 		end
 
 		redirect_to team
-	end
-
-	# POST /assignments/create_group
-	def create_group
-		assn = Assignment.new(params[:assignment])
-		if !assn.can_edit?(@cas_user)
-			render 'shared/unauthorized'
-			return
-		end
-
-		assns = assn.user.assignments.select{ |a| a.period and a.period.id == assn.group.period.id }
-
-		if assns.count > 1
-			throw "ERROR: No user should have two assignments in the same period"
-		elsif assns.count == 1
-			a = assns.first
-			if a.group.nil?
-				a.group = assn.group
-				if a.save
-					flash.notice = 'Member added'
-				else
-					flash.alert = 'Member not added: an error occured while saving.'
-				end
-			else
-				if a.group.id == assn.group.id
-					flash.notice = 'Member already exists'
-				else
-					flash.alert = 'Member not added: this user has been assigned to a different group.'
-				end
-			end
-		else
-			if assn.save
-				flash.notice = 'Member added'
-			else
-				flash.alert = 'Member not added. An error occured while saving.'
-			end
-		end
-
-		redirect_to assn.group
 	end
 
 	# DELETE /assignments/1/group

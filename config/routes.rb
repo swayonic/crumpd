@@ -26,14 +26,10 @@ Mpd::Application.routes.draw do
 		end
 	end
 
-	resources :assignments, :except => [:index, :create, :destroy], :shallow => true do
+	resources :assignments, :except => [:index, :destroy], :shallow => true do
 		member do
 			delete 'team' # Delete team
 			delete 'group' # Delete group
-		end
-		collection do
-			post 'create_team' # Create w/ team
-			post 'create_group' # Create w/ group
 		end
 		resources :pledges, :only => [:index, :create, :destroy] do
 			put 'toggle', :on => :member
@@ -48,6 +44,7 @@ Mpd::Application.routes.draw do
 	end
   
   resources :users, :except => :index do
+		get :confirm, :on => :member
 		get :autocomplete, :on => :collection
 	end
   

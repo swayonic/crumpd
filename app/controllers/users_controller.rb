@@ -50,6 +50,12 @@ class UsersController < HomeController
 		redirect_to users_url # DNE
   end
 
+	# GET /users/1/confirm
+	def confirm
+		@user = User.find(params[:id])
+		@continue_path = params[:continue]
+	end
+
 	# GET /users/autocomplete
 	def autocomplete
 		results = Array.new

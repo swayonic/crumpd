@@ -1,0 +1,12 @@
+<%= page_header 'Add New User' %>
+
+<div class="grid_8 prefix_2 suffix_2">
+	<%= form_for :user, :url => @continue_path do |f| %>
+		Adding user with account number: <%= @user.account_number %>
+		<br>
+		<%= f.submit 'Continue' %>
+		<%= link_to 'Back', :back %>
+	<% end -%>
+</div>
+
+<div class="clear"></div>

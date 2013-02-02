@@ -20,7 +20,7 @@
 	</ul>
 <% end -%>
 <% if @user.periods_as_admin.count > 0 -%>
-	<h3>Assignments</h3>
+	<h3>Coaching Periods</h3>
 	<ul>
 		<% for p in @user.periods_as_admin -%>
 			<li><%= link_to_if p.can_view?(@cas_user), p.name, p %></li>

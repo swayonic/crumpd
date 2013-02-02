@@ -3,9 +3,9 @@ class Team < ActiveRecord::Base
 
 	belongs_to :period
 	has_many :assignments
-	has_many :members, :through => :assignments, :source => :user, :order => 'last_name, first_name'
+	has_many :members, :through => :assignments, :source => :user
 	has_many :team_leaders
-	has_many :leaders, :through => :team_leaders, :source => :user, :order => 'last_name, first_name'
+	has_many :leaders, :through => :team_leaders, :source => :user
 
 	def can_view?(u)
 		return true if u.is_admin

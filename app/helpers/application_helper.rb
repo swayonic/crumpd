@@ -24,4 +24,8 @@ module ApplicationHelper
 		@javascripts.uniq! #So you can add them multiple times
 	end
 
+	def help_tip(text)
+		render :partial => 'shared/help_tip', :locals => {:text => text}
+	end
+
 end

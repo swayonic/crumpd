@@ -20,11 +20,21 @@ class User < ActiveRecord::Base
 		}
 
 	def display_name
-		if preferred_name.nil?
-			return "#{first_name} #{last_name}"
-		else
-			return "#{preferred_name} #{last_name}"
-		end
+		return "##{account_number}"	if first_name.nil? and last_name.nil?
+		return last_name if first_name.nil?
+		return first_name if last_name.nil?
+		return "#{first_name} #{last_name}" if preferred_name.nil?
+		
+		return "#{preferred_name} #{last_name}"
+	end
+
+	def sort_name
+		return "##{account_number}" if first_name.nil? and last_name.nil?
+		return last_name if first_name.nil?
+		return first_name if last_name.nil?
+		return "#{last_name}, #{first_name}" if preferred_name.nil?
+		
+		return "#{last_name}, #{preferred_name}"
 	end
 
 	# Return all periods with which this user is affiliated
