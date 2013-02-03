@@ -37,9 +37,10 @@
 	<% end -%>
 	<% if @group.can_edit_coaches?(@cas_user) -%>
 		<%= form_for [@group, @new_coach] do |f| -%>
-			<%= f.hidden_field :user_id %>
-				<%= autocomplete_field 'auto', 'name', autocomplete_users_url, :id_element => '#group_coach_user_id', :size => 12 %>
-			<%= f.submit 'Add Coach' %>
+			<%= render :partial => 'users/new', :locals => {
+				:name => 'add_coach',
+				:title => 'New Coach',
+				:commit => 'Add Coach' } %>
 		<% end -%>
 	<% end -%>
 </div>
