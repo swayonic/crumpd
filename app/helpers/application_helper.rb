@@ -25,7 +25,7 @@ module ApplicationHelper
 	end
 
 	def help_tip(text)
-		render :partial => 'shared/help_tip', :locals => {:text => text}
+		render :partial => 'shared/help_tip', :locals => {:text => text} if text and !text.blank?
 	end
 
 end

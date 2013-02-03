@@ -99,8 +99,8 @@ class TeamsController < HomeController
 	private
 	# Adds breadcrumbs for all member views
 	def member_breadcrumbs
-		add_breadcrumb(@team.period.name, url_for(@team.period), @team.period.can_view?(@cas_user))
-		add_breadcrumb(@team.name, url_for(@team))
+		add_breadcrumb(@team.period.name, url_for(@team.period), @team.period.can_view?(@cas_user), 'Coaching Period')
+		add_breadcrumb(@team.name, url_for(@team), 'Team')
 	end
 
 end

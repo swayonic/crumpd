@@ -165,26 +165,26 @@ class ReportsController < HomeController
 			render "list.xls", :content_type => "application/xls"
 			return
 		end
-		member_breadcrumbs
+		collection_breadcrumbs
   end
 
 	private
 	# Adds breadcrumbs for all collection views
 	def collection_breadcrumbs
 		assignment = @assignment || @report.assignment
-		add_breadcrumb(assignment.period.name, url_for(assignment.period), assignment.period.can_view?(@cas_user))
+		add_breadcrumb(assignment.period.name, url_for(assignment.period), assignment.period.can_view?(@cas_user), 'Coaching Period')
 		if assignment.group 
-			add_breadcrumb(assignment.group.name, url_for(assignment.group), assignment.group.can_view?(@cas_user))
+			add_breadcrumb(assignment.group.name, url_for(assignment.group), assignment.group.can_view?(@cas_user), 'Coaching Group')
 		elsif assignment.team
-			add_breadcrumb(assignment.team.name, url_for(assignment.team), assignment.team.can_view?(@cas_user))
+			add_breadcrumb(assignment.team.name, url_for(assignment.team), assignment.team.can_view?(@cas_user), 'Team')
 		end
-		add_breadcrumb(assignment.user.display_name, url_for(assignment))
+		add_breadcrumb(assignment.user.display_name, url_for(assignment), true, 'Assignment')
 	end
 
 	# Adds breadcrumbs for all member views
 	def member_breadcrumbs
 		collection_breadcrumbs
-		add_breadcrumb(@report.date.strftime('%b %e Report'), url_for(@report))
+		add_breadcrumb(@report.date.strftime('%b %e Report'), url_for(@report), true, 'Report')
 	end
 
 end

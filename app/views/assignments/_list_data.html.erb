@@ -2,6 +2,12 @@
 	<tr>
 		<th>Name</th>
 		<th>Last Report</th>
+		<% if @fields['group'] == '1' -%>
+			<th>Group</th>
+		<% end -%>
+		<% if @fields['team'] == '1' -%>
+			<th>Team</th>
+		<% end -%>
 		<% for g in Goal.defaults -%>
 			<% if @fields["#{g.frequency}_goal"] == '1' -%>
 				<th><%= g.title %> Goal</th>
@@ -32,7 +38,15 @@
 		<% r = a.latest_report -%>
 		<tr>
 			<td><%= a.user.sort_name %></td>
-			<td><%= r.nil? ? 'None' : r.date.strftime('%Y %m/%e') %></td>
+			<td><%= r.nil? ? 'None' : r.date.strftime('%Y %m/%d') %></td>
+			<% if !@assignment -%>
+				<% if @fields[:group] == '1' -%>
+					<td><%= a.group ? a.group.name : raw('') %></td>
+				<% end -%>
+				<% if @fields[:team] == '1' -%>
+					<td><%= a.team ? a.team.name : raw('') %></td>
+				<% end -%>
+			<% end -%>
 			<% for g in Goal.defaults -%>
 				<% if @fields["#{g.frequency}_goal"] == '1' -%>
 					<td>$<% a.goal_amt(g.frequency) %></td>

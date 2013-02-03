@@ -11,8 +11,6 @@ div.breadcrumbs li.link {
 	margin: 5px;
 	float: left;
 	background: #fff;
-	padding-left: 32px;
-	padding-right: 32px;
 }
 /* A disabled link */
 div.breadcrumbs li.item {
@@ -31,5 +29,7 @@ div.breadcrumbs li.divider {
 }
 div.breadcrumbs a {
 	color: #000;
+	padding-left:32px;
+	padding-right:32px;
 }
 

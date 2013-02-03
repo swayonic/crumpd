@@ -46,12 +46,13 @@
 							<% else -%>
 								<%= line.report_field.name %>
 							<% end -%>
+							<%= help_tip line.report_field.description %>
 						</td>
 						<td>
 							<% if line.report_field.is_number? -%>
-								<%= l.text_field :value, :size => 4, :title => line.report_field.description %>
+								<%= l.text_field :value, :size => 4 %>
 							<% elsif line.report_field.is_text? -%>
-								<%= l.text_area :value, :rows => 5, :title => line.report_field.description %>
+								<%= l.text_area :value, :rows => 5 %>
 							<% else -%>
 								<%= l.text_field :value %>
 							<% end -%>

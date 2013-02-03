@@ -80,9 +80,14 @@ class HomeController < ApplicationController
 		return true
 	end
 
-	def add_breadcrumb(text, link, allowed = true)
+	def add_breadcrumb(text, link, allowed = true, title = nil)
 		@breadcrumbs = Array.new if @breadcrumbs.nil?
-		@breadcrumbs << [text, link, allowed]
+		@breadcrumbs << {
+			:text => text,
+			:link => link,
+			:allowed => allowed,
+			:title => title
+			}
 	end
 
 end

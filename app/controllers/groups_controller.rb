@@ -114,8 +114,8 @@ class GroupsController < HomeController
 	private
 	# Adds breadcrumbs for all member views
 	def member_breadcrumbs
-		add_breadcrumb(@group.period.name, url_for(@group.period), @group.period.can_view?(@cas_user))
-		add_breadcrumb(@group.name, url_for(@group))
+		add_breadcrumb(@group.period.name, url_for(@group.period), @group.period.can_view?(@cas_user), 'Coaching Period')
+		add_breadcrumb(@group.name, url_for(@group), true, 'Coaching Group')
 	end
 
 

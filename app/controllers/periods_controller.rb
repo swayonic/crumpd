@@ -167,7 +167,7 @@ class PeriodsController < HomeController
 	private
 	# Adds breadcrumbs for all member views
 	def member_breadcrumbs
-		add_breadcrumb(@period.name, url_for(@period))
+		add_breadcrumb(@period.name, url_for(@period), true, 'Coaching Period')
 	end
 
 end
