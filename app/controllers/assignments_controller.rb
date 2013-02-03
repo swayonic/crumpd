@@ -153,61 +153,42 @@ class AssignmentsController < HomeController
 		redirect_to continue
 	end
 
-	# DELETE /assignments/1/team
-	def team
+	# DELETE /assignments/1?delete=[group|team]
+	def destroy
 		assn = Assignment.find(params[:id])
 		if !assn.can_edit?(@cas_user)
 			render 'shared/unauthorized'
 			return
 		end
 
-		team = assn.team
-		assn.team = nil
-
-		if assn.group.nil?
-			if assn.destroy
-				flash.notice = 'Member removed'
-			else
-				flash.alert = 'Member not removed: error while deleting assignment'
-			end
-		else
-			if assn.save
-				flash.notice = 'Member removed'
-			else
-				flash.alert = 'Member not removed: error while updating'
-			end
-		end
-
-		redirect_to team
-	end
-
-	# DELETE /assignments/1/group
-	def group
-		assn = Assignment.find(params[:id])
-		if !assn.can_edit?(@cas_user)
-			render 'shared/unauthorized'
+		if !params[:delete]
+			flash.alert = 'Nothing to delete'
+			redirect_to :back
 			return
 		end
 
-		group = assn.group
-
-		assn.group = nil
-
-		if assn.team.nil?
-			if assn.destroy
-				flash.notice = 'Member removed'
-			else
-				flash.alert = 'Member not removed: error while deleting assignment'
-			end
+		if params[:delete] == 'group'
+			assn.group = nil
+		elsif params[:delete] == 'team'
+			assn.team = nil
 		else
-			if assn.save
-				flash.notice = 'Member removed'
-			else
-				flash.alert = 'Member not removed: error while updating'
-			end
+			flash.alert = 'Nothing to delete'
+			redirect_to :back
+			return
 		end
 
-		redirect_to group
+		if assn.group.nil? and assn.team.nil?
+			# Don't delete the assignment
+			# TODO: Change? Would require deleting all reports, pledges, etc
+		end
+		
+		if assn.save
+			flash.notice = 'Member removed'
+		else
+			flash.alert = 'Member not removed: error while updating'
+		end
+
+		redirect_to :back
 	end
 
 	private

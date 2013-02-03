@@ -26,11 +26,7 @@ Mpd::Application.routes.draw do
 		end
 	end
 
-	resources :assignments, :except => [:index, :destroy], :shallow => true do
-		member do
-			delete 'team' # Delete team
-			delete 'group' # Delete group
-		end
+	resources :assignments, :except => :index, :shallow => true do
 		resources :pledges, :only => [:index, :create, :destroy] do
 			put 'toggle', :on => :member
 		end
