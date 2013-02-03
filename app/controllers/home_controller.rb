@@ -55,14 +55,11 @@ class HomeController < ApplicationController
 					# Add this person to the database
 					@cas_user.save
 					logger.info "Adding user from login attributes: #{@cas_user.inspect}"
-				else
-					logger.info "Matched account number:'#{@cas_user.account_number}' to user:'#{@cas_user.display_name}'"
 				end
 			end
 		else #Development mode
 			@login_url = '/login'
 			@cas_user = User.find(session[:username]) if session[:username]
-			logger.debug "Matched user_id:'#{session[:username]}' to user:'#{@cas_user.display_name}'" if @cas_user
 		end
 
 		if @cas_user.nil?
