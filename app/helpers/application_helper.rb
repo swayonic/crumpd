@@ -28,4 +28,8 @@ module ApplicationHelper
 		render :partial => 'shared/help_tip', :locals => {:text => text} if text and !text.blank?
 	end
 
+	def autofocus(id)
+		render :partial => 'shared/autofocus', :locals => {:id => id}
+	end
+
 end
