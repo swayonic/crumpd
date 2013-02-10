@@ -22,12 +22,28 @@
 				<br>
 			<% end -%>
 		<% end -%>
-		<%= fields_for "new_goal", @new_goal do |g| -%>
-			<b>New Goal</b>
-			Frequency (?): <%= g.text_field :frequency, :size => 4 %>
-			Amount: <%= g.text_field :amount, :size => 4 %>
-		<% end -%>
 		<br>
+		<%= fields_for "new_goal", @new_goal do |g| -%>
+			<table class='description'>
+				<tr>
+					<th colspan=2>
+						New Goal
+					</th>
+				</tr>
+				<tr>
+					<td>Frequency</td>
+					<td>
+						<%= g.select :frequency, options_for_select([['',''], ['One-time', 0],['Monthly', 12]]) %>
+					</td>
+				</tr>
+				<tr>
+					<td>Amount</td>
+					<td>
+						<%= g.text_field :amount, :size => 4 %>
+					</td>
+				</tr>
+			</table>
+		<% end -%>
 		<br>
 		<%= f.submit 'Save changes' %>
 	<% end -%>

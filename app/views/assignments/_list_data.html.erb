@@ -1,3 +1,4 @@
+<% is_xls = params[:commit] == 'Download Excel' -%>
 <thead>
 	<tr>
 		<th>Name</th>
@@ -37,14 +38,14 @@
 	<% for a in @assignments -%>
 		<% r = a.latest_report -%>
 		<tr>
-			<td><%= a.user.sort_name %></td>
+			<td><%= link_to_if !is_xls, a.user.sort_name, a.user %></td>
 			<td><%= r.nil? ? 'None' : r.date.strftime('%Y %m/%d') %></td>
 			<% if !@assignment -%>
 				<% if @fields[:group] == '1' -%>
-					<td><%= a.group ? a.group.name : raw('') %></td>
+					<td><%= a.group ? link_to_if(!is_xls, a.group.name, a.group) : raw('') %></td>
 				<% end -%>
 				<% if @fields[:team] == '1' -%>
-					<td><%= a.team ? a.team.name : raw('') %></td>
+					<td><%= a.team ? link_to_if(!is_xls, a.team.name, a.team) : raw('') %></td>
 				<% end -%>
 			<% end -%>
 			<% for g in Goal.defaults -%>

@@ -44,14 +44,24 @@ class AssignmentsController < HomeController
 		end
 
 		if !params[:new_goal][:frequency].blank? and !params[:new_goal][:amount].blank?
-			@new_goal = Goal.new(params[:new_goal])
-			@new_goal.assignment = @assignment
-			if !@new_goal.save
-				flash.alert[:now] = 'Could not create new Goal'
+			if params[:new_goal][:frequency] =~ /^\w*(\d+)\w*$/
+				freq = $1
+				if goal = @assignment.goals.find_by_frequency(freq)
+					goal.amount = params[:new_goal][:amount]
+				else
+					goal = @assignment.goals.build(
+						:frequency => freq,
+						:amount => params[:new_goal][:amount]
+						)
+				end
+				if !goal.save
+					flash.alert = 'Could not create new Goal'
+					valid = false
+				end
 			end
 		end
 
-		valid = false if !@assignment.update_attributes(params[:assignment])
+		valid = false if valid and !@assignment.update_attributes(params[:assignment])
 
 		if valid
 			redirect_to @assignment, notice: 'Assignment was successfully updated'
