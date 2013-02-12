@@ -56,7 +56,28 @@ class GroupsController < HomeController
 			return
 		end
 
-		if @group.update_attributes(params[:group])
+		if params[:group][:name]
+			name = params[:group][:name].strip
+			if name.blank?
+				@group.name = nil
+			else
+				@group.name = name
+			end
+		end
+
+		# Only update these if the period is not kept updated
+		if !@group.period.keep_updated
+			if params[:group][:coach_name]
+				coach_name = params[:group][:coach_name].strip
+				if coach_name.blank?
+					@group.coach_name = nil
+				else
+					@group.coach_name = coach_name
+				end
+			end		
+		end
+
+		if @group.save
 			redirect_to @group, notice: 'Group was successfully updated.'
 		else
 			member_breadcrumbs

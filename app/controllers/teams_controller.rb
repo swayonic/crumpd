@@ -54,8 +54,53 @@ class TeamsController < HomeController
 			render 'shared/unauthorized'
 			return
 		end
+
+		if params[:team][:name]
+			name = params[:team][:name].strip
+			if name.blank?
+				@team.name = nil
+			else
+				@team.name = name
+			end
+		end
+
+		# Only update these if the period is not kept updated
+		if !@team.period.keep_updated
+			if params[:team][:city]
+				city = params[:team][:city].strip
+				if city.blank?
+					@team.city = nil
+				else
+					@team.city = city
+				end
+			end
+			if params[:team][:state]
+				state = params[:team][:state].strip
+				if state.blank?
+					@team.state = nil
+				else
+					@team.state = state
+				end
+			end
+			if params[:team][:country]
+				country = params[:team][:country].strip
+				if country.blank?
+					@team.country = nil
+				else
+					@team.country = country
+				end
+			end
+			if params[:team][:continent]
+				continent = params[:team][:continent].strip
+				if continent.blank?
+					@team.continent = nil
+				else
+					@team.continent = continent
+				end
+			end	
+		end
 		
-		if @team.update_attributes(params[:team])
+		if @team.save
 			redirect_to @team, notice: 'Team was successfully updated.'
 		else
 			member_breadcrumbs

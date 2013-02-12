@@ -30,7 +30,6 @@ class Group < ActiveRecord::Base
 	end
 
 	def can_edit?(u)
-		return false if period.keep_updated
 		return true if u.is_admin
 		return true if period.admins.include?(u)
 		return false

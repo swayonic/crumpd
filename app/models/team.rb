@@ -11,10 +11,11 @@ class Team < ActiveRecord::Base
 
 	def display_name
 		return name if name and !name.nil?
-		return "#{city} Team" if city and !city.nil?
+		return "#{city} Team" if city and !city.blank?
 		# TODO: More complicated options as available
 		
-		return "Team #{sitrack_id}"
+		return "Team #{sitrack_id}" if sitrack_id and !sitrack_id.blank?
+		return "Team #{self.id}"
 	end
 
 	def can_view?(u)
@@ -25,7 +26,6 @@ class Team < ActiveRecord::Base
 	end
 
 	def can_edit?(u)
-		return false if period.keep_updated
 		return true if u.is_admin
 		return true if period.admins.include?(u)
 		return false

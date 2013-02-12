@@ -37,7 +37,7 @@
 			</tr>
 		<% end -%>
 	</table>
-	<% if !@team.period.keep_updated and @team.can_edit?(@cas_user) -%>
+	<% if @team.can_edit?(@cas_user) -%>
 		<%= link_to 'Edit', edit_team_url(@team) %>
 	<% end -%>
 </div>
@@ -66,7 +66,7 @@
 			<% end -%>
 		</ul>
 	<% end -%>
-	<% if @team.can_edit?(@cas_user) -%>
+	<% if !@team.period.keep_updated and @team.can_edit?(@cas_user) -%>
 		<%= form_for @new_assn do |f| -%>
 			<%= f.hidden_field :period_id %>
 			<%= f.hidden_field :team_id %>

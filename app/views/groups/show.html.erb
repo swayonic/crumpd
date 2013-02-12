@@ -72,7 +72,7 @@
 			<% end -%>
 		</ul>
 	<% end %>
-	<% if @group.can_edit?(@cas_user) -%>
+	<% if !@group.period.keep_updated and @group.can_edit?(@cas_user) -%>
 		<%= form_for @new_assn do |f| -%>
 			<%= f.hidden_field :period_id %>
 			<%= f.hidden_field :group_id %>
