@@ -103,7 +103,7 @@ class GroupsController < HomeController
 		@fields = params[:fields] || Hash.new
 		
 		if params[:commit] == 'Download Excel'
-			@title = "#{@period.name} - #{@group.name} (Coaching Group)"
+			@title = "#{@period.name} - #{@group.display_name}"
 			render 'assignments/list.xls', :content_type => 'application/xls'
 			return
 		end
@@ -115,7 +115,7 @@ class GroupsController < HomeController
 	# Adds breadcrumbs for all member views
 	def member_breadcrumbs
 		add_breadcrumb(@group.period.name, url_for(@group.period), @group.period.can_view?(@cas_user), 'Coaching Period')
-		add_breadcrumb(@group.name, url_for(@group), true, 'Coaching Group')
+		add_breadcrumb(@group.display_name, url_for(@group), true, 'Coaching Group')
 	end
 
 

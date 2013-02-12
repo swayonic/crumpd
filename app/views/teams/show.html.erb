@@ -1,4 +1,4 @@
-<%= page_header @team.name %>
+<%= page_header @team.display_name %>
 <%= flash_header %>
 
 <div class="grid_4">
@@ -6,22 +6,36 @@
 	<table class="description">
 		<tr>
 			<td>Team Name</td>
-			<td><%= @team.name %></td>
+			<td><%= @team.display_name %></td>
 		</tr>
 		<tr>
 			<td>Coaching Period</td>
 			<td><%= link_to_if @team.period.can_view?(@cas_user), @team.period.name, @team.period %></td>
 		</tr>
-		<tr>
-			<td>Leader Name</td>
-			<td>
-				<% if @team.leader_name and !@team.leader_name.blank? %>
-					<%= @team.leader_name %>
-				<% else -%>
-					<i>None</i>
-				<% end -%>
-			</td>
-		</tr>
+		<% if @team.city -%>
+			<tr>
+				<td>City</td>
+				<td><%= @team.city %></td>
+			</tr>
+		<% end -%>
+		<% if @team.state -%>
+			<tr>
+				<td>State</td>
+				<td><%= @team.state %></td>
+			</tr>
+		<% end -%>
+		<% if @team.country -%>
+			<tr>
+				<td>Country</td>
+				<td><%= @team.country %></td>
+			</tr>
+		<% end -%>
+		<% if @team.continent -%>
+			<tr>
+				<td>Continent</td>
+				<td><%= @team.continent %></td>
+			</tr>
+		<% end -%>
 	</table>
 	<% if !@team.period.keep_updated and @team.can_edit?(@cas_user) -%>
 		<%= link_to 'Edit', edit_team_url(@team) %>

@@ -18,6 +18,12 @@ class User < ActiveRecord::Base
 		:allow_blank => true,
 		:message => "Invalid format"
 		}
+	
+	def self.cleanup_account_number(accountNo)
+		return nil if accountNo.nil? or accountNo.blank?
+		return "00#{$2}#{$3}" if accountNo.strip =~ /^(00|)(\d{7})(S|)$/
+		return nil
+	end
 
 	def display_name
 		return "##{account_number}"	if first_name.nil? and last_name.nil?
@@ -36,6 +42,7 @@ class User < ActiveRecord::Base
 		
 		return "#{last_name}, #{preferred_name}"
 	end
+
 
 	# Return all periods with which this user is affiliated
 	def all_periods

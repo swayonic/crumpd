@@ -4,7 +4,7 @@ class HomeController < ApplicationController
 		before_filter RubyCAS::Filter, :except => :index
 		before_filter RubyCAS::GatewayFilter, :only => :index
 	end
-	before_filter :cas_auth, :except => [:login, :do_login, :datadump]
+	before_filter :cas_auth, :except => [:login, :do_login]
 	helper_method :add_breadcrumb
 
 	def index
@@ -14,11 +14,11 @@ class HomeController < ApplicationController
 	end
 
 	def do_login
-		if newuser = User.find(params[:login][:id])
+		if newuser = User.find_by_id(params[:login][:id])
 			session[:username] = newuser.id
 			redirect_to :action => :index
 		else
-			flash.now[:alert] = "No user has the ID: #{params[:login][:id]}"
+			flash.now[:alert] = 'No user found'
 			render :login
 		end
 	end
@@ -44,14 +44,15 @@ class HomeController < ApplicationController
 		@cas_user = nil
 		if Rails.env.production?
 			@login_url = RubyCAS::Filter.login_url(self)
-			if session[:cas_extra_attributes] and session[:cas_extra_attributes][:designation]
-				if !@cas_user = User.find_by_account_number(session[:cas_extra_attributes][:designation])
+			if session[:cas_extra_attributes] and session[:cas_extra_attributes][:emplid]
+				account_number = User.cleanup_account_number(session[:cas_extra_attributes][:emplid])
+				if account_number and !@cas_user = User.find_by_account_number(account_number)
 					# Create a user with the given CAS attributes
 					@cas_user = User.new(
 						:first_name => session[:cas_extra_attributes][:firstName],
 						:last_name => session[:cas_extra_attributes][:lastName],
 						:email => session[:cas_extra_attributes][:email],
-						:account_number => session[:cas_extra_attributes][:designation])
+						:account_number => account_number)
 					# Add this person to the database
 					@cas_user.save
 					logger.info "Adding user from login attributes: #{@cas_user.inspect}"
@@ -59,7 +60,7 @@ class HomeController < ApplicationController
 			end
 		else #Development mode
 			@login_url = '/login'
-			@cas_user = User.find(session[:username]) if session[:username]
+			@cas_user = User.find_by_id(session[:username]) if session[:username]
 		end
 
 		if @cas_user.nil?

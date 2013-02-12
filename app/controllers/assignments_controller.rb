@@ -21,6 +21,7 @@ class AssignmentsController < HomeController
 		member_breadcrumbs
 	end
 
+	# PUT /assignments/1
 	def update
 		@assignment = Assignment.find(params[:id])
 		if !@assignment.can_edit?(@cas_user)
@@ -44,7 +45,7 @@ class AssignmentsController < HomeController
 		end
 
 		if !params[:new_goal][:frequency].blank? and !params[:new_goal][:amount].blank?
-			if params[:new_goal][:frequency] =~ /^\w*(\d+)\w*$/
+			if params[:new_goal][:frequency] =~ /^\s*(\d+)\s*$/
 				freq = $1
 				if goal = @assignment.goals.find_by_frequency(freq)
 					goal.amount = params[:new_goal][:amount]
@@ -64,7 +65,7 @@ class AssignmentsController < HomeController
 		valid = false if valid and !@assignment.update_attributes(params[:assignment])
 
 		if valid
-			redirect_to @assignment, notice: 'Assignment was successfully updated'
+			redirect_to @assignment, notice: 'Assignment updated'
 		else
 			member_breadcrumbs
 			render action: 'edit'
@@ -206,9 +207,9 @@ class AssignmentsController < HomeController
 	def member_breadcrumbs
 		add_breadcrumb(@assignment.period.name, url_for(@assignment.period), @assignment.period.can_view?(@cas_user), 'Coaching Period')
 		if @assignment.group 
-			add_breadcrumb(@assignment.group.name, url_for(@assignment.group), @assignment.group.can_view?(@cas_user), 'Coaching Group')
+			add_breadcrumb(@assignment.group.display_name, url_for(@assignment.group), @assignment.group.can_view?(@cas_user), 'Coaching Group')
 		elsif @assignment.team
-			add_breadcrumb(@assignment.team.name, url_for(@assignment.team), @assignment.team.can_view?(@cas_user), 'Team')
+			add_breadcrumb(@assignment.team.display_name, url_for(@assignment.team), @assignment.team.can_view?(@cas_user), 'Team')
 		end
 		add_breadcrumb(@assignment.user.display_name, url_for(@assignment), true, 'Assignment')
 	end

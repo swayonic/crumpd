@@ -2,7 +2,12 @@
 	<table width="100%">
 		<tr>
 			<td>
-				<%= link_to image_tag('logo.png'), root_url %></a>
+				<% if Rails.env.development? -%>
+					<%# Helps my PR a little bit %>
+					<%= link_to image_tag('safelogo.png'), root_url %></a>
+				<% else -%>
+					<%= link_to image_tag('logo.png'), root_url %></a>
+				<% end -%>
 			</td>
 			<td width='100%' style='text-align:right;'>
 				<br>

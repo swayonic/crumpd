@@ -37,9 +37,9 @@
 		<i>None</i>
 	<% else -%>
 		<ul>
-			<% for t in @period.teams -%>
+			<% for t in @period.teams.sort_by{|t| t.display_name} -%>
 				<li>
-					<%= link_to t.name, t %>
+					<%= link_to t.display_name, t %>
 				</li>
 			<% end -%>
 		</ul>
@@ -58,9 +58,9 @@
 		<i>None</i>
 	<% else -%>
 		<ul>
-			<% for g in @period.groups -%>
+			<% for g in @period.groups.sort_by{|g| g.display_name} -%>
 				<li>
-					<%= link_to g.name, g %>,
+					<%= link_to g.display_name, g %>,
 					<% if g.coaches.nil? or g.coaches.count == 0 -%>
 						Coaches: <i>None</i>
 					<% elsif g.coaches.count == 1 -%>

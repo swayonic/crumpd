@@ -2,14 +2,14 @@ class Period < ActiveRecord::Base
   attr_accessible :region_id, :year, :keep_updated
 
 	belongs_to :region
-	has_many :assignments
+	has_many :assignments, :dependent => :destroy
 	has_many :reports, :through => :assignments
-	has_many :groups, :order => 'name'
-	has_many :teams, :order => 'name'
-	has_many :period_admins
+	has_many :groups, :dependent => :destroy
+	has_many :teams, :dependent => :destroy
+	has_many :period_admins, :dependent => :destroy
 	has_many :admins, :through => :period_admins, :source => :user
-	has_many :report_fields, :order => 'list_index'
-	has_many :bmarks, :order => 'date'
+	has_many :report_fields, :order => 'list_index', :dependent => :destroy
+	has_many :bmarks, :order => 'date', :dependent => :destroy
 
 	scope :updated, where(:keep_updated => true)
 

@@ -3,10 +3,10 @@ class Report < ActiveRecord::Base
 
 	belongs_to :assignment
 
-	has_many :goal_lines, :class_name => 'ReportGoalLine', :order => 'frequency'
+	has_many :goal_lines, :class_name => 'ReportGoalLine', :order => 'frequency', :dependent => :destroy
 	validates_associated :goal_lines, :on => []
 
-	has_many :field_lines, :class_name => 'ReportFieldLine'
+	has_many :field_lines, :class_name => 'ReportFieldLine', :dependent => :destroy
 	validates_associated :field_lines, :on => []
 
 	validate do

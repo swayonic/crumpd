@@ -5,10 +5,10 @@
 	<%= form_for @assignment do |f| %>
 		<h2>Groups</h2>
 
-		<% teams_array = [['None', 0]].concat( @assignment.period.teams.map { |t| [t.name, t.id] }) -%>
+		<% teams_array = [['None', 0]].concat( @assignment.period.teams.map { |t| [t.display_name, t.id] }) -%>
 		Team: <%= f.select :team_id, options_for_select(teams_array, @assignment.team_id) %>
 		<br>
-		<% groups_array = [['None', 0]].concat( @assignment.period.groups.map { |t| [t.name, t.id] }) -%>
+		<% groups_array = [['None', 0]].concat( @assignment.period.groups.map { |g| [g.display_name, g.id] }) -%>
 		Coaching group: <%= f.select :group_id, options_for_select(groups_array, @assignment.group_id) %>
 		<br>
 		<br>

@@ -1,11 +1,21 @@
 class Team < ActiveRecord::Base
-  attr_accessible :period_id, :name, :leader_name
+  attr_accessible :period_id, :name,
+		# Sitrack data
+		:sitrack_id, :city, :state, :country, :continent
 
 	belongs_to :period
+	has_many :team_leaders, :dependent => :destroy
+	has_many :leaders, :through => :team_leaders, :source => :user
 	has_many :assignments
 	has_many :members, :through => :assignments, :source => :user
-	has_many :team_leaders
-	has_many :leaders, :through => :team_leaders, :source => :user
+
+	def display_name
+		return name if name and !name.nil?
+		return "#{city} Team" if city and !city.nil?
+		# TODO: More complicated options as available
+		
+		return "Team #{sitrack_id}"
+	end
 
 	def can_view?(u)
 		return true if u.is_admin

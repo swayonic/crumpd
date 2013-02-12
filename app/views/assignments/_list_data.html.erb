@@ -42,15 +42,15 @@
 			<td><%= r.nil? ? 'None' : r.date.strftime('%Y %m/%d') %></td>
 			<% if !@assignment -%>
 				<% if @fields[:group] == '1' -%>
-					<td><%= a.group ? link_to_if(!is_xls, a.group.name, a.group) : raw('') %></td>
+					<td><%= a.group ? link_to_if(!is_xls, a.group.display_name, a.group) : raw('') %></td>
 				<% end -%>
 				<% if @fields[:team] == '1' -%>
-					<td><%= a.team ? link_to_if(!is_xls, a.team.name, a.team) : raw('') %></td>
+					<td><%= a.team ? link_to_if(!is_xls, a.team.display_name, a.team) : raw('') %></td>
 				<% end -%>
 			<% end -%>
 			<% for g in Goal.defaults -%>
 				<% if @fields["#{g.frequency}_goal"] == '1' -%>
-					<td>$<% a.goal_amt(g.frequency) %></td>
+					<td>$<%= a.goal_amt(g.frequency) %></td>
 				<% end -%>
 				<% if @fields["#{g.frequency}_inhand_pct"] == '1' -%>
 					<td>

@@ -174,9 +174,9 @@ class ReportsController < HomeController
 		assignment = @assignment || @report.assignment
 		add_breadcrumb(assignment.period.name, url_for(assignment.period), assignment.period.can_view?(@cas_user), 'Coaching Period')
 		if assignment.group 
-			add_breadcrumb(assignment.group.name, url_for(assignment.group), assignment.group.can_view?(@cas_user), 'Coaching Group')
+			add_breadcrumb(assignment.group.display_name, url_for(assignment.group), assignment.group.can_view?(@cas_user), 'Coaching Group')
 		elsif assignment.team
-			add_breadcrumb(assignment.team.name, url_for(assignment.team), assignment.team.can_view?(@cas_user), 'Team')
+			add_breadcrumb(assignment.team.display_name, url_for(assignment.team), assignment.team.can_view?(@cas_user), 'Team')
 		end
 		add_breadcrumb(assignment.user.display_name, url_for(assignment), true, 'Assignment')
 	end

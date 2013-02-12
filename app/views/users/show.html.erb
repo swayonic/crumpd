@@ -6,10 +6,12 @@
 			<td><b>First Name</b></td>
 			<td><%= @user.first_name %></td>
 		</tr>
-		<tr>
-			<td><b>Preferred Name</b></td>
-			<td><%= @user.preferred_name %></td>
-		</tr>
+		<% if @user.preferred_name and @user.preferred_name != @user.first_name -%>
+			<tr>
+				<td><b>Preferred Name</b></td>
+				<td><%= @user.preferred_name %></td>
+			</tr>
+		<% end -%>
 		<tr>
 			<td><b>Last Name</b></td>
 			<td><%= @user.last_name %></td>
@@ -27,7 +29,9 @@
 			<td><%= @user.email %></td>
 		</tr>
 	</table>
-	<%= link_to "Edit", edit_user_path(@user) %>
+	<% if @user.can_edit?(@cas_user) -%>
+		<%= link_to 'Edit', edit_user_path(@user) %>
+	<% end -%>
 </div>
 
 <div class="grid_8">

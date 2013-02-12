@@ -6,7 +6,7 @@ class PeriodsController < HomeController
 			render 'shared/unauthorized'
 			return
 		end
-		@periods = Period.all
+		@periods = Period.all.sort_by{|p| [p.year, p.region.name]}
 		@new_period = Period.new
 		@regions = Region.all
 		@years = 2012..Date.today.year
@@ -26,6 +26,11 @@ class PeriodsController < HomeController
 			@period = Period.new(params[:period])
 			if @period.save
 				flash.notice = "Period #{@period.name} created"
+
+				# Download data
+				if @period.keep_updated
+					Sitrack.download(@period)
+				end
 			else
 				flash.alert = 'An error occurred while saving'
 			end
@@ -141,6 +146,7 @@ class PeriodsController < HomeController
 			end
 		end
 
+		flash.notice = 'Benchmarks updated'
 		redirect_to :action => :benchmarks, :id => params[:id]
 	end
 

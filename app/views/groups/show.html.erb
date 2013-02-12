@@ -1,4 +1,4 @@
-<%= page_header @group.name %>
+<%= page_header @group.display_name %>
 <%= flash_header %>
 
 <div class="grid_4">
@@ -6,7 +6,11 @@
 	<table class="description">
 		<tr>
 			<td>Group Name</td>
-			<td><%= @group.name %></td>
+			<td><%= @group.display_name %></td>
+		</tr>
+		<tr>
+			<td>Coach Name</td>
+			<td><%= @group.coach_name %></td>
 		</tr>
 		<tr>
 			<td>Coaching Period</td>

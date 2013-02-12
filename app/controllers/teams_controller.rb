@@ -89,7 +89,7 @@ class TeamsController < HomeController
 		@fields = params[:fields] || Hash.new
 		
 		if params[:commit] == 'Download Excel'
-			@title = "#{@period.name} - #{@team.name} (Team)"
+			@title = "#{@period.name} - #{@team.display_name}"
 			render 'assignments/list.xls', :content_type => 'application/xls'
 			return
 		end
@@ -100,7 +100,7 @@ class TeamsController < HomeController
 	# Adds breadcrumbs for all member views
 	def member_breadcrumbs
 		add_breadcrumb(@team.period.name, url_for(@team.period), @team.period.can_view?(@cas_user), 'Coaching Period')
-		add_breadcrumb(@team.name, url_for(@team), 'Team')
+		add_breadcrumb(@team.display_name, url_for(@team), 'Team')
 	end
 
 end
