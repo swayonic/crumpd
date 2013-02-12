@@ -18,7 +18,7 @@ class AdminsController < HomeController
 		if params[:add_admin][:new] == '1'
 			if account_number = User.cleanup_account_number(params[:add_admin][:account_number])
 				if !user = User.find_by_account_number(account_number)
-					if result = SitrackQuery::Query.user(account_number) and result.delete('found')
+					if result = SitrackQuery::Query.find_user(account_number) and result.delete('found')
 						user = User.new(result)
 
 						if user.save

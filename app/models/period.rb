@@ -1,5 +1,7 @@
 class Period < ActiveRecord::Base
   attr_accessible :region_id, :year, :keep_updated
+	
+	scope :updated, where(:keep_updated => true)
 
 	belongs_to :region
 	has_many :assignments, :dependent => :destroy
@@ -11,7 +13,6 @@ class Period < ActiveRecord::Base
 	has_many :report_fields, :order => 'list_index', :dependent => :destroy
 	has_many :bmarks, :order => 'date', :dependent => :destroy
 
-	scope :updated, where(:keep_updated => true)
 
 	def name
 		"#{region.display_name} #{year}"

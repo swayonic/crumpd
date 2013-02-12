@@ -1,5 +1,7 @@
 class User < ActiveRecord::Base
   attr_accessible :account_number, :first_name, :last_name, :preferred_name, :phone, :email, :is_admin
+	
+	scope :admin, where(:is_admin => true)
 
 	has_many :assignments
 	has_many :group_coaches

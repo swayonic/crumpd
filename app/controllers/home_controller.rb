@@ -8,6 +8,7 @@ class HomeController < ApplicationController
 	helper_method :add_breadcrumb
 
 	def index
+		render :json => SitrackQuery::Query.update_all
 	end
 
 	def login

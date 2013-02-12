@@ -48,7 +48,6 @@ Mpd::Application.routes.draw do
 	if Rails.env.development?
 		resources :sitrack, :only => [] do
 			post :dump, :on => :collection
-			get :user, :on => :collection
 		end
 	end
   

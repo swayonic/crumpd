@@ -1,6 +1,6 @@
 # This class should only be used in development
 class Sitrack < ActiveRecord::Base
-	set_table_name 'sitrack_tracking' # Needs to know a table name
+	self.table_name = 'sitrack_tracking' # Needs to know a table name
 
 	establish_connection(
 		:adapter => 'mysql2',

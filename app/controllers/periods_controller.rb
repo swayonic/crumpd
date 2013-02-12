@@ -29,7 +29,7 @@ class PeriodsController < HomeController
 
 				# Download data
 				if @period.keep_updated
-					Sitrack.download(@period)
+					SitrackQuery::Query.find_period(@period)
 				end
 			else
 				flash.alert = 'An error occurred while saving'
