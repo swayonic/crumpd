@@ -1,23 +1,14 @@
+# This class should only be used in development
 class Sitrack < ActiveRecord::Base
 	set_table_name 'sitrack_tracking' # Needs to know a table name
 
-	if Rails.env.development?
-		establish_connection(
-			:adapter => 'mysql2',
-			:host => '108.166.64.232',
-			:username => 'luke.yeager',
-			:password => 'bugatti',
-			:database => 'prod'
-		)
-	else
-		establish_connection(
-			:adapter => 'mysql2',
-			:host => '108.166.64.232',
-			:username => 'crumpd',
-			:password => '???', #TODO
-			:database => 'prod'
-		)
-	end
+	establish_connection(
+		:adapter => 'mysql2',
+		:host => '108.166.64.232',
+		:username => 'luke.yeager',
+		:password => 'bugatti',
+		:database => 'prod'
+	)
 
 	def self.download(period = nil)
 		return false if !period.keep_updated?

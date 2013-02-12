@@ -16,31 +16,38 @@ class AdminsController < HomeController
 
 		# Adding a new user
 		if params[:add_admin][:new] == '1'
-			if params[:add_admin][:account_number] =~ /^\s*(\d+)\s*$/
-				if !user = User.find_by_account_number($1)
-					user = User.new
-					user.account_number = $1
+			if account_number = User.cleanup_account_number(params[:add_admin][:account_number])
+				if !user = User.find_by_account_number(account_number)
+					if result = SitrackQuery::Query.user(account_number) and result.delete('found')
+						user = User.new(result)
 
-					# TODO: Verify with sitrack
-
-					user.save
-					redirect_to(
-						:controller => :users,
-						:action => :confirm,
-						:id => user.id,
-						:continue => url_for(
-							:action => :create,
-							'add_admin[new]' => '0',
-							'add_admin[user_id]' => user.id
-							)
-						)
-					return
+						if user.save
+							redirect_to(
+								:controller => :users,
+								:action => :confirm,
+								:id => user.id,
+								:continue => url_for(
+									:action => :create,
+									'add_admin[new]' => '0',
+									'add_admin[user_id]' => user.id
+									)
+								)
+							return
+						else
+							flash.alert = 'Failed to save the new user'
+						end
+					else
+						flash.alert = "No user found for account number: #{params[:add_admin][:account_number]}"
+					end
 				else
 					user_id = user.id
 					# Fall through to existing user
 				end
 			else
-				flash.notice = 'Admin not added'
+				flash.alert = 'Admin not added'
+			end
+
+			unless user_id # Some error occurred
 				redirect_to @period
 				return
 			end

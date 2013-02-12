@@ -16,31 +16,38 @@ class CoachesController < HomeController
 
 		# Adding a new user
 		if params[:add_coach][:new] == '1'
-			if params[:add_coach][:account_number] =~ /^\s*(\d+)\s*$/
-				if !user = User.find_by_account_number($1)
-					user = User.new
-					user.account_number = $1
-
-					# TODO: Verify with sitrack
-
-					user.save
-					redirect_to(
-						:controller => :users,
-						:action => :confirm,
-						:id => user.id,
-						:continue => url_for(
-							:action => :create,
-							'add_coach[new]' => '0',
-							'add_coach[user_id]' => user.id
-							)
-						)
-					return
+			if account_number = User.cleanup_account_number(params[:add_coach][:account_number])
+				if !user = User.find_by_account_number(account_number)
+					if result = SitrackQuery::Query.user(account_number) and result.delete('found')
+						user = User.new(result)
+						
+						if user.save
+							redirect_to(
+								:controller => :users,
+								:action => :confirm,
+								:id => user.id,
+								:continue => url_for(
+									:action => :create,
+									'add_coach[new]' => '0',
+									'add_coach[user_id]' => user.id
+									)
+								)
+							return
+						else
+							flash.alert = 'Failed to save the new user'
+						end
+					else
+						flash.alert = "No user found for account number: #{params[:add_coach][:account_number]}"
+					end
 				else
 					user_id = user.id
 					# Fall through to existing user
 				end
 			else
 				flash.notice = 'Coach not added'
+			end
+
+			unless user_id # Some error occured
 				redirect_to @group
 				return
 			end

@@ -52,7 +52,7 @@ class UsersController < HomeController
 
 	# GET /users/1/confirm
 	def confirm
-		@user = User.find(params[:id])
+		@user = User.find_by_id(params[:id])
 		@continue_path = params[:continue]
 	end
 
