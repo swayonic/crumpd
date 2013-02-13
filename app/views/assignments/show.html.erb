@@ -9,6 +9,12 @@
 			<td>User</td>
 			<td><%= link_to_if @assignment.user.can_view?(@cas_user), @assignment.user.display_name, @assignment.user %>
 		</tr>
+		<% if @assignment.intern_type -%>
+			<tr>
+				<td>Intern type</td>
+				<td><%= @assignment.intern_type %></td>
+			</tr>
+		<% end -%>
 		<tr>
 			<td>Team</td>
 			<td>
