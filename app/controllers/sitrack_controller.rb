@@ -3,24 +3,26 @@ class SitrackController < HomeController
 	
 	# POST /sitrack/dump
 	def dump
-		periods = params[:periods].split('+') if params[:periods]
-		users = params[:users].split('+') if params[:users]
+		periods_in = params[:periods].split('+') if params[:periods]
+		users_in = params[:users].split('+') if params[:users]
 
-		assignments = Array.new
-
-		assignments = period_query(periods)
-		people = user_query(users)
+		periods_out = Hash.new
+		for p in periods_in
+			periods_out[p] = period_query(p)
+		end
+		users_out = user_query(users_in)
 		regions = region_query
 
 		render :json => {
-			:assignments => assignments,
-			:people => people,
+			:periods => periods_out,
+			:users => users_out,
 			:regions => regions
 			}.to_json
 	end
 
 	private
 
+	# list is an array of account numbers
 	def user_query(list)
 		return nil if !list
 
@@ -43,22 +45,13 @@ class SitrackController < HomeController
 		end
 	end
 
-	def period_query(list)
-		return nil if !list
-
-		if !list.kind_of?(Array)
-			tmp = list
-			list = Array.new
-			list << tmp
-		end
-
-		return nil if list.empty?
-
-		split_list = Array.new
-		for p in list
-			if p =~ /^(\w+)_(\d{4})$/
-				split_list << [$1, $2]
-			end
+	# periods is a string like "RR_2012"
+	def period_query(period)
+		if period =~ /^(\w+)_(\d{4})$/
+			region = $1
+			year = Integer($2)
+		else
+			return nil
 		end
 
 		ActiveRecord::Base.silence_auto_explain do
@@ -71,9 +64,7 @@ class SitrackController < HomeController
 				# Might not be able to grab these tables, it's OK
 				'LEFT JOIN ministry_staff AS s ON a.fk_personID = s.person_id ' +
 				'LEFT JOIN sitrack_mpd AS m on m.application_id = a.applicationID ' +
-				'WHERE p.accountNo IS NOT NULL AND (' +
-				split_list.map{|p| "(caringRegion='#{p[0]}' AND asgYear='#{p[1]}-#{p[1]+1}')"}.join(' OR ') +
-				')'
+				"WHERE t.caringRegion='#{region}' AND t.asgYear='#{year}-#{year+1}' AND p.accountNo IS NOT NULL"
 				)
 		end
 	end
