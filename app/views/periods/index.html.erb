@@ -19,7 +19,7 @@
 		<table style='description'>
 			<tr>
 				<td><%= f.label :region %></td>
-				<td><%= f.select :region_id, @regions.map{|r| [r.title, r.id]} %></td>
+				<td><%= f.select :region_id, @regions.map{|r| [r.display_name, r.id]} %></td>
 			</tr>
 			<tr>
 				<td><%= f.label :year %></td>

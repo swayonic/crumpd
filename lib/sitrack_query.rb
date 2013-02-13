@@ -126,6 +126,20 @@ module SitrackQuery
 		end
 
 		def self.process_user_result(json)
+			return nil if json.nil?
+			return nil if !account_number = User.cleanup_account_number(json['accountNo'])
+
+			if !user = User.find_by_account_number(account_number)
+				user = User.new(:account_number => account_number)
+			end
+
+			user.first_name = json['firstName'] || user.first_name
+			user.last_name = json['lastName'] || user.last_name
+			user.preferred_name = json['preferredName'] || user.preferred_name
+			user.email = json['email'].downcase if json['email']
+			user.phone = json['mobilePhone'] || json['homePhone'] || json['otherPhone'] || user.phone
+
+			return user.save ? user : nil
 		end
 
 		def self.process_period_result(period, assignments)
@@ -149,17 +163,8 @@ module SitrackQuery
 			teams = Hash.new
 
 			for line in assignments
-				if account_number = User.cleanup_account_number(line['accountNo'])
+				if user = process_user_result(line)
 					begin
-						# Update or create user info
-						user = User.find_by_account_number(account_number) || User.new(:account_number => account_number)
-						user.first_name = line['firstName'] || user.first_name
-						user.last_name = line['lastName'] || user.last_name
-						user.preferred_name = line['preferredName'] || user.preferredName
-						user.phone = line['mobilePhone'] || line['homePhone'] || line['otherPhone'] || user.phone
-						user.email = line['email'].downcase if line['email']
-						user.save!
-
 						# Create or update assignment
 						assn = Assignment.find_by_period_id_and_user_id(period.id, user.id) || Assignment.new(:period_id => period.id, :user_id => user.id)
 						if line['tenure'] and line['internType']
