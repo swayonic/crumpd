@@ -2,12 +2,14 @@ class GroupsController < HomeController
   
   # GET /groups/1
   def show
-    @group = Group.find(params[:id])
+    if !@group = Group.find_by_id(params[:id])
+			render 'shared/not_found'
+			return
+		end
 		if !@group.can_view?(@cas_user)
 			render 'shared/unauthorized'
 			return
 		end
-
 
 		@new_coach = GroupCoach.new
 		@new_coach.group = @group
@@ -21,7 +23,10 @@ class GroupsController < HomeController
 
   # GET /groups/1/edit
   def edit
-    @group = Group.find(params[:id])
+    if !@group = Group.find_by_id(params[:id])
+			render 'shared/not_found'
+			return
+		end
 		if !@group.can_edit?(@cas_user)
 			render 'shared/unauthorized'
 			return
@@ -31,7 +36,10 @@ class GroupsController < HomeController
 
   # POST /periods/1/groups
   def create
-    @period = Period.find(params[:period_id])
+    if !@period = Period.find_by_id(params[:period_id])
+			render 'shared/not_found'
+			return
+		end
 		if !@period.can_edit?(@cas_user)
 			render 'shared/unauthorized'
 			return
@@ -50,7 +58,10 @@ class GroupsController < HomeController
 
   # PUT /groups/1
   def update
-    @group = Group.find(params[:id])
+    if !@group = Group.find_by_id(params[:id])
+			render 'shared/not_found'
+			return
+		end
 		if !@group.can_edit?(@cas_user)
 			render 'shared/unauthorized'
 			return
@@ -87,7 +98,10 @@ class GroupsController < HomeController
 
   # DELETE /groups/1
   def destroy
-    @group = Group.find(params[:id])
+    if !@group = Group.find_by_id(params[:id])
+			render 'shared/not_found'
+			return
+		end
 		if !@group.period.can_edit?(@cas_user)
 			render 'shared/unauthorized'
 			return
@@ -100,7 +114,10 @@ class GroupsController < HomeController
 	
 	# DELETE /group_coaches/1
 	def destroy_coach
-		@coach = GroupCoach.find(params[:id])
+		if !@coach = GroupCoach.find_by_id(params[:id])
+			render 'shared/not_found'
+			return
+		end
 		if !@coach.group.can_edit?(@cas_user)
 			render 'shared/unauthorized'
 			return
@@ -113,7 +130,10 @@ class GroupsController < HomeController
 
 	# GET /groups/1/list
 	def list
-		@group = Group.find(params[:id])
+		if !@group = Group.find_by_id(params[:id])
+			render 'shared/not_found'
+			return
+		end
 		if !@group.can_view_list?(@cas_user)
 			render 'shared/unauthorized'
 			return

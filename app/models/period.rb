@@ -25,7 +25,7 @@ class Period < ActiveRecord::Base
 	end
 
 	def can_edit?(u)
-		return false if keep_updated
+		#return false if keep_updated
 		return true if u.is_admin
 		return true if admins.include?(u)
 		return false

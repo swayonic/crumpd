@@ -66,8 +66,22 @@ class User < ActiveRecord::Base
 			return false if p.keep_updated?
 		end
 
+		for p in all_periods
+			return true if p.admins.include?(u)
+		end
+
 		return true if u.is_admin
 		return true if u == self
+		return false
+	end
+
+	# Returns true if u can become self
+	def can_sudo?(u)
+		return true if u.is_admin?
+		for p in all_periods
+			return true if p.admins.include?(u)
+		end
+
 		return false
 	end
 

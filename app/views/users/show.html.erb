@@ -28,9 +28,26 @@
 			<td><b>Email Address</b></td>
 			<td><%= @user.email %></td>
 		</tr>
+		<% if @cas_user.is_admin? -%>
+			<tr>
+				<td><b>Admin</b></td>
+				<td>
+					<% if @user.is_admin? %>
+						<%= button_to 'Revoke', toggle_admin_user_url(@user) %>
+					<% else -%>
+						<%= button_to 'Grant', toggle_admin_user_url(@user) %>
+					<% end -%>
+				</td>
+			</tr>
+		<% end -%>
 	</table>
 	<% if @user.can_edit?(@cas_user) -%>
 		<%= link_to 'Edit', edit_user_path(@user) %>
+	<% end -%>
+	<% if @user.can_sudo?(true_user) -%>
+		<br>
+		<br>
+		<%= button_to 'Sudo', sudo_user_url(@user), :method => :get, :title => 'Assume the permissions of this person' %>
 	<% end -%>
 </div>
 

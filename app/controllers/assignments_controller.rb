@@ -2,7 +2,10 @@ class AssignmentsController < HomeController
 
 	# GET /assignments/1
 	def show
-		@assignment = Assignment.find(params[:id])
+		if !@assignment = Assignment.find_by_id(params[:id])
+			render 'shared/not_found'
+			return
+		end
 		if !@assignment.can_view?(@cas_user)
 			render 'shared/unauthorized'
 			return
@@ -12,18 +15,25 @@ class AssignmentsController < HomeController
 
 	# GET /assignments/1/edit
 	def edit
-		@assignment = Assignment.find(params[:id])
-		@new_goal = Goal.new
+		if !@assignment = Assignment.find_by_id(params[:id])
+			render 'shared/not_found'
+			return
+		end
 		if !@assignment.can_edit?(@cas_user)
 			render 'shared/unauthorized'
 			return
 		end
+		
+		@new_goal = Goal.new
 		member_breadcrumbs
 	end
 
 	# PUT /assignments/1
 	def update
-		@assignment = Assignment.find(params[:id])
+		if !@assignment = Assignment.find_by_id(params[:id])
+			render 'shared/not_found'
+			return
+		end
 		if !@assignment.can_edit?(@cas_user)
 			render 'shared/unauthorized'
 			return
@@ -172,7 +182,10 @@ class AssignmentsController < HomeController
 
 	# DELETE /assignments/1?delete=[group|team]
 	def destroy
-		assn = Assignment.find(params[:id])
+		if !assn = Assignment.find_by_id(params[:id])
+			render 'shared/not_found'
+			return
+		end
 		if !assn.can_edit?(@cas_user)
 			render 'shared/unauthorized'
 			return

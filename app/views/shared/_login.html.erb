@@ -18,7 +18,11 @@
 					<br>
 					<%= link_to 'My Profile', @cas_user %>
 					<br>
-					<%= link_to 'Logout', :controller => :home, :action => :logout %>
+					<% if @sudoer %>
+						<%= link_to 'Unsudo', unsudo_users_url %> (<i><%= @sudoer.display_name %></i>)
+					<% else -%>
+						<%= link_to 'Logout', :controller => :home, :action => :logout %>
+					<% end -%>
 				<% end -%>
 			</td>
 		</tr>

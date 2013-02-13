@@ -2,7 +2,10 @@ class LeadersController < HomeController
 	
 	# POST /teams/1/leaders
 	def create
-		@team = Team.find(params[:team_id])
+		if !@team = Team.find_by_id(params[:team_id])
+			render 'shared/not_found'
+			return
+		end
 		if !@team.can_view?(@cas_user)
 			render 'shared/unauthorized'
 			return
@@ -25,7 +28,10 @@ class LeadersController < HomeController
 
 	# DELETE /leaders/1?return=url
 	def destroy
-		@leader = TeamLeader.find(params[:id])
+		if !@leader = TeamLeader.find_by_id(params[:id])
+			render 'shared/not_found'
+			return
+		end
 		if !@leader.team.can_edit?(@cas_user)
 			render 'shared/unauthorized'
 			return

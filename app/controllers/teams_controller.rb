@@ -2,7 +2,10 @@ class TeamsController < HomeController
   
   # GET /teams/1
   def show
-    @team = Team.find(params[:id])
+    if !@team = Team.find_by_id(params[:id])
+			render 'shared/not_found'
+			return
+		end
 		if !@team.can_view?(@cas_user)
 			render 'shared/unauthorized'
 			return
@@ -20,7 +23,10 @@ class TeamsController < HomeController
 
   # GET /teams/1/edit
   def edit
-    @team = Team.find(params[:id])
+    if !@team = Team.find_by_id(params[:id])
+			render 'shared/not_found'
+			return
+		end
 		if !@team.can_edit?(@cas_user)
 			render 'shared/unauthorized'
 			return
@@ -30,7 +36,10 @@ class TeamsController < HomeController
 
   # POST /periods/1/teams
   def create
-		@period = Period.find(params[:period_id])
+		if !@period = Period.find_by_id(params[:period_id])
+			render 'shared/not_found'
+			return
+		end
 		if !@period.can_edit?(@cas_user)
 			render 'shared/unauthorized'
 			return
@@ -49,7 +58,10 @@ class TeamsController < HomeController
 
   # PUT /teams/1
   def update
-		@team = Team.find(params[:id])
+		if !@team = Team.find_by_id(params[:id])
+			render 'shared/not_found'
+			return
+		end
 		if !@team.can_edit?(@cas_user)
 			render 'shared/unauthorized'
 			return
@@ -110,7 +122,10 @@ class TeamsController < HomeController
 
   # DELETE /teams/1
   def destroy
-    @team = Team.find(params[:id])
+    if !@team = Team.find_by_id(params[:id])
+			render 'shared/not_found'
+			return
+		end
 		if !@team.period.can_edit?(@cas_user)
 			render 'shared/unauthorized'
 			return
@@ -123,7 +138,10 @@ class TeamsController < HomeController
 
 	# GET /teams/1/list
 	def list
-		@team = Team.find(params[:id])
+		if !@team = Team.find_by_id(params[:id])
+			render 'shared/not_found'
+			return
+		end
 		if !@team.can_view_list?(@cas_user)
 			render 'shared/unauthorized'
 			return

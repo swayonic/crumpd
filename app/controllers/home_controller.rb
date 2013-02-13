@@ -4,7 +4,7 @@ class HomeController < ApplicationController
 		before_filter RubyCAS::Filter, :except => :index
 		before_filter RubyCAS::GatewayFilter, :only => :index
 	end
-	before_filter :cas_auth, :except => [:login, :do_login]
+	before_filter :authorize, :except => [:login, :do_login]
 	helper_method :add_breadcrumb
 
 	def index
@@ -25,7 +25,6 @@ class HomeController < ApplicationController
 
 	def logout
 		if Rails.env.production?
-			session[:username] = nil # Can't hurt
 			RubyCAS::Filter.logout(self)
 		else
 			session[:username] = nil
@@ -33,17 +32,14 @@ class HomeController < ApplicationController
 		end
 	end
 
-	# For testing of the data dump
-	def datadump
-		render :json => params.to_json
-		return
+	def not_found
+		render 'shared/not_found'
 	end
 
-	private
-	def cas_auth
-		@cas_user = nil
+	def cas_user
+		return @cas_user if @cas_user # Only set once
+
 		if Rails.env.production?
-			@login_url = RubyCAS::Filter.login_url(self)
 			if session[:cas_extra_attributes] and session[:cas_extra_attributes][:emplid]
 				account_number = User.cleanup_account_number(session[:cas_extra_attributes][:emplid])
 				if account_number and !@cas_user = User.find_by_account_number(account_number)
@@ -55,26 +51,49 @@ class HomeController < ApplicationController
 						:account_number => account_number)
 					# Add this person to the database
 					@cas_user.save
-					logger.info "Adding user from login attributes: #{@cas_user.inspect}"
+					logger.info "Added user ##{@cas_user.id} from login attributes: #{session[:cas_extra_attributes]}"
 				end
 			end
-		else #Development mode
-			@login_url = '/login'
+		else # Development mode
 			@cas_user = User.find_by_id(session[:username]) if session[:username]
 		end
-
-		if @cas_user.nil?
-			render 'shared/unauthorized'
-			return false
-		end
-		return true
 	end
+	helper_method :cas_user
 
-	def admin_only
-		if @cas_user.nil? or !@cas_user.is_admin
+	def sudoer
+		return @sudoer if @sudoer # Only set once
+
+		if session[:sudo_id]
+			if sudoee = User.find_by_id(session[:sudo_id]) and sudoee.can_sudo?(@cas_user)
+				@sudoer = @cas_user
+				@cas_user = sudoee
+				@cas_user.is_admin = false # You can't sudo into admin privileges
+			end
+		end
+	end
+	helper_method :sudoer
+
+	def true_user
+		sudoer || cas_user
+	end
+	helper_method :true_user
+
+	private
+
+	def authorize
+		if Rails.env.production?
+			@login_url = RubyCAS::Filter.login_url(self)
+		else
+			@login_url = '/login'
+		end
+
+		if cas_user.nil?
 			render 'shared/unauthorized'
 			return false
 		end
+
+		sudoer
+
 		return true
 	end
 

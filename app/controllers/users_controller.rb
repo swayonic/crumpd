@@ -1,12 +1,15 @@
 class UsersController < HomeController
 	if Rails.env.development?
 		# Used in the development login screen
-		skip_before_filter :cas_auth, :only => :autocomplete
+		skip_before_filter :authorize, :only => :autocomplete
 	end
 
   # GET /users/1
   def show
-    @user = User.find(params[:id])
+    if !@user = User.find_by_id(params[:id])
+			render 'shared/not_found'
+			return
+		end
 		if !@user.can_view?(@cas_user)
 			render 'shared/unauthorized'
 			return
@@ -15,7 +18,10 @@ class UsersController < HomeController
 
   # GET /users/1/edit
   def edit
-    @user = User.find(params[:id])
+    if !@user = User.find_by_id(params[:id])
+			render 'shared/not_found'
+			return
+		end
 		if !@user.can_edit?(@cas_user)
 			render 'shared/unauthorized'
 			return
@@ -24,7 +30,10 @@ class UsersController < HomeController
 
   # PUT /users/1
   def update
-    @user = User.find(params[:id])
+    if !@user = User.find_by_id(params[:id])
+			render 'shared/not_found'
+			return
+		end
 		if !@user.can_edit?(@cas_user)
 			render 'shared/unauthorized'
 			return
@@ -39,7 +48,10 @@ class UsersController < HomeController
 
   # DELETE /users/1
   def destroy
-    @user = User.find(params[:id])
+    if !@user = User.find_by_id(params[:id])
+			render 'shared/not_found'
+			return
+		end
 		if !@user.can_edit?(@cas_user)
 			render 'shared/unauthorized'
 			return
@@ -52,7 +64,10 @@ class UsersController < HomeController
 
 	# GET /users/1/confirm
 	def confirm
-		@user = User.find_by_id(params[:id])
+    if !@user = User.find_by_id(params[:id])
+			render 'shared/not_found'
+			return
+		end
 		@continue_path = params[:continue]
 	end
 
@@ -72,4 +87,46 @@ class UsersController < HomeController
 
 		render :json => results.to_json
 	end
+
+	# POST /users/1/toggle_admin
+	def toggle_admin
+		if !user = User.find_by_id(params[:id])
+			render 'shared/not_found'
+			return
+		end
+
+		if !@cas_user.is_admin?
+			render 'shared/unauthorized'
+			return
+		end
+
+		user.is_admin = !user.is_admin
+		user.save
+
+		redirect_to :user, :notice => 'User updated.'
+	end
+
+	# GET /users/1/sudo
+	def sudo
+		if !user = User.find_by_id(params[:id])
+			render 'shared/not_found'
+			return
+		end
+
+		if !user.can_sudo?(true_user)
+			render 'shared/unauthorized'
+			return
+		end
+
+		session[:sudo_id] = user.id
+
+		redirect_to user
+	end
+
+	# GET /users/unsudo
+	def unsudo
+		session[:sudo_id] = nil
+		redirect_to :back
+	end
+
 end

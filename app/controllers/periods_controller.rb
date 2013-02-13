@@ -41,7 +41,10 @@ class PeriodsController < HomeController
 
   # GET /periods/1
   def show
-    @period = Period.find(params[:id])
+    if !@period = Period.find_by_id(params[:id])
+			render 'shared/not_found'
+			return
+		end
 		if !@period.can_view?(@cas_user)
 			render 'shared/unauthorized'
 			return
@@ -61,7 +64,10 @@ class PeriodsController < HomeController
 
 	# GET /periods/1/fields
 	def fields
-		@period = Period.find(params[:id])
+		if !@period = Period.find_by_id(params[:id])
+			render 'shared/not_found'
+			return
+		end
 		if !@period.can_view?(@cas_user)
 			render 'shared/unauthorized'
 			return
@@ -71,7 +77,10 @@ class PeriodsController < HomeController
 
 	# POST /periods/1/update_fields
 	def update_fields
-		@period = Period.find(params[:id])
+		if !@period = Period.find_by_id(params[:id])
+			render 'shared/not_found'
+			return
+		end
 		if !@period.can_edit?(@cas_user)
 			render 'shared/unauthorized'
 			return
@@ -106,7 +115,10 @@ class PeriodsController < HomeController
 	
 	# GET /periods/1/benchmarks
 	def benchmarks
-		@period = Period.find(params[:id])
+		if !@period = Period.find_by_id(params[:id])
+			render 'shared/not_found'
+			return
+		end
 		if !@period.can_view?(@cas_user)
 			render 'shared/unauthorized'
 			return
@@ -116,7 +128,10 @@ class PeriodsController < HomeController
 
 	# POST /periods/1/update_benchmarks
 	def update_benchmarks
-		@period = Period.find(params[:id])
+		if !@period = Period.find_by_id(params[:id])
+			render 'shared/not_found'
+			return
+		end
 		if !@period.can_edit?(@cas_user)
 			render 'shared/unauthorized'
 			return
@@ -152,7 +167,10 @@ class PeriodsController < HomeController
 
 	# GET /periods/1/list
 	def list
-		@period = Period.find(params[:id])
+		if !@period = Period.find_by_id(params[:id])
+			render 'shared/not_found'
+			return
+		end
 		if !@period.can_view?(@cas_user)
 			render 'shared/unauthorized'
 			return
