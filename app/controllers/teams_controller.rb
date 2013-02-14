@@ -40,7 +40,7 @@ class TeamsController < HomeController
 			render 'shared/not_found'
 			return
 		end
-		if !@period.can_edit?(@cas_user)
+		if !@period.can_edit?(@cas_user) or @period.keep_updated?
 			render 'shared/unauthorized'
 			return
 		end
@@ -126,12 +126,18 @@ class TeamsController < HomeController
 			render 'shared/not_found'
 			return
 		end
-		if !@team.period.can_edit?(@cas_user)
+		if !@team.period.can_edit?(@cas_user) or @team.period.keep_updated?
 			render 'shared/unauthorized'
 			return
 		end
 
-    @team.destroy
+		if @team.assignments.count > 0
+			flash.alert = 'Cannot delete this team'
+		elsif	@team.destroy
+			flash.notice = 'Team deleted'
+		else
+			flash.alert = 'Failed to delete team'
+		end
 		
 		redirect_to @team.period
   end

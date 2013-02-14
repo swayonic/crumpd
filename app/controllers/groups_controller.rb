@@ -40,7 +40,7 @@ class GroupsController < HomeController
 			render 'shared/not_found'
 			return
 		end
-		if !@period.can_edit?(@cas_user)
+		if !@period.can_edit?(@cas_user) or @period.keep_updated?
 			render 'shared/unauthorized'
 			return
 		end
@@ -102,32 +102,22 @@ class GroupsController < HomeController
 			render 'shared/not_found'
 			return
 		end
-		if !@group.period.can_edit?(@cas_user)
+		if !@group.period.can_edit?(@cas_user) or @group.period.keep_updated?
 			render 'shared/unauthorized'
 			return
 		end
 
-    @group.destroy
+		if @group.assignments.count > 0
+			flash.alert = 'Cannot delete this group'
+		elsif @group.destroy
+			flash.notice = 'Group deleted'
+		else
+			flash.alert = 'Falied to delete group'
+		end
 		
-		redirect_to period_url(@group.period)
+		redirect_to @group.period
   end
 	
-	# DELETE /group_coaches/1
-	def destroy_coach
-		if !@coach = GroupCoach.find_by_id(params[:id])
-			render 'shared/not_found'
-			return
-		end
-		if !@coach.group.can_edit?(@cas_user)
-			render 'shared/unauthorized'
-			return
-		end
-
-		@coach.destroy
-
-		render :text => 'Group Coach destroyed.'
-	end
-
 	# GET /groups/1/list
 	def list
 		if !@group = Group.find_by_id(params[:id])
