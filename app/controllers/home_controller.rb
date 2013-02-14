@@ -57,6 +57,8 @@ class HomeController < ApplicationController
 		else # Development mode
 			@cas_user = User.find_by_id(session[:username]) if session[:username]
 		end
+
+		return @cas_user
 	end
 	helper_method :cas_user
 
@@ -70,6 +72,8 @@ class HomeController < ApplicationController
 				@cas_user.is_admin = false # You can't sudo into admin privileges
 			end
 		end
+
+		return @sudoer
 	end
 	helper_method :sudoer
 
