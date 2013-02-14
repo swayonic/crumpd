@@ -40,7 +40,7 @@
 			<% for t in @period.teams.sort_by{|t| t.display_name} -%>
 				<li>
 					<%= link_to t.display_name, t %>
-					(<%= pluralize t.assignments.count, 'member' %><% if t.assignments.count == 0 -%>
+					(<%= pluralize t.assignments.count, 'member' %><% if t.assignments.count == 0 and @period.can_edit?(@cas_user) and !@period.keep_updated? -%>
 					<%= link_to image_tag('icons/silk/delete.png'), t, method: :delete, data: { confirm: 'Are you sure you want to delete this team?' } %><% end -%>)
 				</li>
 			<% end -%>
@@ -63,7 +63,7 @@
 			<% for g in @period.groups.sort_by{|g| g.display_name} -%>
 				<li>
 					<%= link_to g.display_name, g %>,
-					(<%= pluralize g.assignments.count, 'member' %><% if g.assignments.count == 0 -%>
+					(<%= pluralize g.assignments.count, 'member' %><% if g.assignments.count == 0 and @period.can_edit?(@cas_user) and !@period.keep_updated? -%>
 					<%= link_to image_tag('icons/silk/delete.png'), g, method: :delete, data: { confirm: 'Are you sure you want to delete this group?' } %><% end -%>)
 				</li>
 			<% end -%>

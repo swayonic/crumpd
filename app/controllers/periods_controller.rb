@@ -62,6 +62,28 @@ class PeriodsController < HomeController
 		member_breadcrumbs
   end
 
+	# GET /periods/1/toggle_updated
+	def toggle_updated
+		if !@cas_user.is_admin?
+			render 'shared/unauthorized'
+			return
+		end
+		if !@period = Period.find_by_id(params[:id])
+			render 'shared/not_found'
+			return
+		end
+		
+		@period.keep_updated = !@period.keep_updated
+
+		if @period.save
+			flash.notice = 'Period updated'
+		else
+			flash.notice = 'Failed to update period'
+		end
+
+		redirect_to :action => :index
+	end
+
 	# GET /periods/1/fields
 	def fields
 		if !@period = Period.find_by_id(params[:id])

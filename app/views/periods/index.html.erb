@@ -1,33 +1,24 @@
 <%= page_header 'Coaching Periods' %>
 <%= flash_header %>
 
-<div class='grid_5 prefix_1'>
-	<ul>
-		<% for p in @periods -%>
-			<li>
-				<%= link_to p.name, p %>
-				<% if !p.keep_updated -%>
-					<i>(Not Kept Up-to-date)</i>
-				<% end -%>
-			</li>
-		<% end -%>
-	</ul>
-</div>
-<div class='grid_5 suffix_1'>
+<div class='grid_4 prefix_1'>
 	<h2>Create new Period</h2>
 	<%= form_for @new_period do |f| -%>
 		<table style='description'>
 			<tr>
 				<td><%= f.label :region %></td>
-				<td><%= f.select :region_id, @regions.map{|r| [r.display_name, r.id]} %></td>
+				<td><%= f.select :region_id, @regions.sort_by{|r| r.display_name}.map{|r| [r.display_name, r.id]} %></td>
 			</tr>
 			<tr>
 				<td><%= f.label :year %></td>
 				<td><%= f.select :year, @years %></td>
 			</tr>
 			<tr>
-				<td>Updated</td>
-				<td><%= f.check_box :keep_updated, :title => 'If checked, SiTrack will be periodically pinged to keep the data up-to-date' %></td>
+				<td>
+					Updated
+					<%= help_tip 'If checked, SiTrack will be periodically pinged to keep the data up-to-date' %>
+				</td>
+				<td><%= f.check_box :keep_updated %></td>
 			</tr>
 			<tr>
 				<td colspan=2>
@@ -36,6 +27,20 @@
 			</tr>
 		</table>
 	<% end -%>
+</div>
+<div class='grid_6 suffix_1'>
+	<ul>
+		<% for p in @periods -%>
+			<li>
+				<%= link_to p.name, p %>
+				<% if p.keep_updated -%>
+					(Updated <%= link_to image_tag('icons/silk/accept.png'), toggle_updated_period_url(p), :title => 'Toggle' %>)
+				<% else %>
+					(Not updated <%= link_to image_tag('icons/silk/exclamation.png'), toggle_updated_period_url(p), :title => 'Toggle' %>)
+				<% end -%>
+			</li>
+		<% end -%>
+	</ul>
 </div>
 
 <div class='clear'></div>

@@ -1,6 +1,10 @@
 Mpd::Application.routes.draw do
 
   resources :periods, :shallow => true do
+		member do
+			get 'toggle_updated'
+		end
+
 		resources :teams, :except => [:index, :new], :shallow => true do
 			#resources :leaders, :as => 'team_leaders', :only => [:show, :create, :destroy]
 			member do

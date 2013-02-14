@@ -6,9 +6,9 @@
 	<% if @assignment.can_edit_pledges?(@cas_user) -%>
 		<td style='text-align:center;'>
 			<% if p.is_in_hand -%>
-				<%= link_to image_tag('icons/silk/accept.png'), toggle_pledge_url(p), :method => :put %>
+				<%= link_to image_tag('icons/silk/tick.png'), toggle_pledge_url(p), :method => :put, :title => 'Toggle' %>
 			<% else -%>
-				<%= link_to image_tag('icons/silk/error.png'), toggle_pledge_url(p), :method => :put %>
+				<%= link_to image_tag('icons/silk/cross.png'), toggle_pledge_url(p), :method => :put, :title => 'Toggle' %>
 			<% end -%>
 		</td>
 		<td style='text-align:center;'>

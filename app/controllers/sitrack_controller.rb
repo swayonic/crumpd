@@ -1,5 +1,5 @@
 class SitrackController < HomeController
-	skip_before_filter :cas_auth
+	skip_before_filter :authorize
 	
 	# POST /sitrack/dump
 	def dump
