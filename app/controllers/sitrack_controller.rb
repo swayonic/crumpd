@@ -22,7 +22,7 @@ class SitrackController < HomeController
 
 	private
 
-	# list is an array of account numbers
+	# list is an array of account numbers or guid's
 	def user_query(list)
 		return nil if !list
 
@@ -41,7 +41,8 @@ class SitrackController < HomeController
 				'FROM ministry_person AS p ' +
 				'JOIN simplesecuritymanager_user AS ssm ON p.fk_ssmUserID = ssm.userID ' +
 				'LEFT JOIN ministry_staff AS s ON p.personID = s.person_id ' +
-				"WHERE p.accountNo IN (#{list.map{|u| "'#{u}'"}.join(',')})"
+				"WHERE p.accountNo IN (#{list.map{|u| "'#{u}'"}.join(',')}) " +
+				"OR ssm.globallyUniqueID IN (#{list.map{|u| "'#{u}'"}.join(',')})"
 				)
 		end
 	end

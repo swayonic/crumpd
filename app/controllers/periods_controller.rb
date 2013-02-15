@@ -6,10 +6,10 @@ class PeriodsController < HomeController
 			render 'shared/unauthorized'
 			return
 		end
-		@periods = Period.all.sort_by{|p| [p.year, p.region.name]}
-		@new_period = Period.new
+		@periods = Period.all.sort_by{|p| [-p.year, p.region.name]}
+		@new_period = Period.new(:year => Date.today.year)
 		@regions = Region.all
-		@years = 2012..Date.today.year
+		@years = 2000..Date.today.year + 1
 	end
 
 	# POST /periods
@@ -61,6 +61,26 @@ class PeriodsController < HomeController
 
 		member_breadcrumbs
   end
+
+	# DELETE /periods/1
+	def destroy
+		if !@cas_user.is_admin?
+			render 'shared/unauthorized'
+			return
+		end
+		if !@period = Period.find_by_id(params[:id])
+			render 'shared/not_found'
+			return
+		end
+
+		if @period.destroy
+			flash.notice = 'Period deleted'
+		else
+			flash.alert = 'Period not deleted'
+		end
+
+		redirect_to :action => :index
+	end
 
 	# GET /periods/1/toggle_updated
 	def toggle_updated

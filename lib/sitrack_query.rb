@@ -34,7 +34,7 @@ module SitrackQuery
 			for g in period.groups
 				users.concat g.coaches
 			end
-			users = users.map{|u| u.account_number}.uniq
+			users = users.map{|u| u.account_number || u.guid}.uniq
 
 			periods = Array.new
 			periods << period
@@ -50,22 +50,24 @@ module SitrackQuery
 			users = Array.new
 
 			for u in User.admin
-				users << u.account_number
+				users << u
 			end
 
 			for p in Period.updated
 				periods << p
 				for u in p.admins
-					users << u.account_number
+					users << u
 				end
 				for g in p.groups
 					for u in g.coaches
-						users << u.account_number
+						users << u
 					end
 				end
 			end
 
-			result = make_request(periods, users.uniq)
+			users = users.map{|u| u.account_number || u.guid}.uniq
+
+			result = make_request(periods, users)
 
 			process_result(result)
 		end
