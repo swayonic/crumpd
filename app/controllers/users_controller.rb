@@ -78,8 +78,12 @@ class UsersController < HomeController
 		# TODO
 		# Do I need to filter?
 		# This is slow
-		for user in User.all
-			string = "#{user.display_name} (#{user.account_number})"
+		for user in User.has_guid
+			if user.account_number and !user.account_number.blank?
+				string = "#{user.display_name} (#{user.account_number})"
+			else
+				string = user.display_name
+			end
 			if string.downcase =~ /#{params[:term].downcase}/
 				results << {:id => user.id, :label => string, :value => user.display_name}
 			end

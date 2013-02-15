@@ -15,6 +15,7 @@ module SitrackQuery
 				line = result[0]
 				return {
 					:found => true,
+					:guid => line['globallyUniqueID'],
 					:account_number => line['accountNo'],
 					:first_name => line['firstName'],
 					:preferred_name => line['preferredName'],
@@ -129,8 +130,14 @@ module SitrackQuery
 			return nil if json.nil?
 			return nil if !account_number = User.cleanup_account_number(json['accountNo'])
 
-			if !user = User.find_by_account_number(account_number)
-				user = User.new(:account_number => account_number)
+			if user = User.find_by_guid(account_number)
+				user.account_number = account_number
+			elsif user = User.find_by_account_number(account_number)
+				user.guid = json['globallyUniqueID'] || user.guid
+			else
+				user = User.new
+				user.guid = json['globallyUniqueID'] || user.guid
+				user.account_number = account_number
 			end
 
 			user.first_name = json['firstName'] || user.first_name

@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
-  attr_accessible :account_number, :first_name, :last_name, :preferred_name, :phone, :email, :is_admin
-	
+  attr_accessible :guid, :account_number, :first_name, :last_name, :preferred_name, :phone, :email, :is_admin
+
+	scope :has_guid, where("guid IS NOT NULL")
 	scope :admin, where(:is_admin => true)
 
 	has_many :assignments

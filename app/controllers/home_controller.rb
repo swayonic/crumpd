@@ -15,7 +15,7 @@ class HomeController < ApplicationController
 
 	def do_login
 		if newuser = User.find_by_id(params[:login][:id])
-			session[:username] = newuser.id
+			session[:user_id] = newuser.id
 			redirect_to :action => :index
 		else
 			flash.now[:alert] = 'No user found'
@@ -27,7 +27,7 @@ class HomeController < ApplicationController
 		if Rails.env.production?
 			RubyCAS::Filter.logout(self)
 		else
-			session[:username] = nil
+			session[:user_id] = nil
 			redirect_to :action => :index
 		end
 	end
@@ -40,22 +40,34 @@ class HomeController < ApplicationController
 		return @cas_user if @cas_user # Only set once
 
 		if Rails.env.production?
-			if session[:cas_extra_attributes] and session[:cas_extra_attributes][:emplid]
-				account_number = User.cleanup_account_number(session[:cas_extra_attributes][:emplid])
-				if account_number and !@cas_user = User.find_by_account_number(account_number)
-					# Create a user with the given CAS attributes
-					@cas_user = User.new(
-						:first_name => session[:cas_extra_attributes][:firstName],
-						:last_name => session[:cas_extra_attributes][:lastName],
-						:email => session[:cas_extra_attributes][:email],
-						:account_number => account_number)
-					# Add this person to the database
-					@cas_user.save
-					logger.info "Added user ##{@cas_user.id} from login attributes: #{session[:cas_extra_attributes]}"
+			if session[:cas_extra_attributes] and guid = session[:cas_extra_attributes][:ssoGuid]
+				if !@cas_user = User.find_by_guid(guid)
+					# Check to see if we've been given a valid account number
+					account_number = User.cleanup_account_number(session[:cas_extra_attributes][:designation]) || User.cleanup_account_number(session[:cas_extra_attributes][:emplid]) || nil
+
+					if account_number and @cas_user = User.find_by_account_number(account_number)
+						# Associate guid with this user
+						@cas_user.guid = guid
+						@cas_user.save
+						
+						logger.info "Trusting user and associating guid #{guid} with user ##{@cas_user.id}"
+					else
+						# Create a user with the given CAS attributes
+						@cas_user = User.new(
+							:guid => guid,
+							:account_number => account_number, # may be nil
+							:first_name => session[:cas_extra_attributes][:firstName],
+							:last_name => session[:cas_extra_attributes][:lastName],
+							:email => session[:cas_extra_attributes][:email]
+							)
+						# Add this person to the database
+						@cas_user.save
+						logger.info "Added user ##{@cas_user.id} from login attributes: #{session[:cas_extra_attributes]}"
+					end
 				end
 			end
 		else # Development mode
-			@cas_user = User.find_by_id(session[:username]) if session[:username]
+			@cas_user = User.find_by_id(session[:user_id]) if session[:user_id]
 		end
 
 		return @cas_user
