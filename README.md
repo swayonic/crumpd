@@ -38,6 +38,8 @@ CruMpd
 
 2.	Release notes
 
-Began development September 2012
+	Began development September 2012
 
-Deployed to Heroku 11/18/2012
+	Deployed to Heroku 11/18/2012
+
+	Cloned to GitHub 02/24/2013
