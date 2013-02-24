@@ -1,25 +1,25 @@
 development:
   adapter: postgresql
   encoding: unicode
-  database: crumpd
+  database: crumpd_development
   pool: 5
-  username: postgres
+  username: rails
   password:
 
 test:
   adapter: postgresql
   encoding: unicode
-  database: mpd_test
+  database: crumpd_test
   pool: 5
-  username: postgres
+  username: rails
   password:
 
 production:
   adapter: postgresql
   encoding: unicode
-  database: mpd_production
+  database: crumpd_production
   pool: 5
-  username: postgres
+  username: rails
   password:
 
 #development:
