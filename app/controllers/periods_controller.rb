@@ -104,6 +104,22 @@ class PeriodsController < HomeController
 		redirect_to :action => :index
 	end
 
+	# POST /periods/1/do_update
+	def do_update
+		if !@cas_user.is_admin?
+			render 'shared/unauthorized'
+			return
+		end
+		if !@period = Period.find_by_id(params[:id])
+			render 'shared/not_found'
+			return
+		end
+
+		SitrackQuery::Query.find_period(@period)
+
+		redirect_to :action => :index
+	end
+
 	# GET /periods/1/fields
 	def fields
 		if !@period = Period.find_by_id(params[:id])

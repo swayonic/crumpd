@@ -3,7 +3,7 @@ Mpd::Application.routes.draw do
   resources :periods, :shallow => true do
 		member do
 			get 'toggle_updated'
-			get 'do_update'
+			post 'do_update'
 		end
 
 		resources :teams, :except => [:index, :new], :shallow => true do

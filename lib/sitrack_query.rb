@@ -78,7 +78,7 @@ module SitrackQuery
 			logger = Rails.logger
 
 			if Rails.env.development?
-				uri = URI('http://localhost/sitrack/dump')
+				uri = URI('http://localhost:3000/sitrack/dump')
 			else
 				puts 'Not supported in production yet.'
 				return nil

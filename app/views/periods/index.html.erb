@@ -42,7 +42,7 @@
 					<td>
 						<% if p.keep_updated -%>
 							<%= link_to image_tag('icons/silk/accept.png'), toggle_updated_period_url(p), :title => 'Turn Off' %>
-							<%= link_to 'Update', do_update_period_url(p) %>
+							<%= link_to 'Update', do_update_period_url(p), :method => :post %>
 						<% else %>
 							<%= link_to image_tag('icons/silk/exclamation.png'), toggle_updated_period_url(p), :title => 'Turn On' %>
 						<% end -%>

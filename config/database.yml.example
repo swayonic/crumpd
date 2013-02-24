@@ -1,53 +1,39 @@
-development:
+### Local DB
+
+local: &local
   adapter: postgresql
   encoding: unicode
-  database: crumpd_development
   pool: 5
-  username: rails
+  username: vagrant
   password:
+
+development:
+  <<: *local
+  database: crumpd_development
 
 test:
-  adapter: postgresql
-  encoding: unicode
+  <<: *local
   database: crumpd_test
-  pool: 5
-  username: rails
-  password:
 
 production:
-  adapter: postgresql
-  encoding: unicode
+  <<: *local
   database: crumpd_production
-  pool: 5
-  username: rails
-  password:
 
-#development:
-#  adapter: mysql2
-#  encoding: utf8
-#  reconnect: false
-#  database: mpd_development
-#  pool: 5
-#  username: root
-#  password:
-#  socket: /var/run/mysqld/mysqld.sock
+### Sitrack DB
 
-#test:
-#  adapter: mysql2
-#  encoding: utf8
-#  reconnect: false
-#  database: mpd_test
-#  pool: 5
-#  username: root
-#  password:
-#  socket: /var/run/mysqld/mysqld.sock
+sitrack: &sitrack
+  adapter: mysql2
+  database: prod 
 
-#production:
-#  adapter: mysql2
-#  encoding: utf8
-#  reconnect: false
-#  database: mpd_production
-#  pool: 5
-#  username: root
-#  password:
-#  socket: /var/run/mysqld/mysqld.sock
+sitrack_development:
+  <<: *sitrack
+  host: 108.166.64.232
+  username: ???
+  password: ???
+
+sitrack_test:
+  <<: *sitrack
+
+sitrack_production:
+  <<: *sitrack
+
