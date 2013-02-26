@@ -29,7 +29,10 @@ class PeriodsController < HomeController
 
 				# Download data
 				if @period.keep_updated
-					SitrackQuery::Query.find_period(@period)
+					if Sitrack.update_period(@period)
+						@period.updated_at = DateTime.now
+						@period.save
+					end
 				end
 			else
 				flash.alert = 'An error occurred while saving'
@@ -115,7 +118,10 @@ class PeriodsController < HomeController
 			return
 		end
 
-		SitrackQuery::Query.find_period(@period)
+		if Sitrack.update_period(@period)
+			@period.updated_at = DateTime.now
+			@period.save
+		end
 
 		redirect_to :action => :index
 	end

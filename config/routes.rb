@@ -52,13 +52,6 @@ Mpd::Application.routes.draw do
 		get :unsudo, :on => :collection
 	end
 
-	# These functions model the sitrack functions in development mode
-	if Rails.env.development?
-		resources :sitrack, :only => [] do
-			post :dump, :on => :collection
-		end
-	end
-  
 	match 'login' => 'home#login', :via => :get
 	match 'login' => 'home#do_login', :via => :post
 	match 'logout' => 'home#logout'
