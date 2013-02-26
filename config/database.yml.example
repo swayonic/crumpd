@@ -1,5 +1,4 @@
-### Local DB
-
+# Development only
 local: &local
   adapter: postgresql
   encoding: unicode
@@ -7,10 +6,18 @@ local: &local
   username: vagrant
   password:
 
+# Production
+sitrack: &sitrack
+  adapter: mysql2
+  database: prod 
+
+### Main DB
+
 development:
   <<: *local
   database: crumpd_development
 
+# TODO: Change these when moving to Sitrack site
 test:
   <<: *local
   database: crumpd_test
@@ -20,10 +27,6 @@ production:
   database: crumpd_production
 
 ### Sitrack DB
-
-sitrack: &sitrack
-  adapter: mysql2
-  database: prod 
 
 sitrack_development:
   <<: *sitrack

@@ -67,5 +67,8 @@ module Mpd
 
 		# CAS railtie
 		config.rubycas.cas_base_url = "https://signin.ccci.org/cas/"
+
+		# For integration into 'prod' database
+		config.active_record.table_name_prefix = 'crumpd_'
   end
 end

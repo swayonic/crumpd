@@ -55,10 +55,7 @@
 		<ul>
 			<% for a in @team.assignments.sort_by{|a| a.user.sort_name} -%>
 				<li>
-					<%= link_to_if a.user.can_view?(@cas_user), a.user.display_name, a.user %>
-					<% if a.can_view?(@cas_user) -%>
-						| <i><%= link_to 'Assignment', a %></i>
-					<% end -%>
+					<%= link_to_if a.can_view?(@cas_user), a.user.display_name, a %>
 					<% if @team.can_edit?(@cas_user) and a.can_edit?(@cas_user) -%>
 						<%= link_to image_tag('icons/silk/delete.png'), url_for(:controller => :assignments, :action => :destroy, :id => a.id, :delete => 'team'), method: :delete, data: { confirm: 'Are you sure you want to remove this team member?' } %>
 					<% end -%>
