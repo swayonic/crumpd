@@ -5,7 +5,7 @@ class Sitrack < ActiveRecord::Base
 	establish_connection "sitrack_#{Rails.env}"
 
 	# Used to find a user by their account number
-	# Returns a User or nil
+	# Returns an unsaved User or nil
 	def self.find_user(account_number)
 		result = Sitrack.find_by_sql(
 			'SELECT p.accountNo, p.firstName, p.lastName, p.preferredName, ssm.globallyUniqueID, s.email, s.mobilePhone, s.homePhone, s.otherPhone ' +
@@ -16,10 +16,20 @@ class Sitrack < ActiveRecord::Base
 			)
 
 		if result and result.count == 1
-			return build_user(User.new, result[0])
+			r = result[0]
+			user = User.find_by_guid(r[:globallyUniqueID]) || User.find_by_account_number(r[:accountNo]) || User.new
+			user.guid = r[:globallyUniqueID]
+			user.account_number = r[:accountNo]
+			user.first_name = r[:firstName]
+			user.preferred_name = r[:preferredName]
+			user.last_name = r[:lastName]
+			user.email = r[:email]
+			user.phone = r[:mobilePhone] || r[:homePhone] || r[:otherPhone]
+	
+			return user
+		else
+			return nil
 		end
-
-		return nil
 	end
 
 	def self.update_period(p)
@@ -85,7 +95,7 @@ class Sitrack < ActiveRecord::Base
 			end
 		end
 
-		return false if users.count == 0 and account_numbers.count == 0
+		return false if guids.count == 0 and account_numbers.count == 0
 
 		query = 'SELECT p.accountNo, p.firstName, p.lastName, p.preferredName, ssm.globallyUniqueID, s.email, s.mobilePhone, s.homePhone, s.otherPhone ' +
 			'FROM ministry_person AS p ' +
@@ -93,13 +103,13 @@ class Sitrack < ActiveRecord::Base
 			'LEFT JOIN ministry_staff AS s ON p.personID = s.person_id ' +
 			'WHERE '
 		
-		if users.count > 0
+		if account_numbers.count > 0
 			query = query + "p.accountNo IN (#{account_numbers.join(',')})"
 		end
-		if users.count > 0 and account_numbers.count > 0
+		if guids.count > 0 and account_numbers.count > 0
 			query = query + ' OR '
 		end
-		if account_numbers.count > 0
+		if guids.count > 0
 			query = query + "ssm.globallyUniqueID IN (#{guids.join(',')})"
 		end
 		
@@ -107,8 +117,7 @@ class Sitrack < ActiveRecord::Base
 
 		for line in result
 			if u = User.find_by_guid(line[:globallyUniqueID]) or u = find_by_account_number(line[:accountNo])
-				u = build_user(u, line)
-				if !u.save
+				if !process_user(line)
 					logger.info "Failed to update user with params: #{line.inspect}"
 				end
 			end
@@ -146,9 +155,7 @@ class Sitrack < ActiveRecord::Base
 		teams = Hash.new
 
 		for line in result
-			if user = User.find_by_guid(line[:globallyUniqueID]) or user = User.find_by_account_number(line[:accountNo])
-				user = build_user(user, line)
-				user.save
+			if user = process_user(line)
 				begin
 					# Create or update assignment
 					assn = Assignment.find_by_period_id_and_user_id(p.id, user.id) || Assignment.new(:period_id => p.id, :user_id => user.id)
@@ -243,8 +250,9 @@ class Sitrack < ActiveRecord::Base
 		return true
 	end
 
-	# Builds a User from a query result
-	def self.build_user(user, params)
+	# Creates or updates a User from a query result
+	def self.process_user(params)
+		user = User.find_by_guid(params[:globallyUniqueID]) || User.find_by_account_number(params[:accountNo]) || User.new
 		user.guid = params[:globallyUniqueID]
 		user.account_number = params[:accountNo]
 		user.first_name = params[:firstName]
@@ -253,7 +261,7 @@ class Sitrack < ActiveRecord::Base
 		user.email = params[:email]
 		user.phone = params[:mobilePhone] || params[:homePhone] || params[:otherPhone]
 
-		return user
+		return user.save ? user : nil
 	end
 
 		# Take an array of values and return the best one

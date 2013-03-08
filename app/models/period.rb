@@ -1,5 +1,5 @@
 class Period < ActiveRecord::Base
-  attr_accessible :region_id, :year, :keep_updated, :updated_at
+  attr_accessible :region_id, :year, :keep_updated, :last_updated
 	
 	scope :updated, where(:keep_updated => true)
 

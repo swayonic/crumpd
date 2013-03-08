@@ -30,7 +30,7 @@ class PeriodsController < HomeController
 				# Download data
 				if @period.keep_updated
 					if Sitrack.update_period(@period)
-						@period.updated_at = DateTime.now
+						@period.last_updated = DateTime.now
 						@period.save
 					end
 				end
@@ -119,11 +119,11 @@ class PeriodsController < HomeController
 		end
 
 		if Sitrack.update_period(@period)
-			@period.updated_at = DateTime.now
+			@period.last_updated = DateTime.now
 			@period.save
 		end
 
-		redirect_to :action => :index
+		redirect_to :back
 	end
 
 	# GET /periods/1/fields

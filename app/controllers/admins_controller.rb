@@ -6,7 +6,7 @@ class AdminsController < HomeController
 			render 'shared/not_found'
 			return
 		end
-		if !@period.can_edit_admins?(@cas_user)
+		if !@period.can_edit?(@cas_user)
 			render 'shared/unauthorized'
 			return
 		end
@@ -85,7 +85,7 @@ class AdminsController < HomeController
 			render 'shared/not_found'
 			return
 		end
-		if !@admin.period.can_edit_admins?(@cas_user)
+		if !@admin.period.can_edit?(@cas_user)
 			render 'shared/unauthorized'
 			return
 		end

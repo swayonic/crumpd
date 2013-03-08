@@ -2,10 +2,30 @@
 <%= flash_header %>
 
 <div class="grid_4">
-	<%= button_to 'Show all people', list_period_url(@period), :method => :get %>
-	<%= button_to 'Edit report fields', fields_period_url(@period), :method => :get %>
-	<%= button_to 'Edit benchmarks', benchmarks_period_url(@period), :method => :get %>
+	<h2 width='100%' align='center'>Actions</h2>
+	<ul>
+		<li>
+			<%= link_to 'Show all people', list_period_url(@period) %>
+			(<%= @period.assignments.count %>)
+		</li>
+		<li>
+			<%= link_to 'Edit report fields', fields_period_url(@period) %>
+			(<%= @period.report_fields.count %>)
+		</li>
+		<li>
+			<%= link_to 'Edit benchmarks', benchmarks_period_url(@period) %>
+			(<%= @period.bmarks.count %>)
+		</li>
+		<% if @period.keep_updated? -%>
+			<li>
+				<%= link_to 'Manually Update', do_update_period_url(@period), :method => :post %>
+				(Last Updated: <%= @period.last_updated ? @period.last_updated.strftime('%e-%m %H:%M:%S') : raw('<i>Never</i>') %>)
+			</li>
+		<% end -%>
+	</ul>
+	
 	<br>
+
 	<h2 width="100%" align="center">Administrators</h2>
 	<% if @period.admins.nil? or @period.admins.count == 0 -%>
 		<i>None</i>
