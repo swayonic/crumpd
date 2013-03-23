@@ -12,6 +12,8 @@ gem 'rails3-jquery-autocomplete', '1.0.10'
 #gem 'rubycas-client-rails', '0.1.1' #This version doesn't exist on RubyGems.com
 gem 'rubycas-client', '~> 2.3.9.rc1'
 
+# For Errbit
+gem 'airbrake'
 
 # Gems used only for assets and not required
 # in production environments by default.
