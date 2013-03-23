@@ -15,3 +15,8 @@
 /tmp
 database.yml
 vendor/ruby
+
+# Vagrant
+/Vagrantfile
+/.vagrant
+/puppet
