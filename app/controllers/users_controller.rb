@@ -52,14 +52,14 @@ class UsersController < HomeController
 			render 'shared/not_found'
 			return
 		end
-		if !@user.can_edit?(@cas_user)
+		if !@cas_user.is_admin?
 			render 'shared/unauthorized'
 			return
 		end
 
     @user.destroy
 
-		redirect_to users_url # DNE
+		redirect_to :controller => :home, :action => :index
   end
 
 	# GET /users/1/confirm

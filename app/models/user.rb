@@ -4,10 +4,10 @@ class User < ActiveRecord::Base
 	scope :has_guid, where("guid IS NOT NULL")
 	scope :admin, where(:is_admin => true)
 
-	has_many :assignments
-	has_many :group_coaches
-	has_many :team_leaders
-	has_many :period_admins
+	has_many :assignments, :dependent => :destroy
+	has_many :group_coaches, :dependent => :destroy
+	has_many :team_leaders, :dependent => :destroy
+	has_many :period_admins, :dependent => :destroy
 
 	has_many :groups_as_member, :through => :assignments, :source => :group, :order => "name"
 	has_many :groups_as_coach, :through => :group_coaches, :source => :group, :order => "name"
@@ -15,8 +15,10 @@ class User < ActiveRecord::Base
 	has_many :teams_as_leader, :through => :team_leaders, :source => :team, :order => "name"
 	has_many :periods_as_admin, :through => :period_admins, :source => :period
 
+  # TODO: Validate that text fields are blank or nil
+
 	validates :email, :format => { 
-		:with => /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/,
+		:with => /^[_A-Za-z0-9-]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,4})$/,
 		:allow_nil => true,
 		:allow_blank => true,
 		:message => "Invalid format"

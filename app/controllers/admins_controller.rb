@@ -20,19 +20,17 @@ class AdminsController < HomeController
 		# Adding a new user
 		if params[:add_admin][:new] == '1'
 			if account_number = User.cleanup_account_number(params[:add_admin][:account_number])
-				if !user = User.find_by_account_number(account_number)
-					if result = SitrackQuery::Query.find_user(account_number) and result.delete('found')
-						user = User.new(result)
-
-						if user.save
+				if !old_user = User.find_by_account_number(account_number)
+					if new_user = Sitrack.find_user(account_number)
+						if new_user.save
 							redirect_to(
 								:controller => :users,
 								:action => :confirm,
-								:id => user.id,
+								:id => new_user.id,
 								:continue => url_for(
 									:action => :create,
 									'add_admin[new]' => '0',
-									'add_admin[user_id]' => user.id
+									'add_admin[user_id]' => new_user.id
 									)
 								)
 							return
@@ -43,7 +41,7 @@ class AdminsController < HomeController
 						flash.alert = "No user found for account number: #{params[:add_admin][:account_number]}"
 					end
 				else
-					user_id = user.id
+					user_id = old_user.id
 					# Fall through to existing user
 				end
 			else
