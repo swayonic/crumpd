@@ -32,6 +32,17 @@ class HomeController < ApplicationController
 		end
 	end
 
+	# Manually perform system-wide data update
+	def full_update
+		if !@cas_user.is_admin?
+			render 'shared/unauthorized'
+			return
+		end
+
+		Sitrack.update_all
+		redirect_to :back
+	end
+
 	def not_found
 		render 'shared/not_found'
 	end

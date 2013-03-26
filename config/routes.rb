@@ -55,7 +55,8 @@ Mpd::Application.routes.draw do
 	match 'login' => 'home#login', :via => :get
 	match 'login' => 'home#do_login', :via => :post
 	match 'logout' => 'home#logout'
-	match 'datadump' => 'home#datadump'
+	match 'full_update' => 'home#full_update'
+
 	root :to => 'home#index'
 
 	# Catch-all
