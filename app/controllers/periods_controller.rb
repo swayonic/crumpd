@@ -109,12 +109,12 @@ class PeriodsController < HomeController
 
 	# POST /periods/1/do_update
 	def do_update
-		if !@cas_user.is_admin?
-			render 'shared/unauthorized'
-			return
-		end
 		if !@period = Period.find_by_id(params[:id])
 			render 'shared/not_found'
+			return
+		end
+		if !@period.can_edit?(@cas_user)
+			render 'shared/unauthorized'
 			return
 		end
 
