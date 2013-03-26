@@ -43,7 +43,7 @@
 		<% end -%>
 	</table>
 	<% if @assignment.can_edit?(@cas_user) -%>
-		<%= link_to 'Edit', edit_assignment_url(@assignment) %>
+		<%= link_to 'Edit', edit_assignment_path(@assignment) %>
 	<% end -%>
 	
 	<br>
@@ -69,7 +69,7 @@
 	<% if @assignment.can_view_pledges?(@cas_user) and @assignment.goals.count > 0 -%>
 		<!-- Pledges -->
 		<h3>Pledges</h3>
-		<%= link_to 'View Pledges', assignment_pledges_url(@assignment) %>
+		<%= link_to 'View Pledges', assignment_pledges_path(@assignment) %>
 		<br>
 		<br>
 		<br>

@@ -40,7 +40,7 @@
 	  <% if @user.can_sudo?(true_user) -%>
       <tr>
         <td><b>Sudo</b> <%= help_tip 'Assume the permissions of this person' %></td>
-        <td><%= button_to 'Assume', sudo_user_url(@user), :method => :get %></td>
+        <td><%= button_to 'Assume', sudo_user_path(@user), :method => :get %></td>
       </tr>
   	<% end -%>
     <% if @cas_user.is_admin? -%>
@@ -48,9 +48,9 @@
         <td><b>Admin</b> <%= help_tip 'Grants this user Admin priveleges' %></td>
 				<td>
 					<% if @user.is_admin? %>
-						<%= button_to 'Revoke', toggle_admin_user_url(@user) %>
+						<%= button_to 'Revoke', toggle_admin_user_path(@user) %>
 					<% else -%>
-						<%= button_to 'Grant', toggle_admin_user_url(@user) %>
+						<%= button_to 'Grant', toggle_admin_user_path(@user) %>
 					<% end -%>
 				</td>
 			</tr>

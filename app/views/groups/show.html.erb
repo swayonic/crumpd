@@ -18,7 +18,7 @@
 		</tr>
 	</table>
 	<% if @group.can_edit?(@cas_user) -%>
-		<%= link_to 'Edit', edit_group_url(@group) %>
+		<%= link_to 'Edit', edit_group_path(@group) %>
 	<% end -%>
 
 	<br>
@@ -55,7 +55,7 @@
 		<i>None</i>
 	<% else -%>
 		<% if @group.can_view_list?(@cas_user) -%>
-			<%= button_to 'Detailed listing', list_group_url(@group), :method => :get %>
+			<%= button_to 'Detailed listing', list_group_path(@group), :method => :get %>
 			<br>
 		<% end -%>
 		<ul>

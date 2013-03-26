@@ -9,7 +9,7 @@
 		<li>You cannot edit the 'Type' of an existing field if a report has already been created for this period, since this could lead to data corruption. If you must make a change, you can delete the field and add it again, but you will lose all information that had been entered for that field.</li>
 		</i>
 	</ul>
-	<%= form_for :fields, :url => update_fields_period_url(@period) do |f| %>
+	<%= form_for :fields, :url => update_fields_period_path(@period) do |f| %>
 		<table id='fieldsTable' class='description'>
 		<thead>
 			<tr>

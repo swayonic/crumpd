@@ -2,10 +2,10 @@
 	<%= print_flashes %>
 	<table class='description'>
 		<tr>
-			<td><%= f.label :user %></td>
+      <td><%= f.label :user %> <%= help_tip 'Autocomplete: Name (account number)' %></td>
 			<td>
 				<%= f.hidden_field :id %>
-				<%= autocomplete_field 'auto', 'name', autocomplete_users_url, :id_element => '#login_id', :size => 12 %>
+				<%= autocomplete_field 'auto', 'name', autocomplete_users_path, :id_element => '#login_id', :size => 12 %>
 			</td>
 		</tr>
 	</table>

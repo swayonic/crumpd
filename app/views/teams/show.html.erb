@@ -38,7 +38,7 @@
 		<% end -%>
 	</table>
 	<% if @team.can_edit?(@cas_user) -%>
-		<%= link_to 'Edit', edit_team_url(@team) %>
+		<%= link_to 'Edit', edit_team_path(@team) %>
 	<% end -%>
 </div>
 
@@ -48,7 +48,7 @@
 		<i>None</i>
 	<% else -%>
 		<% if @team.can_view_list?(@cas_user) -%>
-			<%= button_to 'Detailed listing', list_team_url(@team), :method => :get %>
+			<%= button_to 'Detailed listing', list_team_path(@team), :method => :get %>
 			<br>
 		<% end -%>
 

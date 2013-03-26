@@ -98,9 +98,9 @@ class HomeController < ApplicationController
 
 	def authorize
 		if Rails.env.production?
-			@login_url = RubyCAS::Filter.login_url(self)
+			@login_path = RubyCAS::Filter.login_url(self)
 		else
-			@login_url = '/login'
+			@login_path = '/login'
 		end
 
 		if cas_user.nil?

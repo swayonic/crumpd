@@ -7,7 +7,7 @@
 		<tr>
 			<td>Existing User</td>
 			<td><%= radio_button name, 'new', '0', :checked => true %></td>
-			<td><%= autocomplete_field name, :name, autocomplete_users_url, :id_element => "##{name}_user_id", :size => 12 %></td>
+			<td><%= autocomplete_field name, :name, autocomplete_users_path, :id_element => "##{name}_user_id", :size => 12 %></td>
 		</tr>
 		<tr>
 			<td>New User <%= help_tip 'Use their account number' %></td>
