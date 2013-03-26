@@ -174,6 +174,7 @@ class PeriodsController < HomeController
 			end
 		end
 
+		flash.notice = 'Fields updated'
 		redirect_to :action => :fields, :id => params[:id]
 	end
 	
