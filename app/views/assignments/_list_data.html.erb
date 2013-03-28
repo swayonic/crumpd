@@ -50,7 +50,7 @@
 			<% end -%>
 			<% for g in Goal.defaults -%>
 				<% if @fields["#{g.frequency}_goal"] == '1' -%>
-					<td>$<%= a.goal_amt(g.frequency) %></td>
+					<td><%= number_to_currency a.goal_amt(g.frequency) %></td>
 				<% end -%>
 				<% if @fields["#{g.frequency}_inhand_pct"] == '1' -%>
 					<td>
@@ -66,9 +66,9 @@
 					<td>
 					<% if r -%>
 						<% if l = r.goal_lines.find_by_frequency(g.frequency) -%>
-							$<%= l.inhand %>
+							<%= number_to_currency l.inhand %>
 						<% else -%>
-							$0
+              <%= number_to_currency 0 %>
 						<% end -%>
 					<% end -%>
 				<% end -%>
@@ -86,9 +86,9 @@
 					<td>
 					<% if r -%>
 						<% if l = r.goal_lines.find_by_frequency(g.frequency) -%>
-							$<%= l.pledged %>
+							<%= number_to_currency l.pledged %>
 						<% else -%>
-							$0
+              <%= number_to_currency 0 %>
 						<% end -%>
 					<% end -%>
 				<% end -%>

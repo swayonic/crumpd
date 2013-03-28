@@ -38,7 +38,7 @@
 		<% for goal in @assignment.goals -%>
 			<tr>
 				<td><%= goal.title %> goal</td>
-				<td><%= goal.amount %></td>
+				<td><%= number_to_currency goal.amount %></td>
 			</tr>
 		<% end -%>
 	</table>
