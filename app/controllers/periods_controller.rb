@@ -19,7 +19,6 @@ class PeriodsController < HomeController
 			return
 		end
 
-		#TODO: sanitize input
 		if p = Period.find_by_region_id_and_year(params[:period][:region_id], params[:period][:year])
 			flash.alert = "The period #{p.name} already exists"
 		else
@@ -150,7 +149,7 @@ class PeriodsController < HomeController
 			return
 		end
 
-		# TODO: sanitize input
+    #TODO: Track errors during saving/deleting
 
 		# Update old fields
 		for field in @period.report_fields
@@ -202,7 +201,7 @@ class PeriodsController < HomeController
 			return
 		end
 		
-		# TODO: sanitize input
+    #TODO: Track errors during saving/deleting
 
 		# Update old benchmarks
 		for bm in @period.bmarks

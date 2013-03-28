@@ -3,7 +3,10 @@ class ReportField < ActiveRecord::Base
 
 	belongs_to :period
 	has_many :report_field_lines
-	validates_associated :report_field_lines #If we change the field, let's make sure the associated lines are still valid
+
+  validates_associated :report_field_lines #If we change the field, let's make sure the associated lines are still valid
+  validates :list_index, :numericality => { :only_integer => true }
+  #TODO: More validations
 
 	def self.type_array
 		return [

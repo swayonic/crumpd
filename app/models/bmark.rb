@@ -3,4 +3,6 @@ class Bmark < ActiveRecord::Base
 
 	belongs_to :period
 
+  validates :percentage, :numericality => { :only_integer => true }
+
 end
