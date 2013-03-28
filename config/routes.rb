@@ -1,5 +1,7 @@
 Mpd::Application.routes.draw do
 
+  resources :regions, :except => [:show]
+
   resources :periods, :shallow => true do
 		member do
 			get 'toggle_updated'
