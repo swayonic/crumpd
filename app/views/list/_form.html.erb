@@ -4,7 +4,8 @@
 			<tr>
 				<td>
 					<table>
-						<% if !@assignment -%>
+            <% if !@assignment -%>
+							<tr><td>Intern Type: <%= check_box :fields, :intern_type, :checked => '1' == (@fields[:intern_type] ||= '0') %></td></tr>
 							<tr><td>Coaching Group: <%= check_box :fields, :group, :checked => '1' == (@fields[:group] ||= '0') %></td></tr>
 							<tr><td>Team: <%= check_box :fields, :team, :checked => '1' == (@fields[:team] ||= '0') %></td></tr>
 							<tr><td>&nbsp;</td></tr>

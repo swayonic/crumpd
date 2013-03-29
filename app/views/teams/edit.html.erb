@@ -26,10 +26,13 @@
 		</tr>
 		<% disabled = @team.period.keep_updated -%>
 		<% if disabled %>
+      <tr>
+        <td>&nbsp;</td>
+      </tr>
 			<tr>
 				<td></td>
 				<th>Locked <%= help_tip 'These attributes are only editable via sitrack' %></th>
-			</tr>
+      </tr>
 		<% end -%>
 		<tr>
 			<td>City</td>
