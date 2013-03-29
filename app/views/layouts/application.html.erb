@@ -17,10 +17,24 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-<div class="container_12">
-	<%= render :partial => 'shared/login' %>
-	<%= render :partial => 'shared/breadcrumbs' %>
-	<%= content_for?(:content) ? yield(:content) : yield %>
+<div class="container">
+  <div class="row">
+    <%= render :partial => 'shared/login' %>
+  </div>
+  <div class="row">
+	  <%= render :partial => 'shared/breadcrumbs' %>
+  </div>
+  <div class="row">
+	  <%= render :partial => 'shared/page_header' %>
+  </div>
+  <div class="row">
+    <div class="span8 offset2">
+      <%= bootstrap_flash %>
+    </div>
+  </div>
+  <div class="row">
+	  <%= content_for?(:content) ? yield(:content) : yield %>
+  </div>
 </div>
 </body>
 </html>

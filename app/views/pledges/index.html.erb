@@ -1,13 +1,12 @@
-<%= page_header	@assignment.user.display_name + ' - Pledges' -%>
-<%= flash_header %>
+<% title @assignment.user.display_name + ' - Pledges' -%>
 
-<div class="grid_4">
+<div class="span4">
 	<% if @assignment.can_edit_pledges?(@cas_user) -%>
 		<br>
 		<br>
 		<h3>New Pledge</h3>
 		<%= form_for @new_pledge, :url => assignment_pledges_path(@assignment) do |f| -%>
-			<table class='description'>
+			<table class="table">
 				<tr>
 					<td>Name</td>
 					<td><%= f.text_field :name, :size => 15 %></td>
@@ -37,8 +36,8 @@
 	<%= render :partial => 'progress_size4' %>
 </div>
 
-<div class="grid_8">
-	<table width="100%" class='description'>
+<div class="span8">
+	<table width="100%" class="table">
 		<tr>
 			<th>Name</th>
 			<th width=1%>Amount</th>
@@ -51,5 +50,3 @@
 		<%= render :partial => 'pledge', :collection => @assignment.pledges.sort_by{|p| [p.name, p.frequency]} %>
 	</table>
 </div>
-
-<div class="clear"></div>

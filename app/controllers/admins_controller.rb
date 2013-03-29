@@ -89,6 +89,7 @@ class AdminsController < HomeController
 		end
 
 		@admin.destroy
+    flash.notice = 'Admin removed'
 
 		if params[:return]
 			redirect_to params[:return]

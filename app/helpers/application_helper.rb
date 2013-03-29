@@ -8,9 +8,8 @@ module ApplicationHelper
 		render :partial => 'shared/flash'
 	end
 
-	def page_header(title)
+	def title(title)
 		@page_title = title
-		render :partial => 'shared/page_header', :locals => {:title => title}
 	end
 
 	def add_javascript(script)

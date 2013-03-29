@@ -1,7 +1,6 @@
-<%= page_header @period.name + ' - Report Fields' %>
-<%= flash_header %>
+<% title @period.name + ' - Report Fields' %>
 
-<div class="grid_12">
+<div class="span12">
 	<b>NOTE:</b>
 	<ul>
 		<i>
@@ -10,7 +9,7 @@
 		</i>
 	</ul>
 	<%= form_for :fields, :url => update_fields_period_path(@period) do |f| %>
-		<table id='fieldsTable' class='description'>
+		<table id='fieldsTable' class="table">
 		<thead>
 			<tr>
 				<th></th>
@@ -33,8 +32,6 @@
 		<%= link_to 'Back', @period %>
 	<% end %>
 </div>
-
-<div class="clear"></div>
 
 <div style='display:none;'>
 	<table>

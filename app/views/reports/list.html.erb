@@ -1,8 +1,8 @@
-<%= page_header @assignment.user.display_name + ' - Reports List' %>
+<% title @assignment.user.display_name + ' - Reports List' %>
 
 <%= render :partial => 'list/form' %>
 
-<div class="grid_12">
+<div class="span12">
 	<table id='reportList' class='tablesorter-blue'>
 		<%= render :partial => 'list_data' %>
 	</table>
@@ -12,4 +12,3 @@
 		});
 	</script>
 </div>
-<div class='clear'></div>

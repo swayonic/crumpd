@@ -1,6 +1,5 @@
-<%= flash_header %>
 
-<div class="grid_10 prefix_1 suffix_1" align='center'>
+<div class="span10 offset1" align='center'>
 	<%= form_for [@assignment, @report] do |f| %>
 	  <% if @report.errors.any? %>
 	    <div id="error_explanation" align='left'>
@@ -14,7 +13,7 @@
 	    </div>
 	  <% end %>
 
-		<table style='description'>
+		<table class="table">
 			<tr>
 				<td><b>Report Date</b></td>
 				<td><%= f.date_select :date %></td>
@@ -67,4 +66,3 @@
 		
 	<% end %>
 </div>
-<div class='clear'></div>

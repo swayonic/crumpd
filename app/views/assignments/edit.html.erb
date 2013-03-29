@@ -1,7 +1,6 @@
-<%= page_header @assignment.user.display_name + ' - Assignment' %>
-<%= flash_header %>
+<% title @assignment.user.display_name + ' - Assignment' %>
 
-<div class="grid_6 prefix_3 suffix_3">
+<div class="span6 offset3">
 	<%= form_for @assignment do |f| %>
 		<h2>Groups</h2>
 
@@ -24,7 +23,7 @@
 		<% end -%>
 		<br>
 		<%= fields_for "new_goal", @new_goal do |g| -%>
-			<table class='description'>
+			<table class="table">
 				<tr>
 					<th colspan=2>
 						New Goal
@@ -48,4 +47,3 @@
 		<%= f.submit 'Save changes' %>
 	<% end -%>
 </div>
-<div class="clear"</div>

@@ -1,9 +1,8 @@
-<%= page_header @period.name + ' - Benchmarks' %>
-<%= flash_header %>
+<% title @period.name + ' - Benchmarks' %>
 
-<div class="grid_8 prefix_2 suffix_2">
+<div class="span8 offset2">
 	<%= form_for :benchmarks, :url => update_benchmarks_period_path(@period) do |f| %>
-		<table id='benchmarksTable' class='description'>
+		<table id='benchmarksTable' class="table">
 		<thead>
 			<tr>
 				<th>Date</th>
@@ -25,8 +24,6 @@
 		<%= link_to 'Back', @period %>
 	<% end %>
 </div>
-
-<div class="clear"></div>
 
 <div style='display:none;'>
 	<table>

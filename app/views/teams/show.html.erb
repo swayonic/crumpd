@@ -1,9 +1,8 @@
-<%= page_header @team.display_name %>
-<%= flash_header %>
+<% title @team.display_name %>
 
-<div class="grid_4">
+<div class="span4">
 	<h2>Description</h2>
-	<table class="description">
+	<table class="table">
 		<tr>
 			<td>Team Name</td>
 			<td><%= @team.display_name %></td>
@@ -42,13 +41,13 @@
 	<% end -%>
 </div>
 
-<div class="grid_8">
+<div class="span8">
 	<h2 width="100%" align="center">Team Members</h2>
 	<% if @team.members.nil? or @team.members.count == 0 -%>
 		<i>None</i>
 	<% else -%>
 		<% if @team.can_view_list?(@cas_user) -%>
-			<%= button_to 'Detailed listing', list_team_path(@team), :method => :get %>
+      <%= button_to 'Detailed listing', list_team_path(@team), method: 'get', class: 'btn' %>
 			<br>
 		<% end -%>
 
@@ -74,5 +73,3 @@
 		<% end -%>
 	<% end -%>
 </div>
-
-<div class="clear"></div>

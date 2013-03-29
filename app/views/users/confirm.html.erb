@@ -1,8 +1,8 @@
-<%= page_header 'Add New User' %>
+<% title 'Add New User' %>
 
-<div class="grid_8 prefix_2 suffix_2">
+<div class="span8 offset2">
 	<%= form_for @user, :url => @continue_path, :method => :post do |f| %>
-		<table class='description'>
+		<table class="table">
 			<tr>
 				<th>Account Number</th>
 				<td>
@@ -44,5 +44,3 @@
 		<%= link_to 'Back', :back %>
 	<% end -%>
 </div>
-
-<div class="clear"></div>

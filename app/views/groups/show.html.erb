@@ -1,9 +1,8 @@
-<%= page_header @group.display_name %>
-<%= flash_header %>
+<% title @group.display_name %>
 
-<div class="grid_4">
+<div class="span4">
 	<h2>Description</h2>
-	<table class="description">
+	<table class="table">
 		<tr>
 			<td>Group Name</td>
 			<td><%= @group.display_name %></td>
@@ -49,13 +48,13 @@
 	<% end -%>
 </div>
 
-<div class="grid_8">
+<div class="span8">
 	<h2 width="100%" align="center">Group Members</h2>
 	<% if @group.members.nil? or @group.members.count == 0 -%>
 		<i>None</i>
 	<% else -%>
 		<% if @group.can_view_list?(@cas_user) -%>
-			<%= button_to 'Detailed listing', list_group_path(@group), :method => :get %>
+      <%= button_to 'Detailed listing', list_group_path(@group), method: 'get', class: 'btn' %>
 			<br>
 		<% end -%>
 		<ul>
@@ -63,7 +62,7 @@
 				<li>
 					<%= link_to_if a.can_view?(@cas_user), a.user.display_name, a %>
 					<% if @group.can_edit?(@cas_user) and a.can_edit?(@cas_user) -%>
-						<%= link_to image_tag('icons/silk/delete.png'), url_for(:controller => :assignments, :action => :destroy, :id => a.id, :delete => 'group'), :method => :delete, data: { confirm: 'Are you sure you want to remove this group member?' } %>
+						<%= link_to image_tag('icons/silk/delete.png'), url_for(:controller => :assignments, :action => :destroy, :id => a.id, :delete => 'group'), method: 'get', data: { confirm: 'Are you sure you want to remove this group member?' } %>
 					<% end -%>
 				</li>
 			<% end -%>
@@ -80,5 +79,3 @@
 		<% end -%>
 	<% end -%>
 </div>
-
-<div class="clear"></div>

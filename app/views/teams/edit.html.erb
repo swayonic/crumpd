@@ -1,6 +1,6 @@
-<%= page_header @team.display_name + ' - Edit' %>
+<% title @team.display_name + ' - Edit' %>
 
-<div class="grid_6 prefix_3 suffix_3">
+<div class="span6 offset3">
 
 <%= form_for(@team) do |f| %>
   <% if @team.errors.any? %>
@@ -15,7 +15,7 @@
     </div>
 	<% end %>
 
-	<table class='description'>
+	<table class="table">
 		<tr>
 			<td>
 				Name
@@ -56,4 +56,3 @@
 <% end %>
 
 </div>
-<div class="clear"></div>

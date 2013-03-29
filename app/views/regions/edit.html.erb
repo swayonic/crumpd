@@ -1,4 +1,4 @@
-<%= page_header 'Editing Region' %>
+<% title 'Editing Region' %>
 
 <%= form_for(@region) do |f| %>
   <% if @region.errors.any? %>
@@ -13,7 +13,7 @@
     </div>
   <% end %>
 
-  <table class='description'>
+  <table class="table">
     <tr>
       <td><%= f.label :name %></td>
       <td><%= @region.name %></td>

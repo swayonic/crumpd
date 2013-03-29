@@ -1,8 +1,7 @@
-<%= page_header @report.assignment.user.display_name + ' - ' + @report.date.strftime('%b %e Report') %>
-<%= flash_header %>
+<% title @report.assignment.user.display_name + ' - ' + @report.date.strftime('%b %e Report') %>
 
-<div class="grid_10 prefix_1 suffix_1" align='center'>
-	<table style='description'>
+<div class="span10 offset1" align='center'>
+	<table class="table">
 		<tr>
 			<td><b>Report Date</b></td>
 			<td><%= @report.date.strftime('%b %e') %></td>
@@ -56,4 +55,3 @@
 	<%= link_to 'Edit', edit_report_path(@report) %> |
 	<%= link_to 'Back', assignment_path(@report.assignment) %>
 </div>
-<div class='clear'></div>
