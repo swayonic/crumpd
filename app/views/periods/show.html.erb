@@ -41,7 +41,7 @@
 		</ul>
 	<% end -%>
 	<% if @period.can_edit?(@cas_user) -%>
-		<%= form_for [@period, @new_admin] do |f| -%>
+    <%= form_for [@period, @new_admin], :html => {class: 'form-horizontal'} do |f| -%>
 			<%= render :partial => 'users/new', :locals => {
 				:name => 'add_admin',
 				:title => 'New Admin',

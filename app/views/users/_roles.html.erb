@@ -8,7 +8,8 @@
         <% if a.can_view?(@cas_user) %><li>Assignment: <%= link_to 'Home Page', a %></li><% end -%>
 				<% if a.team %><li>Team: <%= link_to_if a.team.can_view?(@cas_user), a.team.display_name, a.team %></li><% end %>
 				<% if a.group %><li>Coaching Group: <%= link_to_if a.group.can_view?(@cas_user), a.group.display_name, a.group %></li><% end %>
-			</ul>
+      </ul>
+      <br>
 			</li>
 		<% end -%>
 	</ul>

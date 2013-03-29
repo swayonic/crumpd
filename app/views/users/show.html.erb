@@ -1,62 +1,44 @@
 <% title @user.display_name %>
 
 <div class="span4">
-	<table class="table">
-		<tr>
-			<td><b>First Name</b></td>
-			<td><%= @user.first_name %></td>
-		</tr>
-		<% if @user.preferred_name and @user.preferred_name != @user.first_name -%>
-			<tr>
-				<td><b>Preferred Name</b></td>
-				<td><%= @user.preferred_name %></td>
-			</tr>
-		<% end -%>
-		<tr>
-			<td><b>Last Name</b></td>
-			<td><%= @user.last_name %></td>
-		</tr>
-		<tr>
-			<td><b>Account Number</b></td>
-			<td><%= @user.account_number %></td>
-		</tr>
-		<tr>
-			<td><b>Phone Number</b></td>
-			<td><%= @user.phone %></td>
-		</tr>
-		<tr>
-			<td><b>Email Address</b></td>
-			<td><%= @user.email %></td>
-		</tr>
-    <tr>
-      <td>&nbsp;</td>
-    </tr>
+  <dl class="dl-horizontal">
+    <dt>First Name</dt>
+      <dd><%= @user.first_name %></dd>
+    <% if @user.preferred_name and @user.preferred_name != @user.first_name -%>
+      <dt>Preferred Name</dt>
+        <dd><%= @user.preferred_name %></dd>
+    <% end -%>
+    <dt>Last Name</dt>
+      <dd><%= @user.last_name %></dd>
+    <dt>Account Number</dt>
+      <dd><%= @user.account_number %></dd>
+    <dt>Phone Number</dt>
+      <dd><%= @user.phone %></dd>
+    <dt>Email Address</dt>
+      <dd><%= @user.email %></dd>
+
+    <dt>&nbsp;</dt>
+      <dd>&nbsp;</dd>
+
     <% if @user.can_edit?(@cas_user) -%>
-      <tr>
-        <td><b>Edit</b></td>
-        <td><%= button_to 'Edit', edit_user_path(@user), method: 'get', class: 'btn' %></td>
-      </tr>
-	  <% end -%>
-	  <% if @user.can_sudo?(true_user) -%>
-      <tr>
-        <td><b>Sudo</b> <%= help_tip 'Assume the permissions of this person' %></td>
-        <td><%= button_to 'Assume', sudo_user_path(@user), method: 'get', class: 'btn' %></td>
-      </tr>
-  	<% end -%>
+      <dt>Edit</dt>
+        <dd><%= button_to 'Edit', edit_user_path(@user), method: 'get', class: 'btn' %></dd>
+    <% end -%>
+    <% if @user.can_sudo?(true_user) -%>
+      <dt>Sudo <%= help_tip 'Assume the permissions of this person' %></dt>
+        <dd><%= button_to 'Assume', sudo_user_path(@user), method: 'get', class: 'btn' %></dd>
+    <% end -%>
     <% if @cas_user.is_admin? -%>
-			<tr>
-        <td><b>Admin</b> <%= help_tip 'Grants this user Admin priveleges' %></td>
-				<td>
-					<% if @user.is_admin? %>
+      <dt>Admin <%= help_tip 'Grants this user Admin priveleges' %></dt>
+        <dd>
+          <% if @user.is_admin? %>
             <%= button_to 'Revoke', toggle_admin_user_path(@user), class: 'btn' %>
-					<% else -%>
+          <% else -%>
             <%= button_to 'Grant', toggle_admin_user_path(@user), class: 'btn' %>
-					<% end -%>
-				</td>
-			</tr>
-      <tr>
-        <td><b>Delete</b></td>
-        <td>
+          <% end -%>
+        </dd>
+      <dt>Delete</dt>
+        <dd>
           <%= button_to 'Delete',
             @user,
             method: 'delete',
@@ -66,12 +48,11 @@ This cannot be undone.'
             },
             class: 'btn'
           %>
-        </td>
-      </tr>
-		<% end -%>
-	</table>
+        </dd>
+    <% end -%>
+  </dl>
 </div>
 
 <div class="span8">
-	<%= render :partial => 'roles' %>
+  <%= render :partial => 'roles' %>
 </div>

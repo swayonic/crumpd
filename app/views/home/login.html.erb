@@ -1,14 +1,19 @@
-<%= form_for :login, :html => {:action => login_path} do |f| %>
-	<table class="table">
-		<tr>
-      <td><%= f.label :user %> <%= help_tip 'Autocomplete: Name (account number)' %></td>
-			<td>
-				<%= f.hidden_field :id %>
-				<%= autocomplete_field 'auto', 'name', autocomplete_users_path, :id_element => '#login_id', :size => 12 %>
-			</td>
-		</tr>
-	</table>
-	<%= submit_tag 'Submit' %>
-<% end %>
+<div class="span8 offset2">
+  <%= form_for :login, :html => {:action => login_path, class: 'form-horizontal'} do |f| %>
+    <div class="control-group">
+      <%= f.label :user, class: 'control-label' %>
+      <div class="controls">
+        <%= f.hidden_field :id %>
+        <%= autocomplete_field 'auto', 'name', autocomplete_users_path, :id_element => '#login_id', :size => 12 %>
+        <%= help_tip 'Autocomplete: Name (account number)' %>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <%= f.submit 'Login', class: 'btn btn-primary' %>
+      </div>
+    </div>
+  <% end %>
+</div>
 
 <%= autofocus 'auto_name' %>
