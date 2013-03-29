@@ -1,27 +1,29 @@
 <%= hidden_field name, :user_id %>
-<fieldset>
-  <legend><%= title %></legend>
-  <div class="control-group">
-    <div class="control-label">Existing User</div>
-    <div class="controls">
-      <%= radio_button name, 'new', '0', :checked => true %>
-      <%= autocomplete_field name, :name, autocomplete_users_path, :id_element => "##{name}_user_id", :size => 12 %>
-    </div>
-  </div>
-  <div class="control-group">
-    <div class="control-label">New User</div>
-    <div class="controls">
-      <%= radio_button name, 'new', '1' %>
-      <%= text_field name, :account_number, :size => 12, :disabled => true %>
-      <%= help_tip 'Use their account number' %>
-    </div>
-  </div>
-  <div class="control-group">
-    <div class="controls">
-      <%= submit_tag commit, class: 'btn btn-primary' %>
-    </div>
-  </div>
-</fieldset>
+<table class="table">
+  <thead>
+    <th colspan="3" style="text-align:center;"><%= title %></th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Existing User</td>
+      <td><%= radio_button name, 'new', '0', :checked => true %></td>
+      <td><%= autocomplete_field name, :name, autocomplete_users_path, :id_element => "##{name}_user_id", class: 'input-medium' %></td>
+    </tr>
+    <tr>
+      <td>
+        New User
+        <%= help_tip 'Use their account number' %>
+      </td>
+      <td><%= radio_button name, 'new', '1' %></td>
+      <td><%= text_field name, :account_number, :disabled => true, class: 'input-medium' %></td>
+    </tr>
+    <tr>
+      <th colspan="3" style="text-align:center;">
+        <%= submit_tag commit, class: 'btn btn-primary' %>
+      </th>
+    </tr>
+  </tbody>
+</table>
 
 <script>
     $("[name='<%= name %>[new]']").click(function() {

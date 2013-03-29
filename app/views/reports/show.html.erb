@@ -1,7 +1,7 @@
 <% title @report.assignment.user.display_name + ' - ' + @report.date.strftime('%b %e Report') %>
 
-<div class="span10 offset1" align='center'>
-  <table class="table">
+<div class="span10 offset1 well well-small" align='center'>
+  <table class="mytable">
     <tr>
       <td><b>Report Date</b></td>
       <td><%= @report.date.strftime('%b %e') %></td>
@@ -52,6 +52,8 @@
     <% end -%>
   </table>
 
-  <%= link_to 'Edit', edit_report_path(@report) %> |
-  <%= link_to 'Back', assignment_path(@report.assignment) %>
+  <br>
+
+  <%= link_to 'Edit', edit_report_path(@report), class: 'btn btn-info' %>
+  <%= link_to 'Back', assignment_path(@report.assignment), class: 'btn' %>
 </div>

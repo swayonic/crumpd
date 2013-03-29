@@ -1,40 +1,50 @@
 <% title @assignment.user.display_name + ' - Assignment' %>
 
-<div class="span4">
+<div class="span4 well well-small">
   <!-- Details -->
-  <h2>Details</h2>
-  <dl class="dl-horizontal">
-    <dt>User</dt>
-    <dd>
-      <%= link_to_if @assignment.user.can_view?(@cas_user), @assignment.user.display_name, @assignment.user %>
-    </dd>
+  <h3>Details</h3>
+  <table class="mytable">
+    <tr>
+      <th>User</th>
+      <td>
+        <%= link_to_if @assignment.user.can_view?(@cas_user), @assignment.user.display_name, @assignment.user %>
+      </td>
+    </tr>
     <% if @assignment.intern_type -%>
-      <dt>Intern type</dt>
-      <dd><%= @assignment.intern_type %></dd>
+      <tr>
+        <th>Intern type</th>
+        <td><%= @assignment.intern_type %></td>
+      </tr>
     <% end -%>
-    <dt>Team</dt>
-    <dd>
-      <% if @assignment.team.nil? -%>
-        <i>None</i>
-      <% else -%>
-        <%= link_to_if @assignment.team.can_view?(@cas_user), @assignment.team.display_name, @assignment.team %>
-      <% end -%>
-    </dd>
-    <dt>Coaching Group</dt>
-    <dd>
-      <% if @assignment.group.nil? -%>
-        <i>None</i>
-      <% else -%>
-        <%= link_to_if @assignment.group.can_view?(@cas_user), @assignment.group.display_name, @assignment.group %>
-      <% end -%>
-    </dd>
+    <tr>
+      <th>Team</th>
+      <td>
+        <% if @assignment.team.nil? -%>
+          <i>None</i>
+        <% else -%>
+          <%= link_to_if @assignment.team.can_view?(@cas_user), @assignment.team.display_name, @assignment.team %>
+        <% end -%>
+      </td>
+    </tr>
+    <tr>
+      <th>Coaching Group</th>
+      <td>
+        <% if @assignment.group.nil? -%>
+          <i>None</i>
+        <% else -%>
+          <%= link_to_if @assignment.group.can_view?(@cas_user), @assignment.group.display_name, @assignment.group %>
+        <% end -%>
+      </td>
+    </tr>
     <% for goal in @assignment.goals -%>
-      <dt><%= goal.title %> goal</dt>
-      <dd><%= number_to_currency goal.amount %></dd>
+      <tr>
+        <th><%= goal.title %> goal</th>
+        <td><%= number_to_currency goal.amount %></td>
+      </tr>
     <% end -%>
-  </dl>
+  </table>
   <% if @assignment.can_edit?(@cas_user) -%>
-    <%= link_to 'Edit', edit_assignment_path(@assignment) %>
+    <%= link_to 'Edit', edit_assignment_path(@assignment), class: 'btn' %>
   <% end -%>
   
   <br>
@@ -42,18 +52,22 @@
   
   <% if @assignment.period.bmarks.count > 0 -%>
     <!-- Benchmarks -->
-    <h2>Benchmarks</h2>
+    <h3>Benchmarks</h3>
     <table class="table">
-      <tr>
-        <th>Date</th>
-        <th>Amount</th>
-      </tr>
-      <% for b in @assignment.period.bmarks -%>
+      <thead>
         <tr>
-          <td><%= b.date.strftime('%b %e') %></td>
-          <td style='text-align:right;'><%= b.percentage %>%</td>
+          <th>Date</th>
+          <th>Amount</th>
         </tr>
-      <% end -%>
+      </thead>
+      <tbody>
+        <% for b in @assignment.period.bmarks -%>
+          <tr>
+            <td><%= b.date.strftime('%b %e') %></td>
+            <td style='text-align:right;'><%= b.percentage %>%</td>
+          </tr>
+        <% end -%>
+      </tbody>
     </table>
   <% end -%>
 
@@ -99,8 +113,8 @@
   
 </div>
 
-<div class="span8">
-  <h2>Reports</h2>
+<div class="span8 well well-small">
+  <h3>Reports</h3>
   <table>
     <tr>
       <td><%= button_to 'New Report', new_assignment_report_path(@assignment), method: 'get', class: 'btn' if @assignment.can_edit_reports?(@cas_user) %></td>

@@ -1,29 +1,31 @@
 <% title @group.display_name %>
 
-<div class="span4">
-  <h2>Description</h2>
-  <table class="table">
+<div class="span4 well well-small">
+  <h3>Description</h3>
+  <table class="mytable">
     <tr>
-      <td>Group Name</td>
+      <th>Group Name</th>
       <td><%= @group.display_name %></td>
     </tr>
     <tr>
-      <td>Coach Name</td>
-      <td><%= @group.coach_name %></td>
+      <% if @group.coach_name %>
+        <th>Coach Name</th>
+        <td><%= @group.coach_name %></td>
+      <% end -%>
     </tr>
     <tr>
-      <td>Coaching Period</td>
+      <th>Coaching Period</th>
       <td><%= link_to_if @group.period.can_view?(@cas_user), @group.period.name, @group.period %></td>
     </tr>
   </table>
   <% if @group.can_edit?(@cas_user) -%>
-    <%= link_to 'Edit', edit_group_path(@group) %>
+    <%= link_to 'Edit', edit_group_path(@group), class: 'btn' %>
   <% end -%>
 
   <br>
   <br>
 
-  <h2>Coaches</h2>
+  <h3>Coaches</h3>
   <% if @group.coaches.nil? or @group.coaches.count == 0 -%>
     <i>None</i>
   <% else -%>
@@ -48,8 +50,8 @@
   <% end -%>
 </div>
 
-<div class="span8">
-  <h2 width="100%" align="center">Group Members</h2>
+<div class="span8 well well-small">
+  <h3>Group Members</h3>
   <% if @group.members.nil? or @group.members.count == 0 -%>
     <i>None</i>
   <% else -%>
@@ -62,13 +64,18 @@
         <li>
           <%= link_to_if a.can_view?(@cas_user), a.user.display_name, a %>
           <% if @group.can_edit?(@cas_user) and a.can_edit?(@cas_user) -%>
-            <%= link_to image_tag('icons/silk/delete.png'), url_for(:controller => :assignments, :action => :destroy, :id => a.id, :delete => 'group'), method: 'get', data: { confirm: 'Are you sure you want to remove this group member?' } %>
+            <%= link_to image_tag('icons/silk/delete.png'),
+              url_for(:controller => :assignments, :action => :destroy, :id => a.id, :delete => 'group'),
+              method: 'delete',
+              data: { confirm: 'Are you sure you want to remove this group member?' } %>
           <% end -%>
         </li>
       <% end -%>
     </ul>
   <% end %>
   <% if !@group.period.keep_updated and @group.can_edit?(@cas_user) -%>
+    <div class="row-fluid">
+      <div class="span6">
     <%= form_for @new_assn, :html => {class: 'form-horizontal'} do |f| -%>
       <%= f.hidden_field :period_id %>
       <%= f.hidden_field :group_id %>
@@ -78,4 +85,6 @@
         :commit => 'Add Member' } %>
     <% end -%>
   <% end -%>
+    </div>
+  </div>
 </div>

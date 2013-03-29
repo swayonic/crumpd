@@ -1,9 +1,8 @@
-
-<div class="span10 offset1" align='center'>
-  <%= form_for [@assignment, @report] do |f| %>
+<div class="span10 offset1 well well-small">
+  <%= form_for [@assignment, @report], :html => {class: 'form-horizontal'} do |f| %>
     <% if @report.errors.any? %>
       <div id="error_explanation" align='left'>
-        <h2><%= pluralize(@report.errors.count, "error") %> prohibited this report from being saved:</h2>
+        <h3><%= pluralize(@report.errors.count, "error") %> prohibited this report from being saved:</h3>
         <ul>
           <%# HACK: I can't get rid of the "is invalid" errors -%>
           <% @report.errors.select{|attr, msg| msg != "is invalid"}.each do |attr, msg| -%>
@@ -13,41 +12,42 @@
       </div>
     <% end %>
 
-    <table class="table">
-      <tr>
-        <td><b>Report Date</b></td>
-        <td><%= f.date_select :date %></td>
-      </tr>
+    <div class="control-group">
+      <%= f.label :date, 'Report Date', class: 'control-label required-label' %>
+      <div class="controls">
+        <%= f.date_select :date, {}, class: 'span3' %>
+      </div>
+    </div>
 
-      <tr><td>&nbsp;</td></tr>
+    <div class="control-group"></div>
 
-      <% for line in @report.goal_lines -%>
-        <%= fields_for "goal_#{line.frequency}", line do |l| %>
-          <tr>
-            <td><b><%= Goal.title(line.frequency) %> in-hand</b></td>
-            <td><%= l.text_field :inhand, :size => 4 %></td>
-          </tr>
-          <tr>
-            <td><b><%= Goal.title(line.frequency) %> pledged</b></td>
-            <td><%= l.text_field :pledged, :size => 4 %></td>
-          </tr>
-        <% end -%>
+    <% for line in @report.goal_lines -%>
+      <%= fields_for "goal_#{line.frequency}", line do |l| %>
+        <div class="control-group">
+          <%= l.label :inhand, "#{Goal.title(line.frequency)} in-hand", class: 'control-label required-label' %>
+          <div class="controls">
+            <%= l.text_field :inhand, :size => 4 %>
+          </div>
+        </div>
+        <div class="control-group">
+          <%= l.label :inhand, "#{Goal.title(line.frequency)} pledged", class: 'control-label required-label' %>
+          <div class="controls">
+            <%= l.text_field :pledged, :size => 4 %>
+          </div>
+        </div>
       <% end -%>
+    <% end -%>
 
-      <tr><td>&nbsp;</td></tr>
+    <div class="control-group"></div>
 
-      <% for line in @report.field_lines.sort_by{|l| l.report_field.list_index} -%>
-        <%= fields_for "field_#{line.report_field.id}", line do |l| %>
-          <tr>
-            <td>
-              <% if line.report_field.required -%>
-                <b><%= line.report_field.name %></b>
-              <% else -%>
-                <%= line.report_field.name %>
-              <% end -%>
-              <%= help_tip line.report_field.description %>
-            </td>
-            <td>
+    <% for line in @report.field_lines.sort_by{|l| l.report_field.list_index} -%>
+      <%= fields_for "field_#{line.report_field.id}", line do |l| %>
+        <div class="control-group">
+          <%= l.label :value, 
+            line.report_field.name, 
+            class: (line.report_field.required? ? 'control-label required-label' : 'control-label') %>
+          <div class="controls">
+            <div class="input-append">
               <% if line.report_field.is_number? -%>
                 <%= l.text_field :value, :size => 4 %>
               <% elsif line.report_field.is_text? -%>
@@ -55,14 +55,22 @@
               <% else -%>
                 <%= l.text_field :value %>
               <% end -%>
-            </td>
-          </tr>
-        <% end -%>
+              <% if line.report_field.description -%>
+                <div class="add-on">
+                  <%= help_tip line.report_field.description %>
+                </div>
+              <% end -%>
+            </div>
+          </div>
+        </div>
       <% end -%>
-    </table>
+    <% end -%>
 
-    <%= f.submit %>
-    <%= link_to 'Back', assignment_path(@report.assignment) %>
-    
+    <div class="control-group">
+      <div class="controls">
+        <%= f.submit class: 'btn btn-primary' %>
+        <%= link_to 'Back', assignment_path(@report.assignment), class: 'btn' %>
+      </div>
+    </div>
   <% end %>
 </div>

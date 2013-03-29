@@ -1,29 +1,20 @@
 <% title @group.display_name + ' - Edit' %>
 
-<div class="span6 offset3">
+<div class="span6 offset3 well well-small">
 
-<%= form_for(@group) do |f| %>
-  <% if @group.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@group.errors.count, "error") %> prohibited this group from being saved:</h2>
-
-      <ul>
-      <% @group.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
+  <%= form_for @group, :html => {class: 'form-horizontal'} do |f| %>
+    <div class="control-group">
+      <%= f.label :name, class: 'control-label' %>
+      <div class="controls">
+        <div class="input-append">
+          <%= f.text_field :name %>
+          <span class="add-on">
+            <% tmp = @group.dup; tmp.name = nil -%>
+            <%= help_tip "If left blank, the name will default to \"#{tmp.display_name}\"" %>
+          </span>
+        </div>
+      </div>
     </div>
-  <% end %>
-
-  <table class="table">
-    <tr>
-      <td>
-        Name
-        <% tmp = @group.dup; tmp.name = nil -%>
-        <%= help_tip "If left blank, the name will default to \"#{tmp.display_name}\"" %>
-      </td>
-      <td><%= f.text_field :name %></td>
-    </tr>
     <% disabled = @group.period.keep_updated -%>
     <% if disabled -%>
       <tr>
@@ -34,13 +25,16 @@
         <th>Locked <%= help_tip 'These attributes are only editable via sitrack' %></th>
       </tr>
     <% end -%>
-    <tr>
-      <td>Coach Name</td>
-      <td><%= f.text_field :coach_name, :disabled => disabled %></td>
-    </tr>
-  </table>
-  
-  <%= f.submit %>
-<% end %>
-
+    <div class="control-group">
+      <%= f.label :coach_name, class: 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :coach_name, :disabled => disabled %>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <%= f.submit class: 'btn btn-primary' %>
+      </div>
+    </div>
+  <% end %>
 </div>

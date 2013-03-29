@@ -2,7 +2,7 @@
 
 <div class="span6 offset3">
   <%= form_for @assignment do |f| %>
-    <h2>Groups</h2>
+    <h3>Groups</h3>
 
     <% teams_array = [['None', 0]].concat( @assignment.period.teams.map { |t| [t.display_name, t.id] }) -%>
     Team: <%= f.select :team_id, options_for_select(teams_array, @assignment.team_id) %>
@@ -12,7 +12,7 @@
     <br>
     <br>
 
-    <h2>Goals</h2>
+    <h3>Goals</h3>
 
     <% for goal in @assignment.goals -%>
       <%= fields_for "goal_#{goal.frequency}", goal do |g| -%>

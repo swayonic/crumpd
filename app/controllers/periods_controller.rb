@@ -248,7 +248,11 @@ class PeriodsController < HomeController
       render 'assignments/list.xls', :content_type => 'application/xls'
       return
     end
-    
+    if params[:commit] == 'Clear'
+      # Clear selections
+      @fields = Hash.new
+    end
+
     member_breadcrumbs
   end
 

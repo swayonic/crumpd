@@ -1,6 +1,6 @@
-<div class="span8 offset2" align='center'>
+<div class="span8 offset2">
   <%= form_for :fields, :html => {:id => 'fields_form'} do |f| %>
-    <table class="table" width=100%>
+    <table class="mytable" width=100%>
       <tr>
         <td>
           <table>
@@ -64,8 +64,9 @@
       </tr>
       <tr>
         <td colspan='2' style='text-align:center;'>
-          <%= submit_tag 'View' %>
-          <%= submit_tag 'Download Excel' %>
+          <%= f.submit 'View', class: 'btn btn-primary' %>
+          <%= f.submit 'Download Excel', class: 'btn btn-success' %>
+          <%= f.submit 'Clear', class: 'btn' %>
         </td>
       </tr>
     </table>

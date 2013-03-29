@@ -21,7 +21,23 @@ body {
 .container {
 	background-color: #fff;
 	margin-bottom: 20px;
-	padding-bottom: 10px;
+}
+
+table.mytable td {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+table.mytable th {
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-bottom: 2px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.required-label {
+  font-weight: bold;
 }
 
 /* No, JQuery, I don't want this */

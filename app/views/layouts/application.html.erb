@@ -18,21 +18,21 @@
 </head>
 <body>
 <div class="container">
-  <div class="row">
+  <div class="row-fluid">
     <%= render :partial => 'shared/login' %>
   </div>
-  <div class="row">
+  <div class="row-fluid">
     <%= render :partial => 'shared/breadcrumbs' %>
   </div>
-  <div class="row">
+  <div class="row-fluid">
     <%= render :partial => 'shared/page_header' %>
   </div>
-  <div class="row">
-    <div class="span8 offset2">
+  <div class="row-fluid">
+    <div class="span6 offset3">
       <%= bootstrap_flash %>
     </div>
   </div>
-  <div class="row">
+  <div id="content-row" class="row-fluid">
     <%= content_for?(:content) ? yield(:content) : yield %>
   </div>
 </div>
