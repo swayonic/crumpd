@@ -1,73 +1,73 @@
 <div class="span8 offset2" align='center'>
-	<%= form_for :fields, :html => {:id => 'fields_form'} do |f| %>
-		<table class="table" width=100%>
-			<tr>
-				<td>
-					<table>
+  <%= form_for :fields, :html => {:id => 'fields_form'} do |f| %>
+    <table class="table" width=100%>
+      <tr>
+        <td>
+          <table>
             <% if !@assignment -%>
-							<tr><td>Intern Type: <%= check_box :fields, :intern_type, :checked => '1' == (@fields[:intern_type] ||= '0') %></td></tr>
-							<tr><td>Coaching Group: <%= check_box :fields, :group, :checked => '1' == (@fields[:group] ||= '0') %></td></tr>
-							<tr><td>Team: <%= check_box :fields, :team, :checked => '1' == (@fields[:team] ||= '0') %></td></tr>
-							<tr><td>&nbsp;</td></tr>
-						<% end -%>
-						<% for g in Goal.defaults -%>
-							<tr>
-								<td>
-									<b><%= g.title %></b>
-									<% if @assignment -%>
-										(<%= @assignment.goal_amt(g.frequency) %>)
-									<% else -%>
-										<% name = "#{g.frequency}_goal" -%>
-										<%= check_box :fields, name, :checked => '1' == (@fields[name] ||= '0') %>
-										Goal
-									<% end -%>
-									<li>
-										<b>In-Hand</b>
-										<% name = "#{g.frequency}_inhand_pct" -%>
-										<%= check_box :fields, name, :checked => '1' == (@fields[name] ||= '0') %>
-										Percent
-										<% name = "#{g.frequency}_inhand_amt" -%>
-										<%= check_box :fields, name, :checked => '1' == (@fields[name] ||= '0') %>
-										Amount
-									</li>
-									<li>
-										<b>Pledged</b>
-										<% name = "#{g.frequency}_pledged_pct" -%>
-										<%= check_box :fields, name, :checked => '1' == (@fields[name] ||= '0') %>
-										Percent
-										<% name = "#{g.frequency}_pledged_amt" -%>
-										<%= check_box :fields, name, :checked => '1' == (@fields[name] ||= '0') %>
-										Amount
-									</li>
-								</td>
-							</tr>
-						<% end -%>
-					</table>
-				</td>
-				<td>
-					<table>
-						<tr>
-							<th colspan=2>Report Fields</th>
-			<% for rf in @period.report_fields -%>
-				<tr>
-					<td>
-						<% name = "field_#{rf.id}" -%>
-						<%= check_box :fields, name, :checked => '1' == (@fields[name] ||= '0') %>
-					</td>
-					<td>
-						<%= rf.name %>
-					</td>
-				</tr>
-			<% end -%>
-					</table>
-				</td>
-			</tr>
-			<tr>
-				<td colspan='2' style='text-align:center;'>
-					<%= submit_tag 'View' %>
-					<%= submit_tag 'Download Excel' %>
-				</td>
-			</tr>
-		</table>
-	<% end %>
+              <tr><td>Intern Type: <%= check_box :fields, :intern_type, :checked => '1' == (@fields[:intern_type] ||= '0') %></td></tr>
+              <tr><td>Coaching Group: <%= check_box :fields, :group, :checked => '1' == (@fields[:group] ||= '0') %></td></tr>
+              <tr><td>Team: <%= check_box :fields, :team, :checked => '1' == (@fields[:team] ||= '0') %></td></tr>
+              <tr><td>&nbsp;</td></tr>
+            <% end -%>
+            <% for g in Goal.defaults -%>
+              <tr>
+                <td>
+                  <b><%= g.title %></b>
+                  <% if @assignment -%>
+                    (<%= @assignment.goal_amt(g.frequency) %>)
+                  <% else -%>
+                    <% name = "#{g.frequency}_goal" -%>
+                    <%= check_box :fields, name, :checked => '1' == (@fields[name] ||= '0') %>
+                    Goal
+                  <% end -%>
+                  <li>
+                    <b>In-Hand</b>
+                    <% name = "#{g.frequency}_inhand_pct" -%>
+                    <%= check_box :fields, name, :checked => '1' == (@fields[name] ||= '0') %>
+                    Percent
+                    <% name = "#{g.frequency}_inhand_amt" -%>
+                    <%= check_box :fields, name, :checked => '1' == (@fields[name] ||= '0') %>
+                    Amount
+                  </li>
+                  <li>
+                    <b>Pledged</b>
+                    <% name = "#{g.frequency}_pledged_pct" -%>
+                    <%= check_box :fields, name, :checked => '1' == (@fields[name] ||= '0') %>
+                    Percent
+                    <% name = "#{g.frequency}_pledged_amt" -%>
+                    <%= check_box :fields, name, :checked => '1' == (@fields[name] ||= '0') %>
+                    Amount
+                  </li>
+                </td>
+              </tr>
+            <% end -%>
+          </table>
+        </td>
+        <td>
+          <table>
+            <tr>
+              <th colspan=2>Report Fields</th>
+      <% for rf in @period.report_fields -%>
+        <tr>
+          <td>
+            <% name = "field_#{rf.id}" -%>
+            <%= check_box :fields, name, :checked => '1' == (@fields[name] ||= '0') %>
+          </td>
+          <td>
+            <%= rf.name %>
+          </td>
+        </tr>
+      <% end -%>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td colspan='2' style='text-align:center;'>
+          <%= submit_tag 'View' %>
+          <%= submit_tag 'Download Excel' %>
+        </td>
+      </tr>
+    </table>
+  <% end %>
 </div>

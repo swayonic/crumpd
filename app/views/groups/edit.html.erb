@@ -15,32 +15,32 @@
     </div>
   <% end %>
 
-	<table class="table">
-		<tr>
-			<td>
-				Name
-				<% tmp = @group.dup; tmp.name = nil -%>
-				<%= help_tip "If left blank, the name will default to \"#{tmp.display_name}\"" %>
-			</td>
-			<td><%= f.text_field :name %></td>
-		</tr>
-		<% disabled = @group.period.keep_updated -%>
-		<% if disabled -%>
+  <table class="table">
+    <tr>
+      <td>
+        Name
+        <% tmp = @group.dup; tmp.name = nil -%>
+        <%= help_tip "If left blank, the name will default to \"#{tmp.display_name}\"" %>
+      </td>
+      <td><%= f.text_field :name %></td>
+    </tr>
+    <% disabled = @group.period.keep_updated -%>
+    <% if disabled -%>
       <tr>
         <td>&nbsp;</td>
       </tr>
-			<tr>
-				<td></td>
-				<th>Locked <%= help_tip 'These attributes are only editable via sitrack' %></th>
-			</tr>
-		<% end -%>
-		<tr>
-			<td>Coach Name</td>
-			<td><%= f.text_field :coach_name, :disabled => disabled %></td>
-		</tr>
-	</table>
-	
-	<%= f.submit %>
+      <tr>
+        <td></td>
+        <th>Locked <%= help_tip 'These attributes are only editable via sitrack' %></th>
+      </tr>
+    <% end -%>
+    <tr>
+      <td>Coach Name</td>
+      <td><%= f.text_field :coach_name, :disabled => disabled %></td>
+    </tr>
+  </table>
+  
+  <%= f.submit %>
 <% end %>
 
 </div>

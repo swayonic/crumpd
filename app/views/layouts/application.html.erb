@@ -3,16 +3,16 @@
 <head>
   <title>MPD - <%= @page_title or params[:controller].to_s.capitalize %></title>
 <!-- STYLESHEETS -->
-	<%= stylesheet_link_tag    "application", :media => 'all'  %>
-	<%= yield :stylesheets %>
+  <%= stylesheet_link_tag    "application", :media => 'all'  %>
+  <%= yield :stylesheets %>
 <!-- JAVASCRIPTS -->
   <%= javascript_include_tag "application" %>
-	<%= yield :javascripts %>
-	<script>
-		$(function() {
-			$(document).tooltip();	//Enable tooltips for all items with a title
-		});
-	</script>
+  <%= yield :javascripts %>
+  <script>
+    $(function() {
+      $(document).tooltip();  //Enable tooltips for all items with a title
+    });
+  </script>
 <!-- METATAGS -->
   <%= csrf_meta_tags %>
 </head>
@@ -22,10 +22,10 @@
     <%= render :partial => 'shared/login' %>
   </div>
   <div class="row">
-	  <%= render :partial => 'shared/breadcrumbs' %>
+    <%= render :partial => 'shared/breadcrumbs' %>
   </div>
   <div class="row">
-	  <%= render :partial => 'shared/page_header' %>
+    <%= render :partial => 'shared/page_header' %>
   </div>
   <div class="row">
     <div class="span8 offset2">
@@ -33,7 +33,7 @@
     </div>
   </div>
   <div class="row">
-	  <%= content_for?(:content) ? yield(:content) : yield %>
+    <%= content_for?(:content) ? yield(:content) : yield %>
   </div>
 </div>
 </body>

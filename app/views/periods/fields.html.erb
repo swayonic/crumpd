@@ -1,125 +1,125 @@
 <% title @period.name + ' - Report Fields' %>
 
 <div class="span12">
-	<b>NOTE:</b>
-	<ul>
-		<i>
-		<li>Lines are automatically added for goal progress, two for each goal (e.g. "Monthly pledged" and "Monthly in-hand").</li>
-		<li>You cannot edit the 'Type' of an existing field if a report has already been created for this period, since this could lead to data corruption. If you must make a change, you can delete the field and add it again, but you will lose all information that had been entered for that field.</li>
-		</i>
-	</ul>
-	<%= form_for :fields, :url => update_fields_period_path(@period) do |f| %>
-		<table id='fieldsTable' class="table">
-		<thead>
-			<tr>
-				<th></th>
-				<th>Name</th>
-				<th>Delete</th>
-				<th>Type</th>
-				<th>Required</th>
-				<th>Description</th>
-			</tr>
-		</thead>
-		<tbody>
-			<% for rf in @period.report_fields %>
-				<%= render :partial => 'field_row', :locals => {:id => "field_#{rf.id}", :rf => rf} %>
-			<% end %>
-		</tbody>
-		</table>
-		
-		<a href='javascript:void(0);' onclick="addRow();">Add Field</a>
-		<%= f.submit 'Save' %>
-		<%= link_to 'Back', @period %>
-	<% end %>
+  <b>NOTE:</b>
+  <ul>
+    <i>
+    <li>Lines are automatically added for goal progress, two for each goal (e.g. "Monthly pledged" and "Monthly in-hand").</li>
+    <li>You cannot edit the 'Type' of an existing field if a report has already been created for this period, since this could lead to data corruption. If you must make a change, you can delete the field and add it again, but you will lose all information that had been entered for that field.</li>
+    </i>
+  </ul>
+  <%= form_for :fields, :url => update_fields_period_path(@period) do |f| %>
+    <table id='fieldsTable' class="table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Name</th>
+        <th>Delete</th>
+        <th>Type</th>
+        <th>Required</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for rf in @period.report_fields %>
+        <%= render :partial => 'field_row', :locals => {:id => "field_#{rf.id}", :rf => rf} %>
+      <% end %>
+    </tbody>
+    </table>
+    
+    <a href='javascript:void(0);' onclick="addRow();">Add Field</a>
+    <%= f.submit 'Save' %>
+    <%= link_to 'Back', @period %>
+  <% end %>
 </div>
 
 <div style='display:none;'>
-	<table>
-	<%= render :partial => 'field_row', :locals => {:id => 'blankfield', :rf => ReportField.new} %>
-	</table>
+  <table>
+  <%= render :partial => 'field_row', :locals => {:id => 'blankfield', :rf => ReportField.new} %>
+  </table>
 </div>
-		
+    
 <script type='text/javascript'>
 function reorder(id, dir)
 {
-	id = id + '_row';
-	var rows = $('#fieldsTable tr');
-	var index = rows.length; //invalid
-	for (var i = 1; i < rows.length; i++)
-	{
-		if (rows[i].id == id)
-		{
-			index = i;
-			break;
-		}
-	}
-	if (index == rows.length) return; //invalid
+  id = id + '_row';
+  var rows = $('#fieldsTable tr');
+  var index = rows.length; //invalid
+  for (var i = 1; i < rows.length; i++)
+  {
+    if (rows[i].id == id)
+    {
+      index = i;
+      break;
+    }
+  }
+  if (index == rows.length) return; //invalid
 
-	if (dir == 'up')
-	{
-		if (index == 1)
-		{
-			//alert("can't!");
-			return;
-		}
-		rows[index].cells[0].childNodes[1].value = index - 1;
-		rows[index - 1].cells[0].childNodes[1].value = index;
-		var otherId = rows[index - 1].id;
-		$('#'+otherId).insertAfter('#'+id);
-	}
-	else if (dir == 'down')
-	{
-		if (index == rows.length - 1)
-		{
-			//alert("can't!");
-			return;
-		}
-		rows[index].cells[0].childNodes[1].value = index + 1;
-		rows[index + 1].cells[0].childNodes[1].value = index;
-		var otherId = rows[index + 1].id;
-		$('#'+id).insertAfter('#'+otherId);
-	}
+  if (dir == 'up')
+  {
+    if (index == 1)
+    {
+      //alert("can't!");
+      return;
+    }
+    rows[index].cells[0].childNodes[1].value = index - 1;
+    rows[index - 1].cells[0].childNodes[1].value = index;
+    var otherId = rows[index - 1].id;
+    $('#'+otherId).insertAfter('#'+id);
+  }
+  else if (dir == 'down')
+  {
+    if (index == rows.length - 1)
+    {
+      //alert("can't!");
+      return;
+    }
+    rows[index].cells[0].childNodes[1].value = index + 1;
+    rows[index + 1].cells[0].childNodes[1].value = index;
+    var otherId = rows[index + 1].id;
+    $('#'+id).insertAfter('#'+otherId);
+  }
 };
 
 function toggleDelete()
 {
-	var checked = this.checked;
-	var rowId = this.id.substr(0,this.id.length-7)+'_row';
-	var inputs = $('#'+rowId+' input, #'+rowId+' textarea, #'+rowId+ ' select');
-	for (var i=0; i<inputs.length; i++)
-	{
-		if (!inputs[i].hidden && inputs[i].id != this.id)
-			inputs[i].disabled = checked;
-	}
+  var checked = this.checked;
+  var rowId = this.id.substr(0,this.id.length-7)+'_row';
+  var inputs = $('#'+rowId+' input, #'+rowId+' textarea, #'+rowId+ ' select');
+  for (var i=0; i<inputs.length; i++)
+  {
+    if (!inputs[i].hidden && inputs[i].id != this.id)
+      inputs[i].disabled = checked;
+  }
 }
 
 function addRow()
 {
-	$('#blankfield_row').clone().insertAfter('#fieldsTable tr :last');
-	var html = $('#fieldsTable tr :last').html();
-	var id = 'newfield_'+newFieldId;
-	newFieldId++;
-	var idx = html.indexOf('blankfield');
-	while (idx > 0)
-	{
-		html = html.replace('blankfield', id);
-		idx = html.indexOf('blankfield');
-	}
-	id = id + '_row';
-	$('#fieldsTable tr :last')[0].id = id;
-	$('#'+id).html(html);
-	$('#'+id)[0].cells[0].childNodes[1].value = $('#fieldsTable tr').length-1;
-	$('#'+id+' .remove_field_box')[0].onchange = toggleDelete;
+  $('#blankfield_row').clone().insertAfter('#fieldsTable tr :last');
+  var html = $('#fieldsTable tr :last').html();
+  var id = 'newfield_'+newFieldId;
+  newFieldId++;
+  var idx = html.indexOf('blankfield');
+  while (idx > 0)
+  {
+    html = html.replace('blankfield', id);
+    idx = html.indexOf('blankfield');
+  }
+  id = id + '_row';
+  $('#fieldsTable tr :last')[0].id = id;
+  $('#'+id).html(html);
+  $('#'+id)[0].cells[0].childNodes[1].value = $('#fieldsTable tr').length-1;
+  $('#'+id+' .remove_field_box')[0].onchange = toggleDelete;
 }
 
 $(document).ready(function()
 {
-	var boxes = $('.remove_field_box');
-	for (var i=0; i < boxes.length; i++)
-	{
-		boxes[i].onchange = toggleDelete;
-	}
-	newFieldId = 1;
+  var boxes = $('.remove_field_box');
+  for (var i=0; i < boxes.length; i++)
+  {
+    boxes[i].onchange = toggleDelete;
+  }
+  newFieldId = 1;
 });
 </script>
 

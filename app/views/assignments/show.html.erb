@@ -5,144 +5,144 @@
   <h2>Details</h2>
   <dl class="dl-horizontal">
     <dt>User</dt>
-		<dd>
+    <dd>
       <%= link_to_if @assignment.user.can_view?(@cas_user), @assignment.user.display_name, @assignment.user %>
-		</dd>
-		<% if @assignment.intern_type -%>
-			<dt>Intern type</dt>
-			<dd><%= @assignment.intern_type %></dd>
-		<% end -%>
-		<dt>Team</dt>
-		<dd>
+    </dd>
+    <% if @assignment.intern_type -%>
+      <dt>Intern type</dt>
+      <dd><%= @assignment.intern_type %></dd>
+    <% end -%>
+    <dt>Team</dt>
+    <dd>
       <% if @assignment.team.nil? -%>
         <i>None</i>
       <% else -%>
         <%= link_to_if @assignment.team.can_view?(@cas_user), @assignment.team.display_name, @assignment.team %>
       <% end -%>
     </dd>
-		<dt>Coaching Group</dt>
-		<dd>
-			<% if @assignment.group.nil? -%>
-				<i>None</i>
-			<% else -%>
-				<%= link_to_if @assignment.group.can_view?(@cas_user), @assignment.group.display_name, @assignment.group %>
-			<% end -%>
-		</dd>
-		<% for goal in @assignment.goals -%>
-			<dt><%= goal.title %> goal</dt>
-			<dd><%= number_to_currency goal.amount %></dd>
-		<% end -%>
-	</dl>
-	<% if @assignment.can_edit?(@cas_user) -%>
-		<%= link_to 'Edit', edit_assignment_path(@assignment) %>
-	<% end -%>
-	
-	<br>
-	<br>
-	
-	<% if @assignment.period.bmarks.count > 0 -%>
-		<!-- Benchmarks -->
-		<h2>Benchmarks</h2>
-		<table class="table">
-			<tr>
-				<th>Date</th>
-				<th>Amount</th>
-			</tr>
-			<% for b in @assignment.period.bmarks -%>
-				<tr>
-					<td><%= b.date.strftime('%b %e') %></td>
-					<td style='text-align:right;'><%= b.percentage %>%</td>
-				</tr>
-			<% end -%>
-		</table>
-	<% end -%>
+    <dt>Coaching Group</dt>
+    <dd>
+      <% if @assignment.group.nil? -%>
+        <i>None</i>
+      <% else -%>
+        <%= link_to_if @assignment.group.can_view?(@cas_user), @assignment.group.display_name, @assignment.group %>
+      <% end -%>
+    </dd>
+    <% for goal in @assignment.goals -%>
+      <dt><%= goal.title %> goal</dt>
+      <dd><%= number_to_currency goal.amount %></dd>
+    <% end -%>
+  </dl>
+  <% if @assignment.can_edit?(@cas_user) -%>
+    <%= link_to 'Edit', edit_assignment_path(@assignment) %>
+  <% end -%>
+  
+  <br>
+  <br>
+  
+  <% if @assignment.period.bmarks.count > 0 -%>
+    <!-- Benchmarks -->
+    <h2>Benchmarks</h2>
+    <table class="table">
+      <tr>
+        <th>Date</th>
+        <th>Amount</th>
+      </tr>
+      <% for b in @assignment.period.bmarks -%>
+        <tr>
+          <td><%= b.date.strftime('%b %e') %></td>
+          <td style='text-align:right;'><%= b.percentage %>%</td>
+        </tr>
+      <% end -%>
+    </table>
+  <% end -%>
 
-	<% if @assignment.can_view_pledges?(@cas_user) and @assignment.goals.count > 0 -%>
-		<!-- Pledges -->
-		<h3>Pledges</h3>
-		<%= link_to 'View Pledges', assignment_pledges_path(@assignment) %>
-		<br>
-		<br>
-		<br>
-		<div width=100% style='padding-left:25px'>
-		<table id='pledgePercent' style='display:none;' width='250px'>
-			<tr>
-				<td style='text-align:right;'><i>Percentages</i></td>
-				<th>In-hand</th>
-				<th>With pledged</th>
-			</tr>
-			<% for g in @assignment.goals -%>
-				<tr>
-					<th><%= g.title %> %</th>
-					<td><%= @assignment.goal_inhand_pct(g.frequency) %></td>
-					<td><%= @assignment.goal_total_pct(g.frequency) %></td>
-				</tr>
-			<% end -%>
-			<% if @assignment.goals.count > 1 -%>
-				<tr>
-					<th>Combined %</th>
-					<td><%= @assignment.combined_inhand_pct %></td>
-					<td><%= @assignment.combined_total_pct %></td>
-				</tr>
-			<% end -%>
-		</table>
-		<br>
-		<br>
-		<br>
-		</div>
-		<script>
-			$(document).ready(function() {
-				$('#pledgePercent').visualize({type:'bar', parseDirection:'y', height:'100px'});
-			});
-		</script>
-	<% end -%>
-	
+  <% if @assignment.can_view_pledges?(@cas_user) and @assignment.goals.count > 0 -%>
+    <!-- Pledges -->
+    <h3>Pledges</h3>
+    <%= link_to 'View Pledges', assignment_pledges_path(@assignment) %>
+    <br>
+    <br>
+    <br>
+    <div width=100% style='padding-left:25px'>
+    <table id='pledgePercent' style='display:none;' width='250px'>
+      <tr>
+        <td style='text-align:right;'><i>Percentages</i></td>
+        <th>In-hand</th>
+        <th>With pledged</th>
+      </tr>
+      <% for g in @assignment.goals -%>
+        <tr>
+          <th><%= g.title %> %</th>
+          <td><%= @assignment.goal_inhand_pct(g.frequency) %></td>
+          <td><%= @assignment.goal_total_pct(g.frequency) %></td>
+        </tr>
+      <% end -%>
+      <% if @assignment.goals.count > 1 -%>
+        <tr>
+          <th>Combined %</th>
+          <td><%= @assignment.combined_inhand_pct %></td>
+          <td><%= @assignment.combined_total_pct %></td>
+        </tr>
+      <% end -%>
+    </table>
+    <br>
+    <br>
+    <br>
+    </div>
+    <script>
+      $(document).ready(function() {
+        $('#pledgePercent').visualize({type:'bar', parseDirection:'y', height:'100px'});
+      });
+    </script>
+  <% end -%>
+  
 </div>
 
 <div class="span8">
-	<h2>Reports</h2>
-	<table>
-		<tr>
+  <h2>Reports</h2>
+  <table>
+    <tr>
       <td><%= button_to 'New Report', new_assignment_report_path(@assignment), method: 'get', class: 'btn' if @assignment.can_edit_reports?(@cas_user) %></td>
       <td><%= button_to 'Report Details', list_assignment_reports_path(@assignment), method: 'get', class: 'btn' if @assignment.reports.count > 0 %></td>
-		</tr>
-	</table>
+    </tr>
+  </table>
 
-	<% if @assignment.reports.count > 0 -%>
-		<table id='reportsTable' class="table">
-			<tr>
-				<td></td>
-				<% for g in @assignment.goals -%>
-					<th><%= g.title %> in-hand</th>
-					<th><%= g.title %> pledged</th>
-				<% end -%>
-			</tr>
-			<% for r in @assignment.reports.reverse -%>
-				<tr>
-					<th>
-						<%= link_to r.date.strftime('%b %e'), r %>
-					</th>
-					<% for g in @assignment.goals -%>
-						<% if l = r.goal_lines.find_by_frequency(g.frequency) -%>
-							<td><%= Goal.pct(l.inhand, @assignment.goal_amt(g.frequency)) %></td>
-							<td><%= Goal.pct(l.inhand + l.pledged, @assignment.goal_amt(g.frequency)) %></td>
-						<% end -%>
-					<% end -%>
-				</tr>
-			<% end -%>
-		</table>
-		<% if @assignment.reports.count > 1 -%>
-			<script>
-				$(document).ready(function() {
-					$('#reportsTable').visualize({type: 'bar', height:'150px', parseDirection:'y'});
-				});
-			</script>
-			<br>
-			<br>
-			<br>
+  <% if @assignment.reports.count > 0 -%>
+    <table id='reportsTable' class="table">
+      <tr>
+        <td></td>
+        <% for g in @assignment.goals -%>
+          <th><%= g.title %> in-hand</th>
+          <th><%= g.title %> pledged</th>
+        <% end -%>
+      </tr>
+      <% for r in @assignment.reports.reverse -%>
+        <tr>
+          <th>
+            <%= link_to r.date.strftime('%b %e'), r %>
+          </th>
+          <% for g in @assignment.goals -%>
+            <% if l = r.goal_lines.find_by_frequency(g.frequency) -%>
+              <td><%= Goal.pct(l.inhand, @assignment.goal_amt(g.frequency)) %></td>
+              <td><%= Goal.pct(l.inhand + l.pledged, @assignment.goal_amt(g.frequency)) %></td>
+            <% end -%>
+          <% end -%>
+        </tr>
+      <% end -%>
+    </table>
+    <% if @assignment.reports.count > 1 -%>
+      <script>
+        $(document).ready(function() {
+          $('#reportsTable').visualize({type: 'bar', height:'150px', parseDirection:'y'});
+        });
+      </script>
+      <br>
+      <br>
+      <br>
     <% end -%>
   <% else -%>
     <i>None</i>
-	<% end -%>
+  <% end -%>
 
 </div>

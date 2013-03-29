@@ -1,57 +1,57 @@
 <% title @report.assignment.user.display_name + ' - ' + @report.date.strftime('%b %e Report') %>
 
 <div class="span10 offset1" align='center'>
-	<table class="table">
-		<tr>
-			<td><b>Report Date</b></td>
-			<td><%= @report.date.strftime('%b %e') %></td>
-		</tr>
-		<tr>
-			<td><i>Created at</i></td>
-			<td><%= @report.created_at.strftime('%b %e, %Y %H:%M') %></td>
-		</tr>
-		<% unless @report.updated_at.eql?(@report.created_at) -%>
-			<tr>
-				<td><i>Updated at</i></td>
-				<td><%= @report.updated_at.strftime('%b %e, %Y %H:%M') %></td>
-			</tr>
-			<% if u = User.find_by_id(@report.updated_by) -%>
-				<tr>
-					<td><i>Updated by</i></td>
-					<td><%= u.display_name %></td>
-				</tr>
-			<% end -%>
-		<% end -%>
+  <table class="table">
+    <tr>
+      <td><b>Report Date</b></td>
+      <td><%= @report.date.strftime('%b %e') %></td>
+    </tr>
+    <tr>
+      <td><i>Created at</i></td>
+      <td><%= @report.created_at.strftime('%b %e, %Y %H:%M') %></td>
+    </tr>
+    <% unless @report.updated_at.eql?(@report.created_at) -%>
+      <tr>
+        <td><i>Updated at</i></td>
+        <td><%= @report.updated_at.strftime('%b %e, %Y %H:%M') %></td>
+      </tr>
+      <% if u = User.find_by_id(@report.updated_by) -%>
+        <tr>
+          <td><i>Updated by</i></td>
+          <td><%= u.display_name %></td>
+        </tr>
+      <% end -%>
+    <% end -%>
 
-		<tr><td>&nbsp;</td></tr>
+    <tr><td>&nbsp;</td></tr>
 
-		<% for line in @report.goal_lines -%>
-			<tr>
-				<td><b><%= Goal.title(line.frequency) %> in-hand</b></td>
-				<td><%= line.inhand %></td>
-			</tr>
-			<tr>
-				<td><b><%= Goal.title(line.frequency) %> pledged</b></td>
-				<td><%= line.pledged %></td>
-			</tr>
-		<% end -%>
+    <% for line in @report.goal_lines -%>
+      <tr>
+        <td><b><%= Goal.title(line.frequency) %> in-hand</b></td>
+        <td><%= line.inhand %></td>
+      </tr>
+      <tr>
+        <td><b><%= Goal.title(line.frequency) %> pledged</b></td>
+        <td><%= line.pledged %></td>
+      </tr>
+    <% end -%>
 
-		<tr><td>&nbsp;</td></tr>
+    <tr><td>&nbsp;</td></tr>
 
-		<% for line in @report.field_lines.sort_by{|l| l.report_field.list_index} -%>
-			<tr>
-				<td>
-					<% if line.report_field.is_required? -%>
-						<b><%= line.report_field.name %></b>
-					<% else -%>
-						<%= line.report_field.name %>
-					<% end -%>
-				</td>
-				<td><%= line.value %></td>
-			</tr>
-		<% end -%>
-	</table>
+    <% for line in @report.field_lines.sort_by{|l| l.report_field.list_index} -%>
+      <tr>
+        <td>
+          <% if line.report_field.is_required? -%>
+            <b><%= line.report_field.name %></b>
+          <% else -%>
+            <%= line.report_field.name %>
+          <% end -%>
+        </td>
+        <td><%= line.value %></td>
+      </tr>
+    <% end -%>
+  </table>
 
-	<%= link_to 'Edit', edit_report_path(@report) %> |
-	<%= link_to 'Back', assignment_path(@report.assignment) %>
+  <%= link_to 'Edit', edit_report_path(@report) %> |
+  <%= link_to 'Back', assignment_path(@report.assignment) %>
 </div>

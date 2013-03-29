@@ -1,30 +1,30 @@
 <div class="span8 offset2">
-	<table width="100%">
-		<tr>
-			<td>
-				<% if Rails.env.development? -%>
-					<%# Helps my PR a little bit %>
-					<%= link_to image_tag('safelogo.png'), root_path %></a>
-				<% else -%>
-					<%= link_to image_tag('logo.png'), root_path %></a>
-				<% end -%>
-			</td>
-			<td width='100%' style='text-align:right;'>
-				<br>
-				<% if @cas_user.nil? -%>
-					<%= link_to 'Login', @login_path %>
-				<% else -%>
-					<%= @cas_user.display_name %>
-					<br>
-					<%= link_to 'My Profile', @cas_user %>
-					<br>
-					<% if @sudoer %>
-						<%= link_to 'Unsudo', unsudo_users_path %> (<i><%= @sudoer.display_name %></i>)
-					<% else -%>
-						<%= link_to 'Logout', :controller => :home, :action => :logout %>
-					<% end -%>
-				<% end -%>
-			</td>
-		</tr>
-	</table>
+  <table width="100%">
+    <tr>
+      <td>
+        <% if Rails.env.development? -%>
+          <%# Helps my PR a little bit %>
+          <%= link_to image_tag('safelogo.png'), root_path %></a>
+        <% else -%>
+          <%= link_to image_tag('logo.png'), root_path %></a>
+        <% end -%>
+      </td>
+      <td width='100%' style='text-align:right;'>
+        <br>
+        <% if @cas_user.nil? -%>
+          <%= link_to 'Login', @login_path %>
+        <% else -%>
+          <%= @cas_user.display_name %>
+          <br>
+          <%= link_to 'My Profile', @cas_user %>
+          <br>
+          <% if @sudoer %>
+            <%= link_to 'Unsudo', unsudo_users_path %> (<i><%= @sudoer.display_name %></i>)
+          <% else -%>
+            <%= link_to 'Logout', :controller => :home, :action => :logout %>
+          <% end -%>
+        <% end -%>
+      </td>
+    </tr>
+  </table>
 </div>

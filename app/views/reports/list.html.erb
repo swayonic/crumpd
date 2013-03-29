@@ -3,12 +3,12 @@
 <%= render :partial => 'list/form' %>
 
 <div class="span12">
-	<table id='reportList' class='tablesorter-blue'>
-		<%= render :partial => 'list_data' %>
-	</table>
-	<script type='text/javascript'>
-		$(document).ready(function() {
-			$('#reportList').tablesorter();
-		});
-	</script>
+  <table id='reportList' class='tablesorter-blue'>
+    <%= render :partial => 'list_data' %>
+  </table>
+  <script type='text/javascript'>
+    $(document).ready(function() {
+      $('#reportList').tablesorter();
+    });
+  </script>
 </div>

@@ -1,18 +1,18 @@
 <%= hidden_field name, :user_id %>
 <fieldset>
   <legend><%= title %></legend>
-	<div class="control-group">
+  <div class="control-group">
     <div class="control-label">Existing User</div>
     <div class="controls">
       <%= radio_button name, 'new', '0', :checked => true %>
       <%= autocomplete_field name, :name, autocomplete_users_path, :id_element => "##{name}_user_id", :size => 12 %>
     </div>
-	</div>
+  </div>
   <div class="control-group">
     <div class="control-label">New User</div>
     <div class="controls">
-			<%= radio_button name, 'new', '1' %>
-			<%= text_field name, :account_number, :size => 12, :disabled => true %>
+      <%= radio_button name, 'new', '1' %>
+      <%= text_field name, :account_number, :size => 12, :disabled => true %>
       <%= help_tip 'Use their account number' %>
     </div>
   </div>
@@ -24,16 +24,16 @@
 </fieldset>
 
 <script>
-		$("[name='<%= name %>[new]']").click(function() {
-			if ($("[name='<%= name %>[new]']:checked").val() == '0')
-			{
-					$('#<%= name %>_name')[0].disabled = false;
-					$('#<%= name %>_account_number')[0].disabled = true;
-			}
-			else
-			{
-					$('#<%= name %>_name')[0].disabled = true;
-					$('#<%= name %>_account_number')[0].disabled = false;
-			}
-		});
+    $("[name='<%= name %>[new]']").click(function() {
+      if ($("[name='<%= name %>[new]']:checked").val() == '0')
+      {
+          $('#<%= name %>_name')[0].disabled = false;
+          $('#<%= name %>_account_number')[0].disabled = true;
+      }
+      else
+      {
+          $('#<%= name %>_name')[0].disabled = true;
+          $('#<%= name %>_account_number')[0].disabled = false;
+      }
+    });
 </script>

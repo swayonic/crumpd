@@ -13,46 +13,46 @@
       <% end %>
       </ul>
     </div>
-	<% end %>
+  <% end %>
 
-	<table class="table">
-		<tr>
-			<td>
-				Name
-				<% tmp = @team.dup; tmp.name = nil -%>
-				<%= help_tip "If left blank, the name will default to \"#{tmp.display_name}\"" %>
-			</td>
-			<td><%= f.text_field :name %></td>
-		</tr>
-		<% disabled = @team.period.keep_updated -%>
-		<% if disabled %>
+  <table class="table">
+    <tr>
+      <td>
+        Name
+        <% tmp = @team.dup; tmp.name = nil -%>
+        <%= help_tip "If left blank, the name will default to \"#{tmp.display_name}\"" %>
+      </td>
+      <td><%= f.text_field :name %></td>
+    </tr>
+    <% disabled = @team.period.keep_updated -%>
+    <% if disabled %>
       <tr>
         <td>&nbsp;</td>
       </tr>
-			<tr>
-				<td></td>
-				<th>Locked <%= help_tip 'These attributes are only editable via sitrack' %></th>
+      <tr>
+        <td></td>
+        <th>Locked <%= help_tip 'These attributes are only editable via sitrack' %></th>
       </tr>
-		<% end -%>
-		<tr>
-			<td>City</td>
-			<td><%= f.text_field :city, :disabled => disabled %></td>
-		</tr>
-		<tr>
-			<td>State</td>
-			<td><%= f.text_field :state, :disabled => disabled %></td>
-		</tr>
-		<tr>
-			<td>Country</td>
-			<td><%= f.text_field :country, :disabled => disabled %></td>
-		</tr>
-		<tr>
-			<td>Continent</td>
-			<td><%= f.text_field :continent, :disabled => disabled %></td>
-		</tr>
-	</table>
-	
-	<%= f.submit %>
+    <% end -%>
+    <tr>
+      <td>City</td>
+      <td><%= f.text_field :city, :disabled => disabled %></td>
+    </tr>
+    <tr>
+      <td>State</td>
+      <td><%= f.text_field :state, :disabled => disabled %></td>
+    </tr>
+    <tr>
+      <td>Country</td>
+      <td><%= f.text_field :country, :disabled => disabled %></td>
+    </tr>
+    <tr>
+      <td>Continent</td>
+      <td><%= f.text_field :continent, :disabled => disabled %></td>
+    </tr>
+  </table>
+  
+  <%= f.submit %>
 <% end %>
 
 </div>

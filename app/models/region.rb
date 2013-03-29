@@ -1,7 +1,7 @@
 class Region < ActiveRecord::Base
   attr_accessible :name, :title
 
-	has_many :periods
+  has_many :periods
 
   validates_each :title do |record, attr, value|
     logger.debug "attr: #{attr}"
@@ -15,7 +15,7 @@ class Region < ActiveRecord::Base
     end
   end
 
-	def display_name
-		title.nil? ? name : title
-	end
+  def display_name
+    title.nil? ? name : title
+  end
 end
