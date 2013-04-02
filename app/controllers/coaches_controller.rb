@@ -7,7 +7,7 @@ class CoachesController < HomeController
       return
     end
     if !@group.can_edit_coaches?(@cas_user)
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
     
@@ -84,7 +84,7 @@ class CoachesController < HomeController
       return
     end
     if !@coach.group.can_edit_coaches?(@cas_user)
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
 

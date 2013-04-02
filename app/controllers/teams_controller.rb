@@ -7,7 +7,7 @@ class TeamsController < HomeController
       return
     end
     if !@team.can_view?(@cas_user)
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
 
@@ -28,7 +28,7 @@ class TeamsController < HomeController
       return
     end
     if !@team.can_edit?(@cas_user)
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
     member_breadcrumbs
@@ -41,7 +41,7 @@ class TeamsController < HomeController
       return
     end
     if !@period.can_edit?(@cas_user) or @period.keep_updated?
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
 
@@ -63,7 +63,7 @@ class TeamsController < HomeController
       return
     end
     if !@team.can_edit?(@cas_user)
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
 
@@ -127,7 +127,7 @@ class TeamsController < HomeController
       return
     end
     if !@team.period.can_edit?(@cas_user) or @team.period.keep_updated?
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
 
@@ -149,7 +149,7 @@ class TeamsController < HomeController
       return
     end
     if !@team.can_view_list?(@cas_user)
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
 

@@ -7,7 +7,7 @@ class LeadersController < HomeController
       return
     end
     if !@team.can_view?(@cas_user)
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
 
@@ -33,7 +33,7 @@ class LeadersController < HomeController
       return
     end
     if !@leader.team.can_edit?(@cas_user)
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
     @leader.destroy

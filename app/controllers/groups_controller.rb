@@ -7,7 +7,7 @@ class GroupsController < HomeController
       return
     end
     if !@group.can_view?(@cas_user)
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
 
@@ -28,7 +28,7 @@ class GroupsController < HomeController
       return
     end
     if !@group.can_edit?(@cas_user)
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
     member_breadcrumbs
@@ -41,7 +41,7 @@ class GroupsController < HomeController
       return
     end
     if !@period.can_edit?(@cas_user) or @period.keep_updated?
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
 
@@ -63,7 +63,7 @@ class GroupsController < HomeController
       return
     end
     if !@group.can_edit?(@cas_user)
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
 
@@ -103,7 +103,7 @@ class GroupsController < HomeController
       return
     end
     if !@group.period.can_edit?(@cas_user) or @group.period.keep_updated?
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
 
@@ -125,7 +125,7 @@ class GroupsController < HomeController
       return
     end
     if !@group.can_view_list?(@cas_user)
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
 

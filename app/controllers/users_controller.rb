@@ -11,7 +11,7 @@ class UsersController < HomeController
       return
     end
     if !@user.can_view?(@cas_user)
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
   end
@@ -23,7 +23,7 @@ class UsersController < HomeController
       return
     end
     if !@user.can_edit?(@cas_user)
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
   end
@@ -35,7 +35,7 @@ class UsersController < HomeController
       return
     end
     if !@user.can_edit?(@cas_user)
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
     
@@ -53,7 +53,7 @@ class UsersController < HomeController
       return
     end
     if !@cas_user.is_admin?
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
 
@@ -100,7 +100,7 @@ class UsersController < HomeController
     end
 
     if !@cas_user.is_admin?
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
 
@@ -118,7 +118,7 @@ class UsersController < HomeController
     end
 
     if !user.can_sudo?(true_user)
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
 

@@ -8,7 +8,7 @@ class ReportsController < HomeController
     end
     @assignment = @report.assignment
     if !@assignment.can_view_reports?(@cas_user)
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
     member_breadcrumbs
@@ -21,7 +21,7 @@ class ReportsController < HomeController
       return
     end
     if !@assignment.can_edit_reports?(@cas_user)
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
 
@@ -47,7 +47,7 @@ class ReportsController < HomeController
     end
     assignment = @report.assignment
     if !assignment.can_edit_reports?(@cas_user)
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
     
@@ -72,7 +72,7 @@ class ReportsController < HomeController
       return
     end
     if !@assignment.can_edit_reports?(@cas_user)
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
     @report = @assignment.reports.new(params[:report])
@@ -105,7 +105,7 @@ class ReportsController < HomeController
       return
     end
     if !@report.assignment.can_edit_reports?(@cas_user)
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
     valid = true
@@ -151,7 +151,7 @@ class ReportsController < HomeController
       return
     end
     if !@report.assignment.can_edit_reports?(@cas_user)
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
     a = @report.assignment
@@ -167,7 +167,7 @@ class ReportsController < HomeController
       return
     end
     if !@assignment.can_view_reports?(@cas_user)
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
 

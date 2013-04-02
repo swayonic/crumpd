@@ -115,7 +115,7 @@ class HomeController < ApplicationController
 		end
 
 		if cas_user.nil?
-			render 'shared/requires_login'
+			render 'shared/unauthorized'
 			return false
 		end
 

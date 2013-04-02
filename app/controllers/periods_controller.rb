@@ -3,7 +3,7 @@ class PeriodsController < HomeController
   # GET /periods
   def index
     if !@cas_user.is_admin?
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
     @periods = Period.all.sort_by{|p| [-p.year, p.region.name]}
@@ -15,7 +15,7 @@ class PeriodsController < HomeController
   # POST /periods
   def create
     if !@cas_user.is_admin?
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
 
@@ -48,7 +48,7 @@ class PeriodsController < HomeController
       return
     end
     if !@period.can_view?(@cas_user)
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
 
@@ -67,7 +67,7 @@ class PeriodsController < HomeController
   # DELETE /periods/1
   def destroy
     if !@cas_user.is_admin?
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
     if !@period = Period.find_by_id(params[:id])
@@ -87,7 +87,7 @@ class PeriodsController < HomeController
   # GET /periods/1/toggle_updated
   def toggle_updated
     if !@cas_user.is_admin?
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
     if !@period = Period.find_by_id(params[:id])
@@ -113,7 +113,7 @@ class PeriodsController < HomeController
       return
     end
     if !@period.can_edit?(@cas_user)
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
 
@@ -132,7 +132,7 @@ class PeriodsController < HomeController
       return
     end
     if !@period.can_view?(@cas_user)
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
     member_breadcrumbs
@@ -145,7 +145,7 @@ class PeriodsController < HomeController
       return
     end
     if !@period.can_edit?(@cas_user)
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
 
@@ -184,7 +184,7 @@ class PeriodsController < HomeController
       return
     end
     if !@period.can_view?(@cas_user)
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
     member_breadcrumbs
@@ -197,7 +197,7 @@ class PeriodsController < HomeController
       return
     end
     if !@period.can_edit?(@cas_user)
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
     
@@ -236,7 +236,7 @@ class PeriodsController < HomeController
       return
     end
     if !@period.can_view?(@cas_user)
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
 

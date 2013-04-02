@@ -7,7 +7,7 @@ class AssignmentsController < HomeController
       return
     end
     if !@assignment.can_view?(@cas_user)
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
     member_breadcrumbs
@@ -20,7 +20,7 @@ class AssignmentsController < HomeController
       return
     end
     if !@assignment.can_edit?(@cas_user)
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
     
@@ -35,7 +35,7 @@ class AssignmentsController < HomeController
       return
     end
     if !@assignment.can_edit?(@cas_user)
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
 
@@ -86,7 +86,7 @@ class AssignmentsController < HomeController
   def create
     assn = Assignment.new(params[:assignment])
     if !assn.can_edit?(@cas_user)
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
 
@@ -186,7 +186,7 @@ class AssignmentsController < HomeController
       return
     end
     if !assn.can_edit?(@cas_user)
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
 

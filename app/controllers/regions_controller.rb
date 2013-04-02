@@ -50,7 +50,7 @@ class RegionsController < HomeController
 
   def region_filter
     if !@cas_user.is_admin?
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return false
     end
     return true

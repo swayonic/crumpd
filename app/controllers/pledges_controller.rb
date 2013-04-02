@@ -7,7 +7,7 @@ class PledgesController < HomeController
       return
     end
     if !@assignment.can_view_pledges?(@cas_user)
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
 
@@ -23,7 +23,7 @@ class PledgesController < HomeController
       return
     end
     if !@assignment.can_edit_pledges?(@cas_user)
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
 
@@ -48,7 +48,7 @@ class PledgesController < HomeController
       return
     end
     if !@pledge.assignment.can_edit_pledges?(@cas_user)
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
 
@@ -70,7 +70,7 @@ class PledgesController < HomeController
       return
     end
     if !@pledge.assignment.can_edit_pledges?(@cas_user)
-      render 'shared/unauthorized'
+      render 'shared/forbidden'
       return
     end
 
