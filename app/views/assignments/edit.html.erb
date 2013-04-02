@@ -1,51 +1,54 @@
-<%= page_header @assignment.user.display_name + ' - Assignment' %>
-<%= flash_header %>
+<% title @assignment.user.display_name + ' - Assignment' %>
 
-<div class="grid_6 prefix_3 suffix_3">
-	<%= form_for @assignment do |f| %>
-		<h2>Groups</h2>
+<div class="span6 offset3 well well-mini">
+  <%= form_for @assignment do |f| %>
+    <h3>Groups</h3>
 
-		<% teams_array = [['None', 0]].concat( @assignment.period.teams.map { |t| [t.display_name, t.id] }) -%>
-		Team: <%= f.select :team_id, options_for_select(teams_array, @assignment.team_id) %>
-		<br>
-		<% groups_array = [['None', 0]].concat( @assignment.period.groups.map { |g| [g.display_name, g.id] }) -%>
-		Coaching group: <%= f.select :group_id, options_for_select(groups_array, @assignment.group_id) %>
-		<br>
-		<br>
+    <% teams_array = [['None', 0]].concat( @assignment.period.teams.map { |t| [t.display_name, t.id] }) -%>
+    Team: <%= f.select :team_id, options_for_select(teams_array, @assignment.team_id) %>
+    <br>
+    <% groups_array = [['None', 0]].concat( @assignment.period.groups.map { |g| [g.display_name, g.id] }) -%>
+    Coaching group: <%= f.select :group_id, options_for_select(groups_array, @assignment.group_id) %>
+    <br>
+    <br>
 
-		<h2>Goals</h2>
+    <h3>Goals</h3>
 
-		<% for goal in @assignment.goals -%>
-			<%= fields_for "goal_#{goal.frequency}", goal do |g| -%>
-				<%= goal.title %> <%= g.text_field :amount, :size => 4 %>
-				Delete: <%= check_box_tag "remove_goal_#{goal.frequency}" %>
-				<br>
-			<% end -%>
-		<% end -%>
-		<br>
-		<%= fields_for "new_goal", @new_goal do |g| -%>
-			<table class='description'>
-				<tr>
-					<th colspan=2>
-						New Goal
-					</th>
-				</tr>
-				<tr>
-					<td>Frequency</td>
-					<td>
-						<%= g.select :frequency, options_for_select([['',''], ['One-time', 0],['Monthly', 12]]) %>
-					</td>
-				</tr>
-				<tr>
-					<td>Amount</td>
-					<td>
-						<%= g.text_field :amount, :size => 4 %>
-					</td>
-				</tr>
-			</table>
-		<% end -%>
-		<br>
-		<%= f.submit 'Save changes' %>
-	<% end -%>
+    <% for goal in @assignment.goals -%>
+      <%= fields_for "goal_#{goal.frequency}", goal do |g| -%>
+        <%= goal.title %> <%= g.text_field :amount, :size => 4 %>
+        Delete: <%= check_box_tag "remove_goal_#{goal.frequency}" %>
+        <br>
+      <% end -%>
+    <% end -%>
+    <br>
+    <%= fields_for "new_goal", @new_goal do |g| -%>
+      <table class="table">
+        <thead>
+          <tr>
+            <th colspan=2>
+              New Goal
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Frequency</td>
+            <td>
+              <%= g.select :frequency, options_for_select([['',''], ['One-time', 0],['Monthly', 12]]) %>
+            </td>
+          </tr>
+          <tr>
+            <td>Amount</td>
+            <td>
+              <%= g.text_field :amount, :size => 4 %>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    <% end -%>
+    <br>
+    <%= f.submit class: 'btn btn-primary' %>
+    <%= link_to 'Back', assignment_path(@assignment), class: 'btn' %>
+  <% end -%>
 </div>
-<div class="clear"</div>

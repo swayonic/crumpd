@@ -1,63 +1,65 @@
-<%= page_header 'Coaching Periods' %>
-<%= flash_header %>
+<% title'Coaching Periods' %>
 
-<div class='grid_4 prefix_1'>
-	<h2>Create new Period</h2>
-	<%= form_for @new_period do |f| -%>
-		<table style='description'>
-			<tr>
-				<td><%= f.label :region %></td>
-				<td><%= f.select :region_id, @regions.sort_by{|r| r.display_name}.map{|r| [r.display_name, r.id]} %></td>
-			</tr>
-			<tr>
-				<td><%= f.label :year %></td>
-				<td><%= f.select :year, @years %></td>
-			</tr>
-			<tr>
-				<td>
-					Updated
-					<%= help_tip 'If checked, SiTrack will be periodically pinged to keep the data up-to-date' %>
-				</td>
-				<td><%= f.check_box :keep_updated %></td>
-			</tr>
-			<tr>
-				<td colspan=2>
-					<%= f.submit %>
-				</td>
-			</tr>
-		</table>
-	<% end -%>
-</div>
-<div class='grid_6 suffix_1'>
-	<% if @periods.count > 0 -%>
-		<table class='description'>
-			<tr>
-				<th>Title</th>
-				<th>Update</th>
-				<th>Actions</th>
-			</tr>
-			<% for p in @periods -%>
-				<tr>
-					<td><%= link_to p.name, p %></td>
-					<td>
-						<% if p.keep_updated -%>
-							<%= link_to image_tag('icons/silk/accept.png'), toggle_updated_period_path(p), :title => 'Turn Off' %>
-							<%= link_to 'Update', do_update_period_path(p), :method => :post %>
-						<% else %>
-							<%= link_to image_tag('icons/silk/exclamation.png'), toggle_updated_period_path(p), :title => 'Turn On' %>
-						<% end -%>
-					</td>
-					<td>
-						<% if p.keep_updated -%>
-						<% end-%>
-						<%= link_to image_tag('icons/silk/delete.png'), p, :method => :delete, :title => 'Delete', :confirm => 'Are you sure you want to delete this entire coaching period?' %>
-					</td>
-				</tr>
-			<% end -%>
-		</table>
-	<% else -%>
-		<i>No Periods</i>
-	<% end -%>
+<div class="span4 well well-small">
+  <h3>Create new Period</h3>
+  <%= form_for @new_period do |f| -%>
+    <table class="table">
+      <tr>
+        <td><%= f.label :region %></td>
+        <td><%= f.select :region_id, @regions.sort_by{|r| r.display_name}.map{|r| [r.display_name, r.id]}, {}, class: 'span12' %></td>
+      </tr>
+      <tr>
+        <td><%= f.label :year %></td>
+        <td><%= f.select :year, @years, {}, class: 'span12' %></td>
+      </tr>
+      <tr>
+        <td>
+          Updated
+          <%= help_tip 'If checked, SiTrack will be periodically pinged to keep the data up-to-date' %>
+        </td>
+        <td><%= f.check_box :keep_updated %></td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <%= f.submit class: 'btn btn-primary' %>
+        </td>
+      </tr>
+    </table>
+  <% end -%>
 </div>
 
-<div class='clear'></div>
+<div class="span8 well well-small">
+  <% if @periods.count > 0 -%>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Update</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for p in @periods -%>
+          <tr>
+            <td><%= link_to p.name, p %></td>
+            <td>
+              <% if p.keep_updated -%>
+                <%= link_to image_tag('icons/silk/accept.png'), toggle_updated_period_path(p), :title => 'Turn Off' %>
+                <%= link_to 'Update', do_update_period_path(p), :method => :post %>
+              <% else %>
+                <%= link_to image_tag('icons/silk/exclamation.png'), toggle_updated_period_path(p), :title => 'Turn On' %>
+              <% end -%>
+            </td>
+            <td>
+              <% if p.keep_updated -%>
+              <% end-%>
+              <%= link_to image_tag('icons/silk/delete.png'), p, :method => :delete, :title => 'Delete', :confirm => 'Are you sure you want to delete this entire coaching period?' %>
+            </td>
+          </tr>
+        <% end -%>
+      </tbody>
+    </table>
+  <% else -%>
+    <i>No Periods</i>
+  <% end -%>
+</div>

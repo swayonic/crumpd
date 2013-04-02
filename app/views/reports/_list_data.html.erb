@@ -1,81 +1,81 @@
 <thead>
-	<tr>
-		<th>Date</th>
-		<% for g in Goal.defaults -%>
-			<% if @fields["#{g.frequency}_inhand_pct"] == '1' -%>
-				<th><%= "#{g.title} In-Hand Pct" %></th>
-			<% end -%>
-			<% if @fields["#{g.frequency}_inhand_amt"] == '1' -%>
-				<th><%= "#{g.title} In-Hand Amt" %></th>
-			<% end -%>
-			<% if @fields["#{g.frequency}_pledged_pct"] == '1' -%>
-				<th><%= "#{g.title} Pledged Pct" %></th>
-			<% end -%>
-			<% if @fields["#{g.frequency}_pledged_amt"] == '1' -%>
-				<th><%= "#{g.title} Pledged Amt" %></th>
-			<% end -%>
-		<% end -%>
-		<% for rf in @period.report_fields -%>
-			<% if @fields["field_#{rf.id}"] == '1' -%>
-				<th><%= rf.name %></th>
-			<% end -%>
-		<% end -%>
-	</tr>
+  <tr>
+    <th>Date</th>
+    <% for g in Goal.defaults -%>
+      <% if @fields["#{g.frequency}_inhand_pct"] == '1' -%>
+        <th><%= "#{g.title} In-Hand Pct" %></th>
+      <% end -%>
+      <% if @fields["#{g.frequency}_inhand_amt"] == '1' -%>
+        <th><%= "#{g.title} In-Hand Amt" %></th>
+      <% end -%>
+      <% if @fields["#{g.frequency}_pledged_pct"] == '1' -%>
+        <th><%= "#{g.title} Pledged Pct" %></th>
+      <% end -%>
+      <% if @fields["#{g.frequency}_pledged_amt"] == '1' -%>
+        <th><%= "#{g.title} Pledged Amt" %></th>
+      <% end -%>
+    <% end -%>
+    <% for rf in @period.report_fields -%>
+      <% if @fields["field_#{rf.id}"] == '1' -%>
+        <th><%= rf.name %></th>
+      <% end -%>
+    <% end -%>
+  </tr>
 </thead>
 
 <tbody>
-	<% for r in @assignment.reports -%>
-		<tr>
-			<td><%= r.date.strftime('%Y %m/%d') %></td>
-			<% for g in Goal.defaults -%>
-				<% if @fields["#{g.frequency}_inhand_pct"] == '1' -%>
-					<td>
-					<% if r -%>
-						<% if l = r.goal_lines.find_by_frequency(g.frequency) -%>
-							<%= Goal.pct(l.inhand, @assignment.goal_amt(g.frequency)) %>
-						<% else -%>
-							0
-						<% end -%>
-					<% end -%>
-				<% end -%>
-				<% if @fields["#{g.frequency}_inhand_amt"] == '1' -%>
-					<td>
-					<% if r -%>
-						<% if l = r.goal_lines.find_by_frequency(g.frequency) -%>
-							<%= l.inhand %>
-						<% else -%>
-							0
-						<% end -%>
-					<% end -%>
-				<% end -%>
-				<% if @fields["#{g.frequency}_pledged_pct"] == '1' -%>
-					<td>
-					<% if r -%>
-						<% if l = r.goal_lines.find_by_frequency(g.frequency) -%>
-							<%= Goal.pct(l.pledged, @assignment.goal_amt(g.frequency)) %>
-						<% else -%>
-							0
-						<% end -%>
-					<% end -%>
-				<% end -%>
-				<% if @fields["#{g.frequency}_pledged_amt"] == '1' -%>
-					<td>
-					<% if r -%>
-						<% if l = r.goal_lines.find_by_frequency(g.frequency) -%>
-							<%= l.pledged %>
-						<% else -%>
-							0
-						<% end -%>
-					<% end -%>
-				<% end -%>
-			<% end -%>
-			<% for rf in @period.report_fields -%>
-				<% if @fields["field_#{rf.id}"] == '1' -%>
-					<td>
-					<%= l.value if r and l = r.field_lines.find_by_report_field_id(rf.id) -%>
-					</td>
-				<% end -%>
-			<% end -%>
-		</tr>
-	<% end -%>
+  <% for r in @assignment.reports -%>
+    <tr>
+      <td><%= r.date.strftime('%Y %m/%d') %></td>
+      <% for g in Goal.defaults -%>
+        <% if @fields["#{g.frequency}_inhand_pct"] == '1' -%>
+          <td>
+          <% if r -%>
+            <% if l = r.goal_lines.find_by_frequency(g.frequency) -%>
+              <%= Goal.pct(l.inhand, @assignment.goal_amt(g.frequency)) %>
+            <% else -%>
+              0
+            <% end -%>
+          <% end -%>
+        <% end -%>
+        <% if @fields["#{g.frequency}_inhand_amt"] == '1' -%>
+          <td>
+          <% if r -%>
+            <% if l = r.goal_lines.find_by_frequency(g.frequency) -%>
+              <%= l.inhand %>
+            <% else -%>
+              0
+            <% end -%>
+          <% end -%>
+        <% end -%>
+        <% if @fields["#{g.frequency}_pledged_pct"] == '1' -%>
+          <td>
+          <% if r -%>
+            <% if l = r.goal_lines.find_by_frequency(g.frequency) -%>
+              <%= Goal.pct(l.pledged, @assignment.goal_amt(g.frequency)) %>
+            <% else -%>
+              0
+            <% end -%>
+          <% end -%>
+        <% end -%>
+        <% if @fields["#{g.frequency}_pledged_amt"] == '1' -%>
+          <td>
+          <% if r -%>
+            <% if l = r.goal_lines.find_by_frequency(g.frequency) -%>
+              <%= l.pledged %>
+            <% else -%>
+              0
+            <% end -%>
+          <% end -%>
+        <% end -%>
+      <% end -%>
+      <% for rf in @period.report_fields -%>
+        <% if @fields["field_#{rf.id}"] == '1' -%>
+          <td>
+          <%= l.value if r and l = r.field_lines.find_by_report_field_id(rf.id) -%>
+          </td>
+        <% end -%>
+      <% end -%>
+    </tr>
+  <% end -%>
 </tbody>

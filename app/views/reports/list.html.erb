@@ -1,15 +1,18 @@
-<%= page_header @assignment.user.display_name + ' - Reports List' %>
+<% title @assignment.user.display_name + ' - Reports List' %>
 
-<%= render :partial => 'list/form' %>
+<% content_for :form do -%>
+  <%= render :partial => 'list/form' %>
+<% end -%>
 
-<div class="grid_12">
-	<table id='reportList' class='tablesorter-blue'>
-		<%= render :partial => 'list_data' %>
-	</table>
-	<script type='text/javascript'>
-		$(document).ready(function() {
-			$('#reportList').tablesorter();
-		});
-	</script>
-</div>
-<div class='clear'></div>
+<% content_for :list do -%>
+  <div class="span12">
+    <table id='reportList' class='tablesorter-blue'>
+      <%= render :partial => 'list_data' %>
+    </table>
+    <script type='text/javascript'>
+      $(document).ready(function() {
+        $('#reportList').tablesorter();
+      });
+    </script>
+  </div>
+<% end -%>

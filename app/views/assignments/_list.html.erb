@@ -1,13 +1,16 @@
-<%= render :partial => 'list/form' %>
+<% content_for :form do -%>
+  <%= render :partial => 'list/form' %>
+<% end -%>
 
-<div class="grid_12">
-	<table id='assignmentList' class='tablesorter-blue'>
-		<%= render :partial => 'assignments/list_data' %>
-	</table>
-	<script type='text/javascript'>
-		$(document).ready(function() {
-			$('#assignmentList').tablesorter();
-		});
-	</script>
-</div>
-<div class='clear'></div>
+<% content_for :list do -%>
+  <div class="span12">
+    <table id='assignmentList' class='tablesorter-blue'>
+      <%= render :partial => 'assignments/list_data' %>
+    </table>
+    <script type='text/javascript'>
+      $(document).ready(function() {
+        $('#assignmentList').tablesorter();
+      });
+    </script>
+  </div>
+<% end -%>

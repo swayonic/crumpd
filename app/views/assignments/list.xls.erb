@@ -1,9 +1,9 @@
 <% 
-	headers["Content-Disposition"] = "attachment; filename=\"#{@title}.xls\""
+  headers["Content-Disposition"] = "attachment; filename=\"#{@title}.xls\""
 -%>
 <table>
-	<tr><td><b><%= @title %></b></td></tr>
-	<tr><td><%= Time.now.strftime('%Y %b %e, %H:%M') %></td></tr>
-	<tr></tr>
-	<%= render :partial => 'assignments/list_data.html' %>
+  <tr><td><b><%= @title %></b></td></tr>
+  <tr><td><%= Time.now.strftime('%Y %b %e, %H:%M') %></td></tr>
+  <tr></tr>
+  <%= render :partial => 'assignments/list_data.html' %>
 </table>

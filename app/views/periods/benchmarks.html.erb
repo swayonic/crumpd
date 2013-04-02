@@ -1,79 +1,76 @@
-<%= page_header @period.name + ' - Benchmarks' %>
-<%= flash_header %>
+<% title @period.name + ' - Benchmarks' %>
 
-<div class="grid_8 prefix_2 suffix_2">
-	<%= form_for :benchmarks, :url => update_benchmarks_period_path(@period) do |f| %>
-		<table id='benchmarksTable' class='description'>
-		<thead>
-			<tr>
-				<th>Date</th>
-				<th>Percentage</th>
-				<th>Remove</th>
-			</tr>
-		</thead>
-		<tbody>
-			<% for bm in @period.bmarks %>
-				<%= render :partial => 'benchmark_row', :locals => {:id => "benchmark_#{bm.id}", :bm => bm} %>
-			<% end %>
-		</tbody>
-		</table>
-		
-		<a href='javascript:void(0);' onclick="addRow();">Add Benchmark</a>
-		<br>
-		<br>
-		<%= f.submit 'Save' %>
-		<%= link_to 'Back', @period %>
-	<% end %>
+<div class="span8 offset2">
+  <%= form_for :benchmarks, :url => update_benchmarks_period_path(@period) do |f| %>
+    <table id='benchmarksTable' class="table">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Percentage</th>
+        <th>Remove</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for bm in @period.bmarks %>
+        <%= render :partial => 'benchmark_row', :locals => {:id => "benchmark_#{bm.id}", :bm => bm} %>
+      <% end %>
+    </tbody>
+    </table>
+    
+    <a href='javascript:void(0);' onclick="addRow();">Add Benchmark</a>
+    <br>
+    <br>
+    <%= f.submit 'Save' %>
+    <%= link_to 'Back', @period %>
+  <% end %>
 </div>
-
-<div class="clear"></div>
 
 <div style='display:none;'>
-	<table>
-	<%= render :partial => 'benchmark_row', :locals => {:id => "blankbenchmark", :bm => Bmark.new} %>
-	</table>
+  <table>
+  <%= render :partial => 'benchmark_row', :locals => {:id => "blankbenchmark", :bm => Bmark.new} %>
+  </table>
 </div>
-		
+    
 <script type='text/javascript'>
 function toggleDelete()
 {
-	var checked = this.checked;
-	var rowId = this.id.substr(0,this.id.length-7)+'_row';
-	var inputs = $('#'+rowId+' input, #'+rowId+' textarea, #'+rowId+ ' select');
-	for (var i=0; i<inputs.length; i++)
-	{
-		if (!inputs[i].hidden && inputs[i].id != this.id)
-			inputs[i].disabled = checked;
-	}
+  var checked = this.checked;
+  var rowId = this.id.substr(0,this.id.length-7)+'_row';
+  var inputs = $('#'+rowId+' input, #'+rowId+' textarea, #'+rowId+ ' select');
+  for (var i=0; i<inputs.length; i++)
+  {
+    if (!inputs[i].hidden && inputs[i].id != this.id)
+      inputs[i].disabled = checked;
+  }
 }
 
 function addRow()
 {
-	$('#blankbenchmark_row').clone().insertAfter('#benchmarksTable tr :last');
-	var html = $('#benchmarksTable tr :last').html();
-	var id = 'newbenchmark_'+newFieldId;
-	newFieldId++;
-	var idx = html.indexOf('blankbenchmark');
-	while (idx > 0)
-	{
-		html = html.replace('blankbenchmark', id);
-		idx = html.indexOf('blankbenchmark');
-	}
-	id = id + '_row';
-	$('#benchmarksTable tr :last')[0].id = id;
-	$('#'+id).html(html);
-	$('#'+id)[0].cells[0].childNodes[1].value = $('#benchmarksTable tr').length-1;
-	$('#'+id+' .remove_benchmark_box')[0].onchange = toggleDelete;
+  $('#blankbenchmark_row').clone().insertAfter('#benchmarksTable tr :last');
+  var html = $('#benchmarksTable tr :last').html();
+  var id = 'newbenchmark_'+newFieldId;
+  newFieldId++;
+  var idx = html.indexOf('blankbenchmark');
+  while (idx > 0)
+  {
+    html = html.replace('blankbenchmark', id);
+    idx = html.indexOf('blankbenchmark');
+  }
+  id = id + '_row';
+  $('#benchmarksTable tr :last')[0].id = id;
+  $('#'+id).html(html);
+  $('#'+id)[0].cells[0].childNodes[1].value = $('#benchmarksTable tr').length-1;
+  $('#'+id+' .remove_benchmark_box')[0].onchange = toggleDelete;
 }
 
 $(document).ready(function()
 {
-	var boxes = $('.remove_benchmark_box');
-	for (var i=0; i < boxes.length; i++)
-	{
-		boxes[i].onchange = toggleDelete;
-	}
-	newFieldId = 1;
+  var boxes = $('.remove_benchmark_box');
+  for (var i=0; i < boxes.length; i++)
+  {
+    boxes[i].onchange = toggleDelete;
+  }
+  newFieldId = 1;
 });
 </script>
 

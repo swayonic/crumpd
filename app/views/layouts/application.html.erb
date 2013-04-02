@@ -3,24 +3,47 @@
 <head>
   <title>MPD - <%= @page_title or params[:controller].to_s.capitalize %></title>
 <!-- STYLESHEETS -->
-	<%= stylesheet_link_tag    "application", :media => 'all'  %>
-	<%= yield :stylesheets %>
+  <%= stylesheet_link_tag    "application", :media => 'all'  %>
+  <%= yield :stylesheets %>
 <!-- JAVASCRIPTS -->
   <%= javascript_include_tag "application" %>
-	<%= yield :javascripts %>
-	<script>
-		$(function() {
-			$(document).tooltip();	//Enable tooltips for all items with a title
-		});
-	</script>
+  <%= yield :javascripts %>
+  <script>
+    $(function() {
+      $(document).tooltip();  //Enable tooltips for all items with a title
+    });
+  </script>
 <!-- METATAGS -->
   <%= csrf_meta_tags %>
 </head>
 <body>
-<div class="container_12">
-	<%= render :partial => 'shared/login' %>
-	<%= render :partial => 'shared/breadcrumbs' %>
-	<%= content_for?(:content) ? yield(:content) : yield %>
+<div class="container">
+  <!-- Log-in bar -->
+  <div class="row-fluid">
+    <%= render :partial => 'shared/login' %>
+  </div>
+  <!-- Breadcrumbs -->
+  <div class="row-fluid">
+    <%= render :partial => 'shared/breadcrumbs' %>
+  </div>
+  <!-- Page header -->
+  <div class="row-fluid">
+    <%= render :partial => 'shared/page_header' %>
+  </div>
+  <!-- Flash -->
+  <div class="row-fluid">
+    <div class="span6 offset3">
+      <%= bootstrap_flash %>
+    </div>
+  </div>
+  <% if content_for?(:content) -%>
+    <%= yield(:content) %>
+  <% else -%>
+    <!-- Content -->
+    <div id="content-row" class="row-fluid">
+      <%= yield %>
+    </div>
+  <% end -%>
 </div>
 </body>
 </html>

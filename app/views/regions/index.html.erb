@@ -1,24 +1,27 @@
-<%= page_header 'Regions' %>
-<%= flash_header %>
+<% title 'Regions' %>
 
-<table class='description'>
-  <tr>
-    <th>Name</th>
-    <th>Title</th>
-    <th></th>
-    <th></th>
-  </tr>
+<div class="span10 offset1 well well-mini">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Title</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
 
-<% @regions.each do |region| %>
-  <tr>
-    <td><%= region.name %></td>
-    <td><%= region.title %></td>
-    <td><%= link_to 'Edit', edit_region_path(region) %></td>
-    <td><%= link_to 'Destroy', region, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
+    <tbody>
+      <% @regions.each do |region| %>
+        <tr>
+          <td><%= region.name %></td>
+          <td><%= region.title %></td>
+          <td><%= link_to 'Edit', edit_region_path(region) %></td>
+          <td><%= link_to 'Destroy', region, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 
-<br />
-
-<%= link_to 'New Region', new_region_path %>
+  <%= link_to 'New Region', new_region_path %>
+</div>

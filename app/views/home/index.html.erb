@@ -1,11 +1,6 @@
-<%= page_header 'MPD Home' %>
+<% title 'MPD Home' %>
 
-<div class="grid_10 prefix_1 suffix_1">
-	<% @user = @cas_user -%>
-	<%= render :partial => 'users/roles' %>
+<div class="span8 offset2 well well-small">
+  <% @user = @cas_user -%>
+  <%= render :partial => 'users/roles' %>
 </div>
-<div class="clear"></div>
-
-<div class="grid_12">
-</div>
-<div class="clear"></div>

@@ -1,78 +1,79 @@
-<%= page_header @user.display_name %>
+<% title @user.display_name %>
 
-<div class="grid_4">
-	<table class="description">
-		<tr>
-			<td><b>First Name</b></td>
-			<td><%= @user.first_name %></td>
-		</tr>
-		<% if @user.preferred_name and @user.preferred_name != @user.first_name -%>
-			<tr>
-				<td><b>Preferred Name</b></td>
-				<td><%= @user.preferred_name %></td>
-			</tr>
-		<% end -%>
-		<tr>
-			<td><b>Last Name</b></td>
-			<td><%= @user.last_name %></td>
-		</tr>
-		<tr>
-			<td><b>Account Number</b></td>
-			<td><%= @user.account_number %></td>
-		</tr>
-		<tr>
-			<td><b>Phone Number</b></td>
-			<td><%= @user.phone %></td>
-		</tr>
-		<tr>
-			<td><b>Email Address</b></td>
-			<td><%= @user.email %></td>
-		</tr>
+<div class="span4 well well-small">
+  <table class="mytable">
+    <tr>
+      <th>First Name</th>
+      <td><%= @user.first_name %></td>
+    </tr>
+    <% if @user.preferred_name and @user.preferred_name != @user.first_name -%>
+      <tr>
+        <th>Preferred Name</th>
+        <td><%= @user.preferred_name %></td>
+      </tr>
+    <% end -%>
+    <tr>
+      <th>Last Name</th>
+      <td><%= @user.last_name %></td>
+    </tr>
+    <tr>
+      <th>Account Number</th>
+      <td><%= @user.account_number %></td>
+    </tr>
+    <tr>
+      <th>Phone Number</th>
+      <td><%= @user.phone %></td>
+    </tr>
+    <tr>
+      <th>Email Address</th>
+      <td><%= @user.email %></td>
+    </tr>
+
     <tr>
       <td>&nbsp;</td>
     </tr>
+
     <% if @user.can_edit?(@cas_user) -%>
       <tr>
-        <td><b>Edit</b></td>
-        <td><%= button_to 'Edit', edit_user_path(@user), :method => :get %></td>
+        <th>Edit</th>
+        <td><%= button_to 'Edit', edit_user_path(@user), method: 'get', class: 'btn' %></td>
       </tr>
-	  <% end -%>
-	  <% if @user.can_sudo?(true_user) -%>
+    <% end -%>
+    <% if @user.can_sudo?(true_user) -%>
       <tr>
-        <td><b>Sudo</b> <%= help_tip 'Assume the permissions of this person' %></td>
-        <td><%= button_to 'Assume', sudo_user_path(@user), :method => :get %></td>
+        <th>Sudo <%= help_tip 'Assume the permissions of this person' %></th>
+        <td><%= button_to 'Assume', sudo_user_path(@user), method: 'get', class: 'btn' %></td>
       </tr>
-  	<% end -%>
+    <% end -%>
     <% if @cas_user.is_admin? -%>
-			<tr>
-        <td><b>Admin</b> <%= help_tip 'Grants this user Admin priveleges' %></td>
-				<td>
-					<% if @user.is_admin? %>
-						<%= button_to 'Revoke', toggle_admin_user_path(@user) %>
-					<% else -%>
-						<%= button_to 'Grant', toggle_admin_user_path(@user) %>
-					<% end -%>
-				</td>
-			</tr>
       <tr>
-        <td><b>Delete</b></td>
+        <th>Admin <%= help_tip 'Grants this user Admin priveleges' %></th>
+        <td>
+          <% if @user.is_admin? %>
+            <%= button_to 'Revoke', toggle_admin_user_path(@user), class: 'btn' %>
+          <% else -%>
+            <%= button_to 'Grant', toggle_admin_user_path(@user), class: 'btn' %>
+          <% end -%>
+        </td>
+      </tr>
+      <tr>
+        <th>Delete</th>
         <td>
           <%= button_to 'Delete',
             @user,
-            :method => :delete,
+            method: 'delete',
             data: {confirm:
 'Are you sure you want to delete this user and all objects dependent on it?
 This cannot be undone.'
-              }
+            },
+            class: 'btn'
           %>
         </td>
       </tr>
-		<% end -%>
-	</table>
+    <% end -%>
+  </table>
 </div>
 
-<div class="grid_8">
-	<%= render :partial => 'roles' %>
+<div class="span8 well well-small">
+  <%= render :partial => 'roles' %>
 </div>
-
-<div class="clear"></div>

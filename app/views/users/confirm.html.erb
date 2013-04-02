@@ -1,48 +1,46 @@
-<%= page_header 'Add New User' %>
+<% title 'Add New User' %>
 
-<div class="grid_8 prefix_2 suffix_2">
-	<%= form_for @user, :url => @continue_path, :method => :post do |f| %>
-		<table class='description'>
-			<tr>
-				<th>Account Number</th>
-				<td>
-					<%= @user.account_number %>
-				</td>
-			</tr>
-			<tr>
-				<th>First Name</th>
-				<td>
-					<%= @user.first_name %>
-				</td>
-			</tr>
-			<tr>
-				<th>Preferred Name</th>
-				<td>
-					<%= @user.preferred_name %>
-				</td>
-			</tr>
-			<tr>
-				<th>Last Name</th>
-				<td>
-					<%= @user.last_name %>
-				</td>
-			</tr>
-			<tr>
-				<th>Phone Number</th>
-				<td>
-					<%= @user.phone %>
-				</td>
-			</tr>
-			<tr>
-				<th>Email Address</th>
-				<td>
-					<%= @user.email %>
-				</td>
-			</tr>
-		</table>
-		<%= f.submit 'Confirm' %>
-		<%= link_to 'Back', :back %>
-	<% end -%>
+<div class="span8 offset2">
+  <%= form_for @user, :url => @continue_path, :method => :post do |f| %>
+    <table class="table">
+      <tr>
+        <th>Account Number</th>
+        <td>
+          <%= @user.account_number %>
+        </td>
+      </tr>
+      <tr>
+        <th>First Name</th>
+        <td>
+          <%= @user.first_name %>
+        </td>
+      </tr>
+      <tr>
+        <th>Preferred Name</th>
+        <td>
+          <%= @user.preferred_name %>
+        </td>
+      </tr>
+      <tr>
+        <th>Last Name</th>
+        <td>
+          <%= @user.last_name %>
+        </td>
+      </tr>
+      <tr>
+        <th>Phone Number</th>
+        <td>
+          <%= @user.phone %>
+        </td>
+      </tr>
+      <tr>
+        <th>Email Address</th>
+        <td>
+          <%= @user.email %>
+        </td>
+      </tr>
+    </table>
+    <%= f.submit 'Confirm' %>
+    <%= link_to 'Back', :back %>
+  <% end -%>
 </div>
-
-<div class="clear"></div>

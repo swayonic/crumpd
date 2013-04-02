@@ -1,46 +1,47 @@
 <% showed_something = false -%>
 <% if @user.assignments.count > 0 -%>
-	<h3>Assignments</h3>
-	<ul>
-		<% for a in @user.assignments.sort_by{|a| [-a.period.year, a.period.region.name]} -%>
-			<li><%= link_to_if a.period.can_view?(@cas_user), a.period.name, a.period %>
-			<ul>
+  <h3>Assignments</h3>
+  <ul>
+    <% for a in @user.assignments.sort_by{|a| [-a.period.year, a.period.region.name]} -%>
+      <li><%= link_to_if a.period.can_view?(@cas_user), a.period.name, a.period %>
+      <ul>
         <% if a.can_view?(@cas_user) %><li>Assignment: <%= link_to 'Home Page', a %></li><% end -%>
-				<% if a.team %><li>Team: <%= link_to_if a.team.can_view?(@cas_user), a.team.display_name, a.team %></li><% end %>
-				<% if a.group %><li>Coaching Group: <%= link_to_if a.group.can_view?(@cas_user), a.group.display_name, a.group %></li><% end %>
-			</ul>
-			</li>
-		<% end -%>
-	</ul>
-	<% showed_something = true -%>
+        <% if a.team %><li>Team: <%= link_to_if a.team.can_view?(@cas_user), a.team.display_name, a.team %></li><% end %>
+        <% if a.group %><li>Coaching Group: <%= link_to_if a.group.can_view?(@cas_user), a.group.display_name, a.group %></li><% end %>
+      </ul>
+      <br>
+      </li>
+    <% end -%>
+  </ul>
+  <% showed_something = true -%>
 <% end -%>
 <% if @user.groups_as_coach.count > 0 -%>
-	<h3>Coaching Groups</h3>
-	<ul>
-		<% for g in @user.groups_as_coach -%>
-			<li><%= link_to_if g.can_view?(@cas_user), g.display_name, g %></li>
-		<% end -%>
-	</ul>
-	<% showed_something = true -%>
+  <h3>Coaching Groups</h3>
+  <ul>
+    <% for g in @user.groups_as_coach -%>
+      <li><%= link_to_if g.can_view?(@cas_user), g.display_name, g %></li>
+    <% end -%>
+  </ul>
+  <% showed_something = true -%>
 <% end -%>
 <% if @user.periods_as_admin.count > 0 -%>
-	<h3>Coaching Periods</h3>
-	<ul>
-		<% for p in @user.periods_as_admin -%>
-			<li><%= link_to_if p.can_view?(@cas_user), p.name, p %></li>
-		<% end -%>
-	</ul>
-	<% showed_something = true -%>
+  <h3>Coaching Periods</h3>
+  <ul>
+    <% for p in @user.periods_as_admin -%>
+      <li><%= link_to_if p.can_view?(@cas_user), p.name, p %></li>
+    <% end -%>
+  </ul>
+  <% showed_something = true -%>
 <% end -%>
 <% if @cas_user.is_admin? and @cas_user == @user -%>
-	<h3>Admin Tools</h3>
-	<ul>
+  <h3>Admin Tools</h3>
+  <ul>
     <li><%= link_to 'Coaching Periods Home', periods_path %></li>
     <li><%= link_to 'Regions Home', regions_path %></li>
-		<li><%= link_to 'System-wide Data Update', full_update_path %> <%= help_tip 'Update all periods with data from sitrack' %></li>
-	</ul>
-	<% showed_something = true -%>
+    <li><%= link_to 'System-wide Data Update', full_update_path %> <%= help_tip 'Update all periods with data from sitrack' %></li>
+  </ul>
+  <% showed_something = true -%>
 <% end -%>
 <% if !showed_something %>
-	<i>No active roles</i>
+  <i>No active roles</i>
 <% end -%>

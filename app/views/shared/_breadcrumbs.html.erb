@@ -1,20 +1,19 @@
-<div class='breadcrumbs'>
-	<ul>
-		<li class='link'><%= link_to 'Home', root_path %></li>
-		<% if !@breadcrumbs.nil? and @breadcrumbs.count > 0 -%>
-			<% for c in @breadcrumbs -%>
-				<li class='divider'>></li>
-				<% if c[:allowed] -%>
-					<li class='link'>
-						<a href="<%= c[:link] %>"<%= raw(" title='#{c[:title]}'") if c[:title] %>><%= c[:text] %></a>
-					</li>
-				<% else -%>
-					<li class='item'>
-						<%= c[:text] %>
-					</li>
-				<% end -%>
-			<% end -%>
-		<% end -%>
-	</ul>
+<div class="span12 breadcrumbs">
+  <ul>
+    <li class='link'><%= link_to 'Home', root_path %></li>
+    <% if !@breadcrumbs.nil? and @breadcrumbs.count > 0 -%>
+      <% for c in @breadcrumbs -%>
+        <li class='divider'>></li>
+        <% if c[:allowed] -%>
+          <li class='link'>
+            <a href="<%= c[:link] %>"<%= raw(" title='#{c[:title]}'") if c[:title] %>><%= c[:text] %></a>
+          </li>
+        <% else -%>
+          <li class='item'>
+            <%= c[:text] %>
+          </li>
+        <% end -%>
+      <% end -%>
+    <% end -%>
+  </ul>
 </div>
-<br>

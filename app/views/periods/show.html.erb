@@ -1,100 +1,98 @@
-<%= page_header @period.name %>
-<%= flash_header %>
+<% title @period.name %>
 
-<div class="grid_4">
-	<h2 width='100%' align='center'>Actions</h2>
-	<ul>
-		<li>
-			<%= link_to 'Show all people', list_period_path(@period) %>
-			(<%= @period.assignments.count %>)
-		</li>
-		<li>
-			<%= link_to 'Edit report fields', fields_period_path(@period) %>
-			(<%= @period.report_fields.count %>)
-		</li>
-		<li>
-			<%= link_to 'Edit benchmarks', benchmarks_period_path(@period) %>
-			(<%= @period.bmarks.count %>)
-		</li>
-		<% if @period.keep_updated? -%>
-			<li>
-				<%= link_to 'Manually Update', do_update_period_path(@period), :method => :post %>
-				(Last Updated: <%= @period.last_updated ? @period.last_updated.strftime('%m-%d %H:%M:%S') : raw('<i>Never</i>') %>)
-			</li>
-		<% end -%>
-	</ul>
-	
-	<br>
+<div class="span4 well well-small">
+  <h3>Actions</h3>
+  <ul>
+    <li>
+      <%= link_to "Show all people", list_period_path(@period)  %>
+      (<%= @period.assignments.count %>)
+    </li>
+    <li>
+      <%= link_to "Edit report fields", fields_period_path(@period) %>
+      (<%= @period.report_fields.count %>)
+    </li>
+    <li>
+      <%= link_to "Edit benchmarks", benchmarks_period_path(@period) %>
+      (<%= @period.bmarks.count %>)
+    </li>
+    <% if @period.keep_updated? -%>
+      <li>
+          <%= link_to 'Manually Update', do_update_period_path(@period), method: 'post' %>
+          (Last Updated: <%= @period.last_updated ? @period.last_updated.strftime('%m-%d %H:%M:%S') : raw('<i>Never</i>') %>)
+      </li>
+    <% end -%>
+  </ul>
 
-	<h2 width="100%" align="center">Administrators</h2>
-	<% if @period.admins.nil? or @period.admins.count == 0 -%>
-		<i>None</i>
-	<% else -%>
-		<ul>
-			<% for a in @period.period_admins.sort_by{|a| a.user.sort_name} -%>
-				<li>
-					<%= link_to_if a.user.can_view?(@cas_user), a.user.display_name, a.user %>
-					<% if @period.can_edit?(@cas_user) -%>
-						<%= link_to image_tag('icons/silk/delete.png'), a, method: :delete, data: { confirm: 'Are you sure you want to remove this admin?' } %>
-					<% end -%>
-				</li>
-			<% end -%>
-		</ul>
-	<% end -%>
-	<% if @period.can_edit?(@cas_user) -%>
-		<%= form_for [@period, @new_admin] do |f| -%>
-			<%= render :partial => 'users/new', :locals => {
-				:name => 'add_admin',
-				:title => 'New Admin',
-				:commit => 'Add Admin' } %>
-		<% end -%>
-	<% end -%>
+  <br>
+  <br>
+
+  <h3>Administrators</h3>
+  <% if @period.admins.nil? or @period.admins.count == 0 -%>
+    <i>None</i>
+  <% else -%>
+    <ul>
+      <% for a in @period.period_admins.sort_by{|a| a.user.sort_name} -%>
+        <li>
+          <%= link_to_if a.user.can_view?(@cas_user), a.user.display_name, a.user %>
+          <% if @period.can_edit?(@cas_user) -%>
+            <%= link_to image_tag('icons/silk/delete.png'), a, method: :delete, data: { confirm: 'Are you sure you want to remove this admin?' } %>
+          <% end -%>
+        </li>
+      <% end -%>
+    </ul>
+  <% end -%>
+  <% if @period.can_edit?(@cas_user) -%>
+    <%= form_for [@period, @new_admin] do |f| -%>
+      <%= render :partial => 'users/new', :locals => {
+        :name => 'add_admin',
+        :title => 'New Admin',
+        :commit => 'Add Admin' } %>
+    <% end -%>
+  <% end -%>
 </div>
 
-<div class="grid_4">
-	<h2 width="100%" align="center">Teams</h2>
-	<% if @period.teams.nil? or @period.teams.count == 0 -%>
-		<i>None</i>
-	<% else -%>
-		<ul>
-			<% for t in @period.teams.sort_by{|t| t.display_name} -%>
-				<li>
-					<%= link_to t.display_name, t %>
-					(<%= pluralize t.assignments.count, 'member' %><% if t.assignments.count == 0 and @period.can_edit?(@cas_user) and !@period.keep_updated? -%>
-					<%= link_to image_tag('icons/silk/delete.png'), t, method: :delete, data: { confirm: 'Are you sure you want to delete this team?' } %><% end -%>)
-				</li>
-			<% end -%>
-		</ul>
-	<% end -%>
-	<% if @period.can_edit?(@cas_user) and !@period.keep_updated? -%>
-		<%= form_for [@period, @new_team] do |f| -%>
-			<%= f.text_field :name, :size => 12 %>
-			<%= f.submit %>
-		<% end -%>
-	<% end -%>
+<div class="span4 well well-small">
+  <h3>Teams</h3>
+  <% if @period.teams.nil? or @period.teams.count == 0 -%>
+    <i>None</i>
+  <% else -%>
+    <ul>
+      <% for t in @period.teams.sort_by{|t| t.display_name} -%>
+        <li>
+          <%= link_to t.display_name, t %>
+          (<%= pluralize t.assignments.count, 'member' %><% if t.assignments.count == 0 and @period.can_edit?(@cas_user) and !@period.keep_updated? -%>
+          <%= link_to image_tag('icons/silk/delete.png'), t, method: :delete, data: { confirm: 'Are you sure you want to delete this team?' } %><% end -%>)
+        </li>
+      <% end -%>
+    </ul>
+  <% end -%>
+  <% if @period.can_edit?(@cas_user) and !@period.keep_updated? -%>
+    <%= form_for [@period, @new_team] do |f| -%>
+      <%= f.text_field :name, :size => 12 %>
+      <%= f.submit class: 'btn btn-primary' %>
+    <% end -%>
+  <% end -%>
 </div>
 
-<div class="grid_4">
-	<h2 width="100%" align="center">Coaching Groups</h2>
-	<% if @period.groups.nil? or @period.groups.count == 0 -%>
-		<i>None</i>
-	<% else -%>
-		<ul>
-			<% for g in @period.groups.sort_by{|g| g.display_name} -%>
-				<li>
-					<%= link_to g.display_name, g %>,
-					(<%= pluralize g.assignments.count, 'member' %><% if g.assignments.count == 0 and @period.can_edit?(@cas_user) and !@period.keep_updated? -%>
-					<%= link_to image_tag('icons/silk/delete.png'), g, method: :delete, data: { confirm: 'Are you sure you want to delete this group?' } %><% end -%>)
-				</li>
-			<% end -%>
-		</ul>
-	<% end -%>
-	<% if @period.can_edit?(@cas_user) and !@period.keep_updated? -%>
-		<%= form_for [@period, @new_group] do |f| -%>
-			<%= f.text_field :name, :size => 12 %>
-			<%= f.submit %>
-		<% end -%>
-	<% end -%>
+<div class="span4 well well-small">
+  <h3>Coaching Groups</h3>
+  <% if @period.groups.nil? or @period.groups.count == 0 -%>
+    <i>None</i>
+  <% else -%>
+    <ul>
+      <% for g in @period.groups.sort_by{|g| g.display_name} -%>
+        <li>
+          <%= link_to g.display_name, g %>,
+          (<%= pluralize g.assignments.count, 'member' %><% if g.assignments.count == 0 and @period.can_edit?(@cas_user) and !@period.keep_updated? -%>
+          <%= link_to image_tag('icons/silk/delete.png'), g, method: :delete, data: { confirm: 'Are you sure you want to delete this group?' } %><% end -%>)
+        </li>
+      <% end -%>
+    </ul>
+  <% end -%>
+  <% if @period.can_edit?(@cas_user) and !@period.keep_updated? -%>
+    <%= form_for [@period, @new_group] do |f| -%>
+      <%= f.text_field :name, :size => 12 %>
+      <%= f.submit class: 'btn btn-primary' %>
+    <% end -%>
+  <% end -%>
 </div>
-
-<div class="clear"></div>

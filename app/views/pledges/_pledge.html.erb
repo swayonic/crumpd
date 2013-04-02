@@ -1,21 +1,21 @@
 <% p = pledge -%>
 <tr>
-	<td><%= p.name %></td>
-	<td><%= p.amount %></td>
-	<td><%= Goal.title(p.frequency) %></td>
-	<% if @assignment.can_edit_pledges?(@cas_user) -%>
-		<td style='text-align:center;'>
-			<% if p.is_in_hand -%>
-				<%= link_to image_tag('icons/silk/tick.png'), toggle_pledge_path(p), :method => :put, :title => 'Toggle' %>
-			<% else -%>
-				<%= link_to image_tag('icons/silk/cross.png'), toggle_pledge_path(p), :method => :put, :title => 'Toggle' %>
-			<% end -%>
-		</td>
-		<td style='text-align:center;'>
-			<%= link_to image_tag('icons/silk/delete.png'), p, :method => :delete %>
-		</td>
-	<% else -%>
-		<td><%= p.is_in_hand ? 'Y' : '' %></td>
-	<% end -%>
+  <td><%= p.name %></td>
+  <td><%= number_to_currency p.amount %></td>
+  <td><%= Goal.title(p.frequency) %></td>
+  <% if @assignment.can_edit_pledges?(@cas_user) -%>
+    <td style='text-align:center;'>
+      <% if p.is_in_hand -%>
+        <%= link_to image_tag('icons/silk/tick.png'), toggle_pledge_path(p), :method => :put, :title => 'Toggle' %>
+      <% else -%>
+        <%= link_to image_tag('icons/silk/cross.png'), toggle_pledge_path(p), :method => :put, :title => 'Toggle' %>
+      <% end -%>
+    </td>
+    <td style='text-align:center;'>
+      <%= link_to image_tag('icons/silk/delete.png'), p, :method => :delete %>
+    </td>
+  <% else -%>
+    <td><%= p.is_in_hand ? 'Y' : '' %></td>
+  <% end -%>
 </tr>
 
