@@ -1,33 +1,31 @@
 <% title @assignment.user.display_name + ' - Pledges' -%>
 
-<div class="span4">
+<div class="span4 well well-small">
   <% if @assignment.can_edit_pledges?(@cas_user) -%>
-    <br>
-    <br>
     <h3>New Pledge</h3>
     <%= form_for @new_pledge, :url => assignment_pledges_path(@assignment) do |f| -%>
       <table class="table">
         <tr>
-          <td>Name</td>
-          <td><%= f.text_field :name, :size => 15 %></td>
+          <td><%= f.label :name %></td>
+          <td><%= f.text_field :name, class: 'input-medium' %></td>
         </tr>
         <tr>
-          <td>Amount</td>
-          <td><%= f.text_field :amount, :size => 4 %></td>
+          <td><%= f.label :amount %></td>
+          <td><%= f.text_field :amount, class: 'input-small' %></td>
         </tr>
         <tr>
-          <td>In-Hand</td>
+          <td><%= f.label :is_in_hand, 'In-Hand' %></td>
           <td><%= f.check_box :is_in_hand %></td>
         </tr>
         <tr>
-          <td>Frequency</td>
+          <td><%= f.label :frequency %></td>
           <td>
             <% freq_array = @assignment.goals.map{|g| [g.title, g.frequency]} -%>
-            <%= f.select :frequency, options_for_select(freq_array) %>
+            <%= f.select :frequency, options_for_select(freq_array), {}, class: 'input-medium' %>
           </td>
         </tr>
       </table>
-      <%= f.submit 'Add pledge' %>
+      <%= f.submit class: 'btn btn-primary' %>
     <% end -%>
   <% end -%>
   <br>
@@ -36,17 +34,21 @@
   <%= render :partial => 'progress_size4' %>
 </div>
 
-<div class="span8">
-  <table width="100%" class="table">
-    <tr>
-      <th>Name</th>
-      <th width=1%>Amount</th>
-      <th width=1%>Frequency</th>
-      <th width=1%>In-Hand</th>
-      <% if @assignment.can_edit?(@cas_user) -%>
-        <th width=1%>Delete</th>
-      <% end -%>
-    </tr>
-    <%= render :partial => 'pledge', :collection => @assignment.pledges.sort_by{|p| [p.name, p.frequency]} %>
+<div class="span8 well well-small">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th width=1%>Amount</th>
+        <th width=1%>Frequency</th>
+        <th width=1%>In-Hand</th>
+        <% if @assignment.can_edit?(@cas_user) -%>
+          <th width=1%>Delete</th>
+        <% end -%>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render :partial => 'pledge', :collection => @assignment.pledges.sort_by{|p| [p.name, p.frequency]} %>
+    </tbody>
   </table>
 </div>

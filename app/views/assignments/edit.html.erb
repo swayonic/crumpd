@@ -1,6 +1,6 @@
 <% title @assignment.user.display_name + ' - Assignment' %>
 
-<div class="span6 offset3">
+<div class="span6 offset3 well well-mini">
   <%= form_for @assignment do |f| %>
     <h3>Groups</h3>
 
@@ -24,26 +24,31 @@
     <br>
     <%= fields_for "new_goal", @new_goal do |g| -%>
       <table class="table">
-        <tr>
-          <th colspan=2>
-            New Goal
-          </th>
-        </tr>
-        <tr>
-          <td>Frequency</td>
-          <td>
-            <%= g.select :frequency, options_for_select([['',''], ['One-time', 0],['Monthly', 12]]) %>
-          </td>
-        </tr>
-        <tr>
-          <td>Amount</td>
-          <td>
-            <%= g.text_field :amount, :size => 4 %>
-          </td>
-        </tr>
+        <thead>
+          <tr>
+            <th colspan=2>
+              New Goal
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Frequency</td>
+            <td>
+              <%= g.select :frequency, options_for_select([['',''], ['One-time', 0],['Monthly', 12]]) %>
+            </td>
+          </tr>
+          <tr>
+            <td>Amount</td>
+            <td>
+              <%= g.text_field :amount, :size => 4 %>
+            </td>
+          </tr>
+        </tbody>
       </table>
     <% end -%>
     <br>
-    <%= f.submit 'Save changes' %>
+    <%= f.submit class: 'btn btn-primary' %>
+    <%= link_to 'Back', assignment_path(@assignment), class: 'btn' %>
   <% end -%>
 </div>

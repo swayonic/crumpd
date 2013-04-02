@@ -41,7 +41,7 @@
   <% for a in @assignments -%>
     <% r = a.latest_report -%>
     <tr>
-      <td><%= link_to_if !is_xls, a.user.sort_name, a.user %></td>
+      <td><%= link_to_if !is_xls, a.user.sort_name, a %></td>
       <% if !@assignment -%>
         <% if @fields[:intern_type] == '1' -%>
           <td><%= a.intern_type ? a.intern_type : raw('') %></td>

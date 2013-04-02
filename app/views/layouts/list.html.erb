@@ -1,0 +1,11 @@
+<% content_for :content do -%>
+  <!-- Form content -->
+  <div class="row-fluid">
+    <%= yield(:form) %>
+  </div>
+  <!-- List content -->
+  <div class="row-fluid">
+    <%= yield(:list) %>
+  </div>
+<% end -%>
+<%= render :template => 'layouts/application' %>

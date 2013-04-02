@@ -132,16 +132,17 @@ class GroupsController < HomeController
     @period = @group.period
     @assignments = @group.assignments
     @fields = params[:fields] || Hash.new
-    
+
     if params[:commit] == 'Download Excel'
       @title = "#{@period.name} - #{@group.display_name}"
       render 'assignments/list.xls', :content_type => 'application/xls'
       return
     end
-    
+
     member_breadcrumbs
+    render :layout => 'list'
   end
-  
+
   private
   # Adds breadcrumbs for all member views
   def member_breadcrumbs

@@ -180,13 +180,15 @@ class ReportsController < HomeController
         @fields["#{g.frequency}_inhand_pct"] = '1'
       end
     end
-    
+
     if params[:commit] == 'Download Excel'
       @title = "Reports - #{@assignment.user.display_name}"
       render "list.xls", :content_type => "application/xls"
       return
     end
+
     collection_breadcrumbs
+    render :layout => 'list'
   end
 
   private

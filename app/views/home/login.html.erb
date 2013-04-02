@@ -1,11 +1,15 @@
-<div class="span8 offset2">
+<div class="span8 offset2 well well-small">
   <%= form_for :login, :html => {:action => login_path, class: 'form-horizontal'} do |f| %>
     <div class="control-group">
       <%= f.label :user, class: 'control-label' %>
       <div class="controls">
         <%= f.hidden_field :id %>
-        <%= autocomplete_field 'auto', 'name', autocomplete_users_path, :id_element => '#login_id', :size => 12 %>
-        <%= help_tip 'Autocomplete: Name (account number)' %>
+        <div class="input-append">
+          <%= autocomplete_field 'auto', 'name', autocomplete_users_path, :id_element => '#login_id', :size => 12 %>
+          <span class="add-on">
+            <%= help_tip "Autocomplete: 'Name (account number)'" %>
+          </span>
+        </div>
       </div>
     </div>
     <div class="control-group">

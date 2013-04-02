@@ -4,23 +4,23 @@
   <h3>Actions</h3>
   <ul>
     <li>
-      <%= link_to "Show all people", list_period_path(@period), class: 'btn btn-small' %>
+      <%= link_to "Show all people", list_period_path(@period)  %>
       (<%= @period.assignments.count %>)
     </li>
     <li>
-      <%= link_to "Edit report fields", fields_period_path(@period), class: 'btn btn-small' %>
+      <%= link_to "Edit report fields", fields_period_path(@period) %>
       (<%= @period.report_fields.count %>)
     </li>
     <li>
-      <%= link_to "Edit benchmarks", benchmarks_period_path(@period), class: 'btn btn-small' %>
+      <%= link_to "Edit benchmarks", benchmarks_period_path(@period) %>
       (<%= @period.bmarks.count %>)
     </li>
-    <li>
-      <% if @period.keep_updated? -%>
-        <%= link_to 'Manually Update', do_update_period_path(@period), method: 'post', class: 'btn btn-small' %>
-        (Last Updated: <%= @period.last_updated ? @period.last_updated.strftime('%m-%d %H:%M:%S') : raw('<i>Never</i>') %>)
-      <% end -%>
-    </li>
+    <% if @period.keep_updated? -%>
+      <li>
+          <%= link_to 'Manually Update', do_update_period_path(@period), method: 'post' %>
+          (Last Updated: <%= @period.last_updated ? @period.last_updated.strftime('%m-%d %H:%M:%S') : raw('<i>Never</i>') %>)
+      </li>
+    <% end -%>
   </ul>
 
   <br>

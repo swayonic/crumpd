@@ -1,7 +1,7 @@
 <div class="span10 offset1 well well-small">
   <%= form_for [@assignment, @report], :html => {class: 'form-horizontal'} do |f| %>
     <% if @report.errors.any? %>
-      <div id="error_explanation" align='left'>
+      <div class="alert alert-error" align='left'>
         <h3><%= pluralize(@report.errors.count, "error") %> prohibited this report from being saved:</h3>
         <ul>
           <%# HACK: I can't get rid of the "is invalid" errors -%>

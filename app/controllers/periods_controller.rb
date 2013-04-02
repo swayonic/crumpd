@@ -254,6 +254,7 @@ class PeriodsController < HomeController
     end
 
     member_breadcrumbs
+    render :layout => 'list'
   end
 
   private
