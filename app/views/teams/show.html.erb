@@ -47,7 +47,8 @@
     <i>None</i>
   <% else -%>
     <% if @team.can_view_list?(@cas_user) -%>
-      <%= button_to 'Detailed listing', list_team_path(@team), method: 'get', class: 'btn' %>
+      <%= link_to 'Detailed listing', list_team_path(@team), class: 'btn' %>
+      <br>
       <br>
     <% end -%>
 

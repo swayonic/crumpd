@@ -56,7 +56,8 @@
     <i>None</i>
   <% else -%>
     <% if @group.can_view_list?(@cas_user) -%>
-      <%= button_to 'Detailed listing', list_group_path(@group), method: 'get', class: 'btn' %>
+      <%= link_to 'Detailed listing', list_group_path(@group), class: 'btn' %>
+      <br>
       <br>
     <% end -%>
     <ul>

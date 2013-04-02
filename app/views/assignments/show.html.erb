@@ -110,33 +110,37 @@
   <h3>Reports</h3>
   <table>
     <tr>
-      <td><%= button_to 'New Report', new_assignment_report_path(@assignment), method: 'get', class: 'btn' if @assignment.can_edit_reports?(@cas_user) %></td>
-      <td><%= button_to 'Report Details', list_assignment_reports_path(@assignment), method: 'get', class: 'btn' if @assignment.reports.count > 0 %></td>
+      <td><%= link_to 'New Report', new_assignment_report_path(@assignment), class: 'btn' if @assignment.can_edit_reports?(@cas_user) %></td>
+      <td><%= link_to 'Report Details', list_assignment_reports_path(@assignment), class: 'btn' if @assignment.reports.count > 0 %></td>
     </tr>
   </table>
 
   <% if @assignment.reports.count > 0 -%>
     <table id='reportsTable' class="table">
-      <tr>
-        <td></td>
-        <% for g in @assignment.goals -%>
-          <th><%= g.title %> in-hand</th>
-          <th><%= g.title %> pledged</th>
-        <% end -%>
-      </tr>
-      <% for r in @assignment.reports.reverse -%>
+      <thead>
         <tr>
-          <th>
-            <%= link_to r.date.strftime('%b %e'), r %>
-          </th>
+          <td></td>
           <% for g in @assignment.goals -%>
-            <% if l = r.goal_lines.find_by_frequency(g.frequency) -%>
-              <td><%= Goal.pct(l.inhand, @assignment.goal_amt(g.frequency)) %>%</td>
-              <td><%= Goal.pct(l.inhand + l.pledged, @assignment.goal_amt(g.frequency)) %>%</td>
-            <% end -%>
+            <th><%= g.title %> in-hand</th>
+            <th><%= g.title %> pledged</th>
           <% end -%>
         </tr>
-      <% end -%>
+      </thead>
+      <tbody>
+        <% for r in @assignment.reports.reverse -%>
+          <tr>
+            <th>
+              <%= link_to r.date.strftime('%b %e'), r %>
+            </th>
+            <% for g in @assignment.goals -%>
+              <% if l = r.goal_lines.find_by_frequency(g.frequency) -%>
+                <td><%= Goal.pct(l.inhand, @assignment.goal_amt(g.frequency)) %>%</td>
+                <td><%= Goal.pct(l.inhand + l.pledged, @assignment.goal_amt(g.frequency)) %>%</td>
+              <% end -%>
+            <% end -%>
+          </tr>
+        <% end -%>
+      </tbody>
     </table>
   <% else -%>
     <i>None</i>

@@ -36,13 +36,13 @@
     <% if @user.can_edit?(@cas_user) -%>
       <tr>
         <th>Edit</th>
-        <td><%= button_to 'Edit', edit_user_path(@user), method: 'get', class: 'btn' %></td>
+        <td><%= link_to 'Edit', edit_user_path(@user), class: 'btn' %></td>
       </tr>
     <% end -%>
     <% if @user.can_sudo?(true_user) -%>
       <tr>
         <th>Sudo <%= help_tip 'Assume the permissions of this person' %></th>
-        <td><%= button_to 'Assume', sudo_user_path(@user), method: 'get', class: 'btn' %></td>
+        <td><%= link_to 'Assume', sudo_user_path(@user), class: 'btn' %></td>
       </tr>
     <% end -%>
     <% if @cas_user.is_admin? -%>
@@ -50,16 +50,16 @@
         <th>Admin <%= help_tip 'Grants this user Admin priveleges' %></th>
         <td>
           <% if @user.is_admin? %>
-            <%= button_to 'Revoke', toggle_admin_user_path(@user), class: 'btn' %>
+            <%= link_to 'Revoke', toggle_admin_user_path(@user), method: 'post', class: 'btn' %>
           <% else -%>
-            <%= button_to 'Grant', toggle_admin_user_path(@user), class: 'btn' %>
+            <%= link_to 'Grant', toggle_admin_user_path(@user), method: 'post', class: 'btn' %>
           <% end -%>
         </td>
       </tr>
       <tr>
         <th>Delete</th>
         <td>
-          <%= button_to 'Delete',
+          <%= link_to 'Delete',
             @user,
             method: 'delete',
             data: {confirm:
