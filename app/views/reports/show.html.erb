@@ -28,11 +28,11 @@
     <% for line in @report.goal_lines -%>
       <tr>
         <td><b><%= Goal.title(line.frequency) %> in-hand</b></td>
-        <td><%= line.inhand %></td>
+        <td><%= number_to_currency line.inhand %></td>
       </tr>
       <tr>
         <td><b><%= Goal.title(line.frequency) %> pledged</b></td>
-        <td><%= line.pledged %></td>
+        <td><%= number_to_currency line.pledged %></td>
       </tr>
     <% end -%>
 

@@ -77,40 +77,33 @@
     <%= link_to 'View Pledges', assignment_pledges_path(@assignment) %>
     <br>
     <br>
-    <br>
-    <div width=100% style='padding-left:25px'>
-    <table id='pledgePercent' style='display:none;' width='250px'>
-      <tr>
-        <td style='text-align:right;'><i>Percentages</i></td>
-        <th>In-hand</th>
-        <th>With pledged</th>
-      </tr>
-      <% for g in @assignment.goals -%>
+    <table id='pledgePercent' class="table">
+      <thead>
         <tr>
-          <th><%= g.title %> %</th>
-          <td><%= @assignment.goal_inhand_pct(g.frequency) %></td>
-          <td><%= @assignment.goal_total_pct(g.frequency) %></td>
+          <td style='text-align:right;'><i>Percentages</i></td>
+          <th>In-hand</th>
+          <th>With pledged</th>
         </tr>
-      <% end -%>
-      <% if @assignment.goals.count > 1 -%>
-        <tr>
-          <th>Combined %</th>
-          <td><%= @assignment.combined_inhand_pct %></td>
-          <td><%= @assignment.combined_total_pct %></td>
-        </tr>
-      <% end -%>
+      </thead>
+      <tbody>
+        <% for g in @assignment.goals -%>
+          <tr>
+            <th><%= g.title %></th>
+            <td><%= @assignment.goal_inhand_pct(g.frequency) %>%</td>
+            <td><%= @assignment.goal_total_pct(g.frequency) %>%</td>
+          </tr>
+        <% end -%>
+        <% if @assignment.goals.count > 1 -%>
+          <tr>
+            <th>Combined</th>
+            <td><%= @assignment.combined_inhand_pct %>%</td>
+            <td><%= @assignment.combined_total_pct %>%</td>
+          </tr>
+        <% end -%>
+      </thead>
     </table>
-    <br>
-    <br>
-    <br>
-    </div>
-    <script>
-      $(document).ready(function() {
-        $('#pledgePercent').visualize({type:'bar', parseDirection:'y', height:'100px'});
-      });
-    </script>
   <% end -%>
-  
+
 </div>
 
 <div class="span8 well well-small">
@@ -138,23 +131,13 @@
           </th>
           <% for g in @assignment.goals -%>
             <% if l = r.goal_lines.find_by_frequency(g.frequency) -%>
-              <td><%= Goal.pct(l.inhand, @assignment.goal_amt(g.frequency)) %></td>
-              <td><%= Goal.pct(l.inhand + l.pledged, @assignment.goal_amt(g.frequency)) %></td>
+              <td><%= Goal.pct(l.inhand, @assignment.goal_amt(g.frequency)) %>%</td>
+              <td><%= Goal.pct(l.inhand + l.pledged, @assignment.goal_amt(g.frequency)) %>%</td>
             <% end -%>
           <% end -%>
         </tr>
       <% end -%>
     </table>
-    <% if @assignment.reports.count > 1 -%>
-      <script>
-        $(document).ready(function() {
-          $('#reportsTable').visualize({type: 'bar', height:'150px', parseDirection:'y'});
-        });
-      </script>
-      <br>
-      <br>
-      <br>
-    <% end -%>
   <% else -%>
     <i>None</i>
   <% end -%>

@@ -1,47 +1,46 @@
-<table class="table" width='100%'>
-  <tr>
-    <td style='text-align:right;'><i>Totals</i></td>
-    <th>Goal</th>
-    <th>In-hand</th>
-    <th>Pledged</th>
-  </tr>
-  <% for g in @assignment.goals -%>
+<table class="table">
+  <thead>
     <tr>
-      <th><%= g.title %></th>
-      <td><%= g.amount %></td>
-      <td><%= @assignment.goal_inhand(g.frequency) %></td>
-      <td><%= @assignment.goal_pledged(g.frequency) %></td>
+      <td style='text-align:right;'><i>Totals</i></td>
+      <th>Goal</th>
+      <th>In-hand</th>
+      <th>Pledged</th>
     </tr>
-  <% end -%>
+  </thead>
+  <tbody>
+    <% for g in @assignment.goals -%>
+      <tr>
+        <th><%= g.title %></th>
+        <td><%= number_to_currency g.amount %></td>
+        <td><%= number_to_currency @assignment.goal_inhand(g.frequency) %></td>
+        <td><%= number_to_currency @assignment.goal_pledged(g.frequency) %></td>
+      </tr>
+    <% end -%>
+  </tbody>
 </table>
-<div width=100% style='padding-left:25px'>
-<table id='pledgePercent' class="table" width='250px'>
-  <tr>
-    <td style='text-align:right;'><i>Percentages</i></td>
-    <th>In-hand</th>
-    <th>With pledged</th>
-  </tr>
-  <% for g in @assignment.goals -%>
+
+<table class="table">
+  <thead>
     <tr>
-      <th><%= g.title %></th>
-      <td><%= @assignment.goal_inhand_pct(g.frequency) %></td>
-      <td><%= @assignment.goal_total_pct(g.frequency) %></td>
+      <td style='text-align:right;'><i>Percentages</i></td>
+      <th>In-hand</th>
+      <th>With pledged</th>
     </tr>
-  <% end -%>
-  <% if @assignment.goals.count > 1 -%>
-    <tr>
-      <th>Combined</th>
-      <td><%= @assignment.combined_inhand_pct %></td>
-      <td><%= @assignment.combined_total_pct %></td>
-    </tr>
-  <% end -%>
+  </thead>
+  <tbody>
+    <% for g in @assignment.goals -%>
+      <tr>
+        <th><%= g.title %></th>
+        <td><%= @assignment.goal_inhand_pct(g.frequency) %>%</td>
+        <td><%= @assignment.goal_total_pct(g.frequency) %>%</td>
+      </tr>
+    <% end -%>
+    <% if @assignment.goals.count > 1 -%>
+      <tr>
+        <th>Combined</th>
+        <td><%= @assignment.combined_inhand_pct %>%</td>
+        <td><%= @assignment.combined_total_pct %>%</td>
+      </tr>
+    <% end -%>
+  </tbody>
 </table>
-<br>
-<br>
-<br>
-</div>
-<script>
-  $(document).ready(function() {
-    $('#pledgePercent').visualize({type:'bar', parseDirection:'y', height:'100px'});
-  });
-</script>

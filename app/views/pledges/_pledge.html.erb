@@ -1,7 +1,7 @@
 <% p = pledge -%>
 <tr>
   <td><%= p.name %></td>
-  <td><%= p.amount %></td>
+  <td><%= number_to_currency p.amount %></td>
   <td><%= Goal.title(p.frequency) %></td>
   <% if @assignment.can_edit_pledges?(@cas_user) -%>
     <td style='text-align:center;'>
