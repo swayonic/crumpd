@@ -63,7 +63,7 @@ module Mpd
 
     # Compress assets using these gems
     config.assets.js_compressor = :uglifier
-    config.assets.css_compressor = :yui
+    #config.assets.css_compressor = :yui
 
 		# CAS railtie
 		config.rubycas.cas_base_url = "https://signin.cru.org/cas/"

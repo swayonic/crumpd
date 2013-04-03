@@ -22,7 +22,7 @@ group :assets do
 
   # Compression for production
   gem 'uglifier', '>= 1.0.3'
-  gem 'yui-compressor'
+  #gem 'yui-compressor' # Requires java
 end
 
 
