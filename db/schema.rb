@@ -66,7 +66,7 @@ ActiveRecord::Schema.define(:version => 16) do
   end
 
   create_table "regions", :force => true do |t|
-    t.string "name",  :default => "f"
+    t.string "name",  :null => false
     t.string "title"
   end
 
