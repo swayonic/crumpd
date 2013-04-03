@@ -61,8 +61,9 @@ module Mpd
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 
-    # Use uglifier to compress
+    # Compress assets using these gems
     config.assets.js_compressor = :uglifier
+    config.assets.css_compressor = :yui
 
 		# CAS railtie
 		config.rubycas.cas_base_url = "https://signin.cru.org/cas/"
