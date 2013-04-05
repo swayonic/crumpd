@@ -1,5 +1,5 @@
-class CoachesController < HomeController
-  
+class CoachesController < ApplicationController
+
   # POST /groups/1/coaches
   def create
     if !@group = Group.find_by_id(params[:group_id])

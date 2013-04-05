@@ -1,5 +1,5 @@
-class AdminsController < HomeController
-  
+class AdminsController < ApplicationController
+
   # POST /periods/1/admins
   def create
     if !@period = Period.find_by_id(params[:period_id])

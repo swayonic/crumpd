@@ -1,5 +1,5 @@
-class GroupsController < HomeController
-  
+class GroupsController < ApplicationController
+
   # GET /groups/1
   def show
     if !@group = Group.find_by_id(params[:id])

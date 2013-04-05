@@ -1,5 +1,5 @@
-class ReportsController < HomeController
-  
+class ReportsController < ApplicationController
+
   # GET /reports/1
   def show
     if !@report = Report.find_by_id(params[:id])

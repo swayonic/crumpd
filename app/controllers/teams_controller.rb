@@ -1,5 +1,5 @@
-class TeamsController < HomeController
-  
+class TeamsController < ApplicationController
+
   # GET /teams/1
   def show
     if !@team = Team.find_by_id(params[:id])

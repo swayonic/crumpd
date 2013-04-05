@@ -1,4 +1,4 @@
-class PledgesController < HomeController
+class PledgesController < ApplicationController
 
   # GET /assignments/1/pledges
   def index
