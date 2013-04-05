@@ -3,7 +3,7 @@
 -%>
 <table>
   <tr><td><b><%= @title %></b></td></tr>
-  <tr><td><%= Time.now.strftime('%Y %b %e, %H:%M') %></td></tr>
+  <tr><td><%= Time.now.strftime('%b %e, %Y at %I:%M %p') %></td></tr>
   <tr></tr>
   <%= render :partial => 'assignments/list_data.html' %>
 </table>

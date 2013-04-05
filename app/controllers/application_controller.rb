@@ -17,6 +17,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  ### Time zone
+
+  around_filter :user_time_zone, if: :cas_user
+
   ### User methods
 
 	helper_method :cas_user
@@ -107,5 +111,9 @@ class ApplicationController < ActionController::Base
 
 		return true
 	end
+
+  def user_time_zone(&block)
+    Time.use_zone(cas_user.time_zone, &block)
+  end
 
 end

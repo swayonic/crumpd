@@ -8,12 +8,12 @@
     </tr>
     <tr>
       <td><i>Created at</i></td>
-      <td><%= @report.created_at.strftime('%b %e, %Y %H:%M') %></td>
+      <td><%= @report.created_at.strftime('%b %e, %Y at %I:%M %p') %></td>
     </tr>
     <% unless @report.updated_at.eql?(@report.created_at) -%>
       <tr>
         <td><i>Updated at</i></td>
-        <td><%= @report.updated_at.strftime('%b %e, %Y %H:%M') %></td>
+        <td><%= @report.updated_at.strftime('%b %e, %Y at %I:%M %p') %></td>
       </tr>
       <% if u = User.find_by_id(@report.updated_by) -%>
         <tr>

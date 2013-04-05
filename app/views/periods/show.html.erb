@@ -18,7 +18,7 @@
     <% if @period.keep_updated? -%>
       <li>
           <%= link_to 'Manually Update', do_update_period_path(@period), method: 'post' %>
-          (Last Updated: <%= @period.last_updated ? @period.last_updated.strftime('%m-%d %H:%M:%S') : raw('<i>Never</i>') %>)
+          (Last Updated: <%= @period.last_updated ? @period.last_updated.strftime('%B %e, %Y at %I:%M %p') : raw('<i>Never</i>') %>)
       </li>
     <% end -%>
   </ul>
