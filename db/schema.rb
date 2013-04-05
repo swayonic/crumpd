@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130405103510) do
+ActiveRecord::Schema.define(:version => 20130405145809) do
 
   create_table "assignments", :force => true do |t|
     t.integer "user_id",     :null => false
@@ -66,8 +66,9 @@ ActiveRecord::Schema.define(:version => 20130405103510) do
   end
 
   create_table "regions", :force => true do |t|
-    t.string "name",  :null => false
+    t.string "name",      :null => false
     t.string "title"
+    t.string "time_zone"
   end
 
   create_table "report_field_lines", :force => true do |t|

@@ -24,19 +24,6 @@ User.new(
   :first_name => 'Regina',
   :last_name => 'Clark').save
 
-User.new(:account_number => 't01',
-  :first_name => 'Test',
-  :last_name => 'Coach').save
- User.new(:account_number => 't02',
-  :first_name => 'Test',
-  :last_name => 'Leader').save
-User.new(:account_number => 't03',
-  :first_name => 'Test 1',
-  :last_name => 'Member').save
-User.new(:account_number => 't04',
-  :first_name => 'Test 2',
-  :last_name => 'Member').save
-
 ### Regions
 
 Region.new(
@@ -62,26 +49,13 @@ g.save
 
 ### Coaches
 
-c = GroupCoach.new
-c.user = User.find_by_last_name('Coach')
-c.group = Group.first
-c.save
-
 ### Teams
 
 t = Team.new(:name => 'Team 1')
 t.period = Period.first
 t.save
-t = Team.new(:name => 'Team 2')
-t.period = Period.first
-t.save
 
 ### Leaders
-
-l = TeamLeader.new
-l.user = User.find_by_last_name('Leader')
-l.team = Team.first
-l.save
 
 ### Assignments
 
@@ -89,22 +63,6 @@ a = Assignment.new
 a.user = User.first
 a.period = Period.first
 a.team = Team.first
-a.group = Group.first
-a.save
-a = Assignment.new
-a.user = User.find_by_last_name('Leader')
-a.period = Period.first
-a.team = Team.first
-a.save
-a = Assignment.new
-a.user = User.find_by_first_name('Test 1')
-a.period = Period.first
-a.team = Team.first
-a.save
-a = Assignment.new
-a.user = User.find_by_first_name('Test 2')
-a.period = Period.first
-a.team = Team.find(2)
 a.group = Group.first
 a.save
 
@@ -159,3 +117,4 @@ p.report_fields.new(
   :description => 'The total amount of time spent on MPD',
   :required => true)
 p.save
+

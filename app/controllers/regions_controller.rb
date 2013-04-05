@@ -22,7 +22,8 @@ class RegionsController < ApplicationController
     @region = Region.new(params[:region])
 
     if @region.save
-      redirect_to :action => :index, notice: 'Region was successfully created.'
+      flash.notice = 'Region was successfully created'
+      redirect_to :action => :index
     else
       render action: "new"
     end
@@ -33,7 +34,8 @@ class RegionsController < ApplicationController
     @region = Region.find(params[:id])
 
     if @region.update_attributes(params[:region])
-      redirect_to :action => :index, notice: 'Region was successfully updated.'
+      flash.notice = 'Region was successfully updated'
+      redirect_to :action => :index
     else
       render action: "edit"
     end

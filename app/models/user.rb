@@ -24,7 +24,7 @@ class User < ActiveRecord::Base
     :message => "Invalid format"
     }
 
-  validates_inclusion_of :time_zone, in: ActiveSupport::TimeZone.zones_map(&:name)
+  validates_inclusion_of :time_zone, in: ActiveSupport::TimeZone.zones_map(&:name), :allow_nil => true
 
   def self.cleanup_account_number(accountNo)
     return nil if accountNo.nil? or accountNo.blank?

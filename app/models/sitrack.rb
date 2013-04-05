@@ -40,8 +40,14 @@ class Sitrack < ActiveRecord::Base
       users.concat g.coaches
     end
 
-    users_query users
-    return period_query p
+    users_query(users, p)
+    if period_query(p)
+      p.last_updated = DateTime.now
+      p.save
+      return true
+    else
+      return false
+    end
   end
 
   # Updates all periods marked as 'keep_updated'
@@ -50,18 +56,10 @@ class Sitrack < ActiveRecord::Base
     periods = Array.new
 
     for p in Period.updated
-      periods << p
-      users.concat p.admins
-      for g in p.groups
-        users.concat g.coaches
-      end
+      update_period p
     end
 
     regions_query
-    users_query users
-    for p in periods
-      period_query p
-    end
   end
 
   private
@@ -83,7 +81,7 @@ class Sitrack < ActiveRecord::Base
     end
   end
 
-  def self.users_query(users)
+  def self.users_query(users, period = nil)
     account_numbers = Array.new
     guids = Array.new
 
@@ -117,7 +115,7 @@ class Sitrack < ActiveRecord::Base
 
     for line in result
       if u = User.find_by_guid(line[:globallyUniqueID]) or u = find_by_account_number(line[:accountNo])
-        if !process_user(line)
+        if !process_user(line, period)
           logger.info "Failed to update user with params: #{line.inspect}"
         end
       end
@@ -155,7 +153,7 @@ class Sitrack < ActiveRecord::Base
     teams = Hash.new
 
     for line in result
-      if user = process_user(line)
+      if user = process_user(line, p)
         begin
           # Create or update assignment
           assn = Assignment.find_by_period_id_and_user_id(p.id, user.id) || Assignment.new(:period_id => p.id, :user_id => user.id)
@@ -251,7 +249,7 @@ class Sitrack < ActiveRecord::Base
   end
 
   # Creates or updates a User from a query result
-  def self.process_user(params)
+  def self.process_user(params, period = nil)
     user = User.find_by_guid(params[:globallyUniqueID]) || User.find_by_account_number(params[:accountNo]) || User.new
     user.guid = params[:globallyUniqueID]
     user.account_number = params[:accountNo]
@@ -260,6 +258,7 @@ class Sitrack < ActiveRecord::Base
     user.last_name = params[:lastName]
     user.email = params[:email]
     user.phone = params[:mobilePhone] || params[:homePhone] || params[:otherPhone]
+    user.time_zone ||= period.region.time_zone if period
 
     return user.save ? user : nil
   end

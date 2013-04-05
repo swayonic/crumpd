@@ -117,10 +117,7 @@ class PeriodsController < ApplicationController
       return
     end
 
-    if Sitrack.update_period(@period)
-      @period.last_updated = DateTime.now
-      @period.save
-    end
+    Sitrack.update_period(@period)
 
     redirect_to :back
   end
