@@ -1,4 +1,4 @@
-class AssignmentsController < HomeController
+class AssignmentsController < ApplicationController
 
   # GET /assignments/1
   def show

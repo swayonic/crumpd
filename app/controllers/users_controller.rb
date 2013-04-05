@@ -1,4 +1,5 @@
-class UsersController < HomeController
+class UsersController < ApplicationController
+
   if Rails.env.development?
     # Used in the development login screen
     skip_before_filter :authorize, :only => :autocomplete

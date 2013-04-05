@@ -1,4 +1,4 @@
-class PeriodsController < HomeController
+class PeriodsController < ApplicationController
 
   # GET /periods
   def index

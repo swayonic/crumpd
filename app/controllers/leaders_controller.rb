@@ -1,5 +1,5 @@
-class LeadersController < HomeController
-  
+class LeadersController < ApplicationController
+
   # POST /teams/1/leaders
   def create
     if !@team = Team.find_by_id(params[:team_id])

@@ -1,4 +1,5 @@
-class RegionsController < HomeController
+class RegionsController < ApplicationController
+
   before_filter :region_filter
 
   # GET /regions
@@ -48,6 +49,7 @@ class RegionsController < HomeController
 
   private
 
+  # Simplify actions, only admins have access
   def region_filter
     if !@cas_user.is_admin?
       render 'shared/forbidden'
