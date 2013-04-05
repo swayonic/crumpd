@@ -38,8 +38,19 @@ class UsersController < HomeController
       render 'shared/forbidden'
       return
     end
-    
-    if @user.update_attributes(params[:user])
+
+    # Only change allowed fields
+
+    @user.time_zone = params[:user][:time_zone]
+
+    if !@user.gets_updated?
+      @user.preferred_name = params[:user][:preferred_name]
+      @user.last_name = params[:user][:last_name]
+      @user.phone = params[:user][:phone]
+      @user.email = params[:user][:email]
+    end
+
+    if @user.save
       redirect_to @user, notice: 'User was successfully updated.'
     else
       render action: "edit"

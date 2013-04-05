@@ -1,6 +1,6 @@
-<%= form_for(@user) do |f| %>
+<%= form_for @user, :html => {class: 'form-horizontal'} do |f| %>
   <% if @user.errors.any? %>
-    <div id="error_explanation">
+    <div id="alert alert-error">
       <h3><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h3>
 
       <ul>
@@ -11,31 +11,86 @@
     </div>
   <% end %>
 
-  <table class="table">
-    <tr>
-      <td><b>First Name</b></td>
-      <td><%= f.text_field :first_name %></td>
-    </tr>
-    <tr>
-      <td><b>Preferred Name</b></td>
-      <td><%= f.text_field :preferred_name %></td>
-    </tr>
-    <tr>
-      <td><b>Last Name</b></td>
-      <td><%= f.text_field :last_name %></td>
-    </tr>
-    <tr>
-      <td><b>Phone Number</b></td>
-      <td><%= f.text_field :phone %></td>
-    </tr>
-    <tr>
-      <td><b>Email Address</b></td>
-      <td><%= f.text_field :email %></td>
-    </tr>
-    <tr>
-      <th colspan=2>
-        <%= f.submit %>
-      </th>
-    </tr>
-  </table>
+  <% disabled = @user.gets_updated? -%>
+  <% locked_text = 'This attribute is updated automatically.' -%>
+
+  <div class="control-group">
+    <%= f.label :first_name, class: 'control-label' %>
+    <div class="controls">
+      <div class="input-append">
+        <%= f.text_field :first_name, :disabled => disabled %>
+        <% if disabled -%>
+          <span class="add-on">
+            <%= image_tag 'icons/silk/error.png', title: locked_text %>
+          </span>
+        <% end -%>
+      </div>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :preferred_name, class: 'control-label' %>
+    <div class="controls">
+      <div class="input-append">
+        <%= f.text_field :preferred_name, :disabled => disabled %>
+        <% if disabled -%>
+          <span class="add-on">
+            <%= image_tag 'icons/silk/error.png', title: locked_text %>
+          </span>
+        <% end -%>
+      </div>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :last_name, class: 'control-label' %>
+    <div class="controls">
+      <div class="input-append">
+        <%= f.text_field :last_name, :disabled => disabled %>
+        <% if disabled -%>
+          <span class="add-on">
+            <%= image_tag 'icons/silk/error.png', title: locked_text %>
+          </span>
+        <% end -%>
+      </div>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :phone, class: 'control-label' %>
+    <div class="controls">
+      <div class="input-append">
+        <%= f.text_field :phone, :disabled => disabled %>
+        <% if disabled -%>
+          <span class="add-on">
+            <%= image_tag 'icons/silk/error.png', title: locked_text %>
+          </span>
+        <% end -%>
+      </div>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :email, class: 'control-label' %>
+    <div class="controls">
+      <div class="input-append">
+        <%= f.text_field :email, :disabled => disabled %>
+        <% if disabled -%>
+          <span class="add-on">
+            <%= image_tag 'icons/silk/error.png', title: locked_text %>
+          </span>
+        <% end -%>
+      </div>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <%= f.label :time_zone, class: 'control-label' %>
+    <div class="controls">
+      <%= f.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <div class="controls">
+      <%= f.submit class: 'btn btn-primary' %>
+      <%= link_to 'Cancel', user_path(@user), class: 'btn' %>
+    </div>
+  </div>
 <% end -%>

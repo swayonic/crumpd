@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  attr_accessible :guid, :account_number, :first_name, :last_name, :preferred_name, :phone, :email, :is_admin
+  attr_accessible :guid, :account_number, :first_name, :last_name, :preferred_name, :phone, :email, :is_admin, :time_zone
 
   scope :has_guid, where("guid IS NOT NULL")
   scope :admin, where(:is_admin => true)
@@ -23,7 +23,9 @@ class User < ActiveRecord::Base
     :allow_blank => true,
     :message => "Invalid format"
     }
-  
+
+  validates_inclusion_of :time_zone, in: ActiveSupport::TimeZone.zones_map(&:name)
+
   def self.cleanup_account_number(accountNo)
     return nil if accountNo.nil? or accountNo.blank?
     return "00#{$2}#{$3}" if accountNo.strip =~ /^(00|)(\d{7})(S|)$/
@@ -64,17 +66,21 @@ class User < ActiveRecord::Base
   end
 
   def can_edit?(u)
-    # Can't edit if they are a part of an updated Period
-    for p in all_periods
-      return false if p.keep_updated?
-    end
+    return true if u.is_admin
+    return true if u == self
 
     for p in all_periods
       return true if p.admins.include?(u)
     end
 
-    return true if u.is_admin
-    return true if u == self
+    return false
+  end
+
+  # Can't edit certain fields if they are a part of an updated Period
+  def gets_updated?
+    for p in all_periods
+      return true if p.keep_updated?
+    end
     return false
   end
 

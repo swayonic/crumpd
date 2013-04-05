@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 16) do
+ActiveRecord::Schema.define(:version => 20130405103510) do
 
   create_table "assignments", :force => true do |t|
     t.integer "user_id",     :null => false
@@ -125,6 +125,7 @@ ActiveRecord::Schema.define(:version => 16) do
     t.string  "phone"
     t.string  "email"
     t.boolean "is_admin",       :default => false, :null => false
+    t.string  "time_zone"
   end
 
 end
