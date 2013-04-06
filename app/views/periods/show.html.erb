@@ -1,6 +1,7 @@
 <% title @period.name %>
 
-<div class="span4 well well-small">
+<div class="span4">
+<div class="well well-small">
   <h3>Actions</h3>
   <ul>
     <li>
@@ -23,8 +24,8 @@
     <% end -%>
   </ul>
 
-  <br>
-  <br>
+</div>
+<div class="well well-small">
 
   <h3>Administrators</h3>
   <% if @period.admins.nil? or @period.admins.count == 0 -%>
@@ -49,6 +50,7 @@
         :commit => 'Add Admin' } %>
     <% end -%>
   <% end -%>
+</div>
 </div>
 
 <div class="span4 well well-small">

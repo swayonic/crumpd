@@ -1,6 +1,6 @@
 <% title @period.name + ' - Benchmarks' %>
 
-<div class="span8 offset2">
+<div class="span8 offset2 well well-small">
   <%= form_for :benchmarks, :url => update_benchmarks_period_path(@period) do |f| %>
     <table id='benchmarksTable' class="table">
     <thead>
@@ -16,12 +16,12 @@
       <% end %>
     </tbody>
     </table>
-    
+
     <a href='javascript:void(0);' onclick="addRow();">Add Benchmark</a>
     <br>
     <br>
-    <%= f.submit 'Save' %>
-    <%= link_to 'Back', @period %>
+    <%= f.submit 'Save', class: 'btn btn-primary' %>
+    <%= link_to 'Back', @period, class: 'btn' %>
   <% end %>
 </div>
 
