@@ -18,9 +18,23 @@ body {
 	padding-bottom: 20px;
 }
 
-.container {
+/* Set values for .container and .container-fluid
+ * - can choose either */
+
+body .container,
+body .container-fluid {
 	background-color: #fff;
 	margin-bottom: 20px;
+}
+
+body .container {
+}
+
+body .container-fluid {
+  padding-left: 0px;
+  padding-right: 0px;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 
 table.mytable td {
