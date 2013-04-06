@@ -1,4 +1,8 @@
-<% title @period.name %>
+<% title @period.name do -%>
+  <% if @period.keep_updated? -%>
+Because this period is set to be updated periodically with data from Sitrack, you cannot change things such as team assignments and coaching assignments directly. You must first go to Sitrack and make the changes there, then come back here and click on "Manually Update".
+  <% end -%>
+<% end -%>
 
 <div class="span4">
 <div class="well well-small">

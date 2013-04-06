@@ -1,13 +1,14 @@
-<% title @period.name + ' - Report Fields' %>
+<% title @period.name + ' - Report Fields' do %>
+<b>NOTE:</b>
+<ul>
+  <i>
+  <li>Lines are automatically added for goal progress, two for each goal (e.g. "Monthly pledged" and "Monthly in-hand").</li>
+  <li>You cannot edit the 'Type' of an existing field if a report has already been created for this period, since this could lead to data corruption. If you must make a change, you can delete the field and add it again, but you will lose all information that had been entered for that field.</li>
+  </i>
+</ul>
+<% end -%>
 
-<div class="span12">
-  <b>NOTE:</b>
-  <ul>
-    <i>
-    <li>Lines are automatically added for goal progress, two for each goal (e.g. "Monthly pledged" and "Monthly in-hand").</li>
-    <li>You cannot edit the 'Type' of an existing field if a report has already been created for this period, since this could lead to data corruption. If you must make a change, you can delete the field and add it again, but you will lose all information that had been entered for that field.</li>
-    </i>
-  </ul>
+<div class="span12 well well-small">
   <%= form_for :fields, :url => update_fields_period_path(@period) do |f| %>
     <table id='fieldsTable' class="table">
     <thead>

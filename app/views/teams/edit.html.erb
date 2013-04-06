@@ -1,4 +1,8 @@
-<% title @team.display_name + ' - Edit' %>
+<% title @team.display_name + ' - Edit' do -%>
+  <% if @team.period.keep_updated? -%>
+This team's period is automatically updated with data from Sitrack and thus some of these fields are blocked. If you believe there is an error with one or more of these fields, please notify your regional coordinator.
+  <% end -%>
+<% end -%>
 
 <div class="span6 offset3 well well-small">
 

@@ -1,15 +1,17 @@
 module ApplicationHelper
 
-  def flash_header
-    render :partial => 'shared/flash_header'
+  def set_flash_from_block(type, &block)
+    flash[type] = capture(&block) if block
   end
 
-  def print_flashes
-    render :partial => 'shared/flash'
-  end
-
-  def title(title)
+  def title(title, &block)
     @page_title = title
+    if block
+      content = capture(&block)
+      if content and content.strip != ''
+        @page_description = content
+      end
+    end
   end
 
   def add_javascript(script)
