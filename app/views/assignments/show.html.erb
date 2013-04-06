@@ -1,7 +1,7 @@
 <% title @assignment.user.display_name + ' - Assignment' %>
 
-<div class="span4 well well-small">
-  <!-- Details -->
+<div class="span4">
+<div class="well well-small">
   <h3>Details</h3>
   <table class="mytable">
     <tr>
@@ -46,12 +46,11 @@
   <% if @assignment.can_edit?(@cas_user) -%>
     <%= link_to 'Edit', edit_assignment_path(@assignment), class: 'btn' %>
   <% end -%>
-  
-  <br>
-  <br>
-  
-  <% if @assignment.period.bmarks.count > 0 -%>
-    <!-- Benchmarks -->
+
+</div>
+
+<% if @assignment.period.bmarks.count > 0 -%>
+  <div class="well well-small">
     <h3>Benchmarks</h3>
     <table class="table">
       <thead>
@@ -64,15 +63,16 @@
         <% for b in @assignment.period.bmarks -%>
           <tr>
             <td><%= b.date.strftime('%b %e') %></td>
-            <td style='text-align:right;'><%= b.percentage %>%</td>
+            <td><%= b.percentage %>%</td>
           </tr>
         <% end -%>
       </tbody>
     </table>
-  <% end -%>
+  </div>
+<% end -%>
 
-  <% if @assignment.can_view_pledges?(@cas_user) and @assignment.goals.count > 0 -%>
-    <!-- Pledges -->
+<% if @assignment.can_view_pledges?(@cas_user) and @assignment.goals.count > 0 -%>
+  <div class="well well-small">
     <h3>Pledges</h3>
     <%= link_to 'View Pledges', assignment_pledges_path(@assignment) %>
     <br>
@@ -80,7 +80,7 @@
     <table id='pledgePercent' class="table">
       <thead>
         <tr>
-          <td style='text-align:right;'><i>Percentages</i></td>
+          <td></td>
           <th>In-hand</th>
           <th>With pledged</th>
         </tr>
@@ -102,7 +102,8 @@
         <% end -%>
       </thead>
     </table>
-  <% end -%>
+  </div>
+<% end -%>
 
 </div>
 

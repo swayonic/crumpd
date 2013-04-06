@@ -1,6 +1,7 @@
 <% title @group.display_name %>
 
-<div class="span4 well well-small">
+<div class="span4">
+<div class="well well-small">
   <h3>Description</h3>
   <table class="table table-condensed">
     <tr>
@@ -22,8 +23,8 @@
     <%= link_to 'Edit', edit_group_path(@group), class: 'btn' %>
   <% end -%>
 
-  <br>
-  <br>
+</div>
+<div class="well well-small">
 
   <h3>Coaches</h3>
   <% if @group.coaches.nil? or @group.coaches.count == 0 -%>
@@ -48,6 +49,7 @@
         :commit => 'Add Coach' } %>
     <% end -%>
   <% end -%>
+</div>
 </div>
 
 <div class="span8 well well-small">

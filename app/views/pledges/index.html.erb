@@ -1,6 +1,7 @@
 <% title @assignment.user.display_name + ' - Pledges' -%>
 
-<div class="span4 well well-small">
+<div class="span4">
+<div class="well well-small">
   <% if @assignment.can_edit_pledges?(@cas_user) -%>
     <h3>New Pledge</h3>
     <%= form_for @new_pledge, :url => assignment_pledges_path(@assignment) do |f| -%>
@@ -28,13 +29,17 @@
       <%= f.submit class: 'btn btn-primary' %>
     <% end -%>
   <% end -%>
-  <br>
-  <br>
-  <h3>Progress</h3>
-  <%= render :partial => 'progress_size4' %>
+
+</div>
+
+  <div class="well well-small">
+    <h3>Progress</h3>
+    <%= render :partial => 'progress_size4' %>
+  </div>
 </div>
 
 <div class="span8 well well-small">
+  <h3>Pledges</h3>
   <table class="table">
     <thead>
       <tr>

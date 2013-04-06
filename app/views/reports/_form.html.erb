@@ -15,7 +15,7 @@
     <div class="control-group">
       <%= f.label :date, 'Report Date', class: 'control-label required-label' %>
       <div class="controls">
-        <%= f.date_select :date, {}, class: 'span3' %>
+        <%= f.date_select :date, {}, class: 'input-small' %>
       </div>
     </div>
 
@@ -26,13 +26,13 @@
         <div class="control-group">
           <%= l.label :inhand, "#{Goal.title(line.frequency)} in-hand", class: 'control-label required-label' %>
           <div class="controls">
-            <%= l.text_field :inhand, :size => 4 %>
+            <%= l.text_field :inhand, class: 'input-small' %>
           </div>
         </div>
         <div class="control-group">
           <%= l.label :inhand, "#{Goal.title(line.frequency)} pledged", class: 'control-label required-label' %>
           <div class="controls">
-            <%= l.text_field :pledged, :size => 4 %>
+            <%= l.text_field :pledged, class: 'input-small' %>
           </div>
         </div>
       <% end -%>
@@ -49,9 +49,9 @@
           <div class="controls">
             <div class="input-append">
               <% if line.report_field.is_number? -%>
-                <%= l.text_field :value, :size => 4 %>
+                <%= l.text_field :value, class: 'input-small' %>
               <% elsif line.report_field.is_text? -%>
-                <%= l.text_area :value, :rows => 5 %>
+                <%= l.text_area :value %>
               <% else -%>
                 <%= l.text_field :value %>
               <% end -%>
