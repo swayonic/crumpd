@@ -7,15 +7,26 @@
     <tr>
       <td>Existing User</td>
       <td><%= radio_button name, 'new', '0', :checked => true %></td>
-      <td><%= autocomplete_field name, :name, autocomplete_users_path, :id_element => "##{name}_user_id", class: 'input-medium' %></td>
+      <td>
+        <div class="input-append">
+          <%= autocomplete_field name, :name, autocomplete_users_path, :id_element => "##{name}_user_id", class: 'input-small' %>
+          <div class="add-on">
+            <%= help_tip User.autocomplete_help_tip_text %>
+          </div>
+        </div>
+      </td>
     </tr>
     <tr>
-      <td>
-        New User
-        <%= help_tip 'Use their account number' %>
-      </td>
+      <td>New User</td>
       <td><%= radio_button name, 'new', '1' %></td>
-      <td><%= text_field name, :account_number, :disabled => true, class: 'input-medium' %></td>
+      <td>
+        <div class="input-append">
+          <%= text_field name, :account_number, :disabled => true, class: 'input-small' %>
+          <div class="add-on">
+            <%= help_tip 'Use their account number. You will be prompted on the next screen to confirm the selected user.' %>
+          </div>
+        </div>
+      </td>
     </tr>
     <tr>
       <th colspan="3" style="text-align:center;">
