@@ -19,8 +19,10 @@ This team's period is automatically updated with data from Sitrack and thus some
         </div>
       </div>
     </div>
+
     <% disabled = @team.period.keep_updated -%>
-    <% locked_text = 'This attribute is only editable through sitrack, since this coaching period is marked for updating.' -%>
+    <% locked_text = 'This attribute is updated automatically.' -%>
+
     <div class="control-group">
       <%= f.label :city, class: 'control-label' %>
       <div class="controls">

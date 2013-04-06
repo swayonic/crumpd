@@ -1,15 +1,14 @@
 <%= form_for @user, :html => {class: 'form-horizontal'} do |f| %>
   <% if @user.errors.any? %>
-    <div id="alert alert-error">
-      <h3><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h3>
-
+    <% set_flash_from_block :error do -%>
+      <h4><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h4>
       <ul>
       <% @user.errors.full_messages.each do |msg| %>
         <li><%= msg %></li>
       <% end %>
       </ul>
-    </div>
-  <% end %>
+    <% end -%>
+  <% end -%>
 
   <% disabled = @user.gets_updated? -%>
   <% locked_text = 'This attribute is updated automatically.' -%>

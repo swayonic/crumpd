@@ -27,10 +27,10 @@
       <% end %>
     </tbody>
     </table>
-    
+
     <a href='javascript:void(0);' onclick="addRow();">Add Field</a>
-    <%= f.submit 'Save' %>
-    <%= link_to 'Back', @period %>
+    <%= f.submit 'Save', class: 'btn btn-primary' %>
+    <%= link_to 'Back', @period, class: 'btn' %>
   <% end %>
 </div>
 
