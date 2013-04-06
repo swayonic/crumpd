@@ -1,4 +1,8 @@
-<% title @period.name %>
+<% title @period.name do -%>
+  <% if @period.keep_updated? -%>
+Because this period is set to be updated periodically with data from Sitrack, you cannot change things such as team assignments and coaching assignments directly. You must first go to Sitrack and make the changes there, then come back here and click on "Manually Update".
+  <% end -%>
+<% end -%>
 
 <div class="span4">
 <div class="well well-small">
@@ -62,8 +66,10 @@
       <% for t in @period.teams.sort_by{|t| t.display_name} -%>
         <li>
           <%= link_to t.display_name, t %>
-          (<%= pluralize t.assignments.count, 'member' %><% if t.assignments.count == 0 and @period.can_edit?(@cas_user) and !@period.keep_updated? -%>
-          <%= link_to image_tag('icons/silk/delete.png'), t, method: :delete, data: { confirm: 'Are you sure you want to delete this team?' } %><% end -%>)
+          (<%= pluralize t.assignments.count, 'member' %>)
+          <% if t.assignments.count == 0 and @period.can_edit?(@cas_user) and !@period.keep_updated? -%>
+            <%= link_to image_tag('icons/silk/delete.png'), t, method: :delete, data: { confirm: 'Are you sure you want to delete this team?' } %>
+          <% end -%>
         </li>
       <% end -%>
     </ul>
@@ -84,9 +90,14 @@
     <ul>
       <% for g in @period.groups.sort_by{|g| g.display_name} -%>
         <li>
-          <%= link_to g.display_name, g %>,
-          (<%= pluralize g.assignments.count, 'member' %><% if g.assignments.count == 0 and @period.can_edit?(@cas_user) and !@period.keep_updated? -%>
-          <%= link_to image_tag('icons/silk/delete.png'), g, method: :delete, data: { confirm: 'Are you sure you want to delete this group?' } %><% end -%>)
+          <%= link_to g.display_name, g %>
+          <% if g.coaches.count == 0 -%>
+            <%= image_tag 'icons/silk/error.png', title: 'No coach has been assigned to this group.' %>
+          <% end -%>
+          (<%= pluralize g.assignments.count, 'member' %>)
+          <% if g.assignments.count == 0 and @period.can_edit?(@cas_user) and !@period.keep_updated? -%>
+            <%= link_to image_tag('icons/silk/delete.png'), g, method: :delete, title: 'Delete', data: { confirm: 'Are you sure you want to delete this group?' } %>
+          <% end -%>
         </li>
       <% end -%>
     </ul>

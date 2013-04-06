@@ -2,7 +2,7 @@
 
 <div class="span4 well well-small">
   <h3>Description</h3>
-  <table class="mytable">
+  <table class="table table-condensed">
     <tr>
       <th>Team Name</th>
       <td><%= @team.display_name %></td>
@@ -11,6 +11,12 @@
       <th>Coaching Period</th>
       <td><%= link_to_if @team.period.can_view?(@cas_user), @team.period.name, @team.period %></td>
     </tr>
+    <% if @team.sitrack_id -%>
+      <tr>
+        <th>Sitrack Team #</th>
+        <td><%= @team.sitrack_id %></td>
+      </tr>
+    <% end -%>
     <% if @team.city -%>
       <tr>
         <th>City</th>

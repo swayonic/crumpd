@@ -1,4 +1,8 @@
-<% title @group.display_name + ' - Edit' %>
+<% title @group.display_name + ' - Edit' do -%>
+  <% if @group.period.keep_updated? -%>
+This group's period is automatically updated with data from Sitrack and thus some of these fields are blocked. If you believe there is an error with one or more of these fields, please notify your regional coordinator.
+  <% end -%>
+<% end -%>
 
 <div class="span6 offset3 well well-small">
 
@@ -15,20 +19,20 @@
         </div>
       </div>
     </div>
+
     <% disabled = @group.period.keep_updated -%>
-    <% if disabled -%>
-      <tr>
-        <td>&nbsp;</td>
-      </tr>
-      <tr>
-        <td></td>
-        <th>Locked <%= help_tip 'These attributes are only editable via sitrack' %></th>
-      </tr>
-    <% end -%>
+
     <div class="control-group">
       <%= f.label :coach_name, class: 'control-label' %>
       <div class="controls">
-        <%= f.text_field :coach_name, :disabled => disabled %>
+        <div class="input-append">
+          <%= f.text_field :coach_name, :disabled => disabled %>
+          <% if disabled -%>
+            <span class="add-on">
+              <%= image_tag 'icons/silk/error.png', title: 'This attribute is updated automatically.' %>
+            </span>
+          <% end -%>
+        </div>
       </div>
     </div>
     <div class="control-group">

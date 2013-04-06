@@ -1,4 +1,8 @@
-<% title @user.display_name + ' - Edit' %>
+<% title @user.display_name + ' - Edit' do -%>
+  <% if @user.gets_updated? -%>
+Because of this user's assignments, some of these attributes are automatically updated and thus blocked here. If you believe there is an error with one or more of these fields, please notify your regional coordinator.
+  <% end -%>
+<% end -%>
 
 <div class="span6 offset3 well well-small">
   <%= render 'form' %>

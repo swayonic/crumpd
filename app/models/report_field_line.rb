@@ -4,6 +4,9 @@ class ReportFieldLine < ActiveRecord::Base
   belongs_to :report
   belongs_to :report_field
 
+  validates :value, :length => { :maximum => 255,
+    :too_long => "%{count} characters is the maximum allowed" }
+
   validates_each :value, :if => :is_number? do |record, attr, value|
     if value.nil? or value.blank?
       if !record.report_field.required

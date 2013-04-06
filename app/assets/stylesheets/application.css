@@ -54,5 +54,16 @@ table.mytable th {
   font-weight: bold;
 }
 
+/* field_with_errors */
+div.field_with_errors{
+  float: left;
+}
+div.field_with_errors input {
+}
+div.field_with_errors label {
+  /* Have to set classes in a .less file */
+}
+
+
 /* No, JQuery, I don't want this */
 .ui-helper-hidden-accessible { display:none; }

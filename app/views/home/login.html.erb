@@ -7,7 +7,7 @@
         <div class="input-append">
           <%= autocomplete_field 'auto', 'name', autocomplete_users_path, :id_element => '#login_id', :size => 12 %>
           <span class="add-on">
-            <%= help_tip "Autocomplete: 'Name (account number)'" %>
+            <%= help_tip User.autocomplete_help_tip_text %>
           </span>
         </div>
       </div>

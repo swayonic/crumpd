@@ -1,11 +1,11 @@
 <% title @period.name + ' - Report Fields' do -%>
-  <b>NOTE:</b>
-  <ul>
-    <i>
-    <li>Lines are automatically added for goal progress, two for each goal (e.g. "Monthly pledged" and "Monthly in-hand").</li>
-    <li>You cannot edit the 'Type' of an existing field if a report has already been created for this period, since this could lead to data corruption. If you must make a change, you can delete the field and add it again, but you will lose all information that had been entered for that field.</li>
-    </i>
-  </ul>
+<b>NOTE:</b>
+<ul>
+  <i>
+  <li>Lines are automatically added for goal progress, two for each goal (e.g. "Monthly pledged" and "Monthly in-hand").</li>
+  <li>You cannot edit the 'Type' of an existing field if a report has already been created for this period, since this could lead to data corruption. If you must make a change, you can delete the field and add it again, but you will lose all information that had been entered for that field.</li>
+  </i>
+</ul>
 <% end -%>
   
 <% if @period.errors.any? -%>
@@ -50,10 +50,13 @@ end
       <% end %>
     </tbody>
     </table>
-    
+
     <a href='javascript:void(0);' onclick="addRow();">Add Field</a>
+<<<<<<< HEAD
     <br>
     <br>
+=======
+>>>>>>> give_directions
     <%= f.submit 'Save', class: 'btn btn-primary' %>
     <%= link_to 'Back', @period, class: 'btn' %>
   <% end %>

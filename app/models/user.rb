@@ -94,4 +94,8 @@ class User < ActiveRecord::Base
     return false
   end
 
+  def self.autocomplete_help_tip_text
+    "This is an autocomplete field. Type in the user's name or account number."
+  end
+
 end

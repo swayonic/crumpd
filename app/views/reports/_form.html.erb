@@ -1,16 +1,16 @@
 <div class="span10 offset1 well well-small">
   <%= form_for [@assignment, @report], :html => {class: 'form-horizontal'} do |f| %>
     <% if @report.errors.any? %>
-      <div class="alert alert-error" align='left'>
-        <h3><%= pluralize(@report.errors.count, "error") %> prohibited this report from being saved:</h3>
+      <% set_flash_from_block :error do -%>
+        <h4><%= pluralize(@report.errors.count/2, "error") %> prohibited this report from being saved:</h4>
         <ul>
           <%# HACK: I can't get rid of the "is invalid" errors -%>
           <% @report.errors.select{|attr, msg| msg != "is invalid"}.each do |attr, msg| -%>
             <li><%= msg %></li>
           <% end -%>
         </ul>
-      </div>
-    <% end %>
+      <% end -%>
+    <% end -%>
 
     <div class="control-group">
       <%= f.label :date, 'Report Date', class: 'control-label required-label' %>
@@ -26,13 +26,22 @@
         <div class="control-group">
           <%= l.label :inhand, "#{Goal.title(line.frequency)} in-hand", class: 'control-label required-label' %>
           <div class="controls">
-            <%= l.text_field :inhand, class: 'input-small' %>
+            <div class="input-prepend">
+              <span class="add-on">$</span>
+              <%= l.text_field :inhand, class: 'input-small' %>
+            </div>
           </div>
         </div>
         <div class="control-group">
-          <%= l.label :inhand, "#{Goal.title(line.frequency)} pledged", class: 'control-label required-label' %>
+          <%= l.label :pledged, "#{Goal.title(line.frequency)} pledged", class: 'control-label required-label' %>
           <div class="controls">
-            <%= l.text_field :pledged, class: 'input-small' %>
+            <div class="input-prepend input-append">
+              <span class="add-on">$</span>
+              <%= l.text_field :pledged, class: 'input-small' %>
+              <span class="add-on">
+                <%= help_tip raw('Amount that has been pledged <strong>in addition to</strong> what has already been received.') %>
+              </span>
+            </div>
           </div>
         </div>
       <% end -%>
