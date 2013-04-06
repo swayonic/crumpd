@@ -1,5 +1,5 @@
 <%= fields_for id, rf do |g| %>
-  <tr id="<%= id %>_row">
+  <tr id="<%= id %>_row" <%= raw("class=\"error\"") if rf.errors.any? %>>
     <td>
       <%= g.hidden_field :list_index %>
       <a href='javascript:void(0);' onclick="reorder('<%= id %>', 'up');"><%= image_tag 'icons/silk/arrow_up.png' %></a>

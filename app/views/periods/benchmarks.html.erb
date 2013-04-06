@@ -1,5 +1,19 @@
 <% title @period.name + ' - Benchmarks' %>
 
+<% if @period.errors.any? -%>
+  <% set_flash_from_block :error do -%>
+      <h4><%= pluralize(@period.errors.count/2, "error") %> prohibited this period from being saved:</h4>
+      <ul>
+        <%# HACK: I can't get rid of the "is invalid" errors -%>
+        <% @period.errors.select{|attr, msg| msg != "is invalid"}.each do |attr, msg| -%>
+          <li><%= msg %></li>
+        <% end -%>
+      </ul>
+  <% end -%>
+<% end -%>
+
+<% newBmarkId = 1 -%>
+
 <div class="span8 offset2 well well-small">
   <%= form_for :benchmarks, :url => update_benchmarks_period_path(@period) do |f| %>
     <table id='benchmarksTable' class="table">
@@ -11,9 +25,18 @@
       </tr>
     </thead>
     <tbody>
-      <% for bm in @period.bmarks %>
-        <%= render :partial => 'benchmark_row', :locals => {:id => "benchmark_#{bm.id}", :bm => bm} %>
-      <% end %>
+      <% for bm in @period.bmarks -%>
+<%
+if bm.id
+  bmark_id = "benchmark_#{bm.id}"
+else
+  # This happens if a new benchmark didn't save successfully
+  bmark_id = "newbenchmark_#{newBmarkId}"
+  newBmarkId = newBmarkId + 1
+end
+-%>
+        <%= render :partial => 'benchmark_row', :locals => {:id => bmark_id, :bm => bm} %>
+      <% end -%>
     </tbody>
     </table>
 
@@ -48,8 +71,8 @@ function addRow()
 {
   $('#blankbenchmark_row').clone().insertAfter('#benchmarksTable tr :last');
   var html = $('#benchmarksTable tr :last').html();
-  var id = 'newbenchmark_'+newFieldId;
-  newFieldId++;
+  var id = 'newbenchmark_'+newBmarkId;
+  newBmarkId++;
   var idx = html.indexOf('blankbenchmark');
   while (idx > 0)
   {
@@ -70,7 +93,7 @@ $(document).ready(function()
   {
     boxes[i].onchange = toggleDelete;
   }
-  newFieldId = 1;
+  newBmarkId = <%= newBmarkId %>;
 });
 </script>
 

@@ -146,16 +146,16 @@ class PeriodsController < ApplicationController
       return
     end
 
-    #TODO: Track errors during saving/deleting
+    valid = true
 
     # Update old fields
     for field in @period.report_fields
       id = "field_#{field.id}"
       if params[id]
         if params[id].delete('remove') == '1'
-          field.destroy
+          valid = false if !field.destroy
         else
-          field.update_attributes(params[id])
+          valid = false if !field.update_attributes(params[id])
         end
       end
     end
@@ -165,15 +165,21 @@ class PeriodsController < ApplicationController
       if key =~ /^newfield\_(\d+)/
         if hash.delete('remove') != '1'
           field = @period.report_fields.build(hash)
-          field.save
+          valid = false if !field.save
         end
       end
     end
 
-    flash.notice = 'Fields updated'
-    redirect_to :action => :fields, :id => params[:id]
+    if !valid
+      member_breadcrumbs
+      @period.valid? # Run validations
+      render :action => :fields
+    else
+      flash.notice = 'Fields updated'
+      redirect_to :action => :fields, :id => params[:id]
+    end
   end
-  
+
   # GET /periods/1/benchmarks
   def benchmarks
     if !@period = Period.find_by_id(params[:id])
@@ -197,17 +203,17 @@ class PeriodsController < ApplicationController
       render 'shared/forbidden'
       return
     end
-    
-    #TODO: Track errors during saving/deleting
+
+    valid = true
 
     # Update old benchmarks
     for bm in @period.bmarks
       id = "benchmark_#{bm.id}"
       if params[id]
         if params[id].delete('remove') == '1'
-          bm.destroy
+          valid = false if !bm.destroy
         else
-          bm.update_attributes(params[id])
+          valid = false if !bm.update_attributes(params[id])
         end
       end
     end
@@ -217,13 +223,19 @@ class PeriodsController < ApplicationController
       if key =~ /^newbenchmark\_(\d+)/
         if hash.delete('remove') != '1'
           bm = @period.bmarks.build(hash)
-          bm.save
+          valid = false if !bm.save
         end
       end
     end
 
-    flash.notice = 'Benchmarks updated'
-    redirect_to :action => :benchmarks, :id => params[:id]
+    if !valid
+      @period.valid? #Run validations
+      member_breadcrumbs
+      render :action => :benchmarks
+    else
+      flash.notice = 'Benchmarks updated'
+      redirect_to :action => :benchmarks, :id => params[:id]
+    end
   end
 
   # GET /periods/1/list

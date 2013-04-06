@@ -7,6 +7,8 @@ class ReportField < ActiveRecord::Base
   validates_associated :report_field_lines #If we change the field, let's make sure the associated lines are still valid
   validates :list_index, :numericality => { :only_integer => true }
 
+  validates :name, :presence => {:message => 'Name cannot be blank'}
+
   validates_each :description do |record, attr, value|
     record.description = nil if value and value.strip.blank?
   end

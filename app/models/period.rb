@@ -13,6 +13,22 @@ class Period < ActiveRecord::Base
   has_many :report_fields, :order => 'list_index', :dependent => :destroy
   has_many :bmarks, :order => 'date', :dependent => :destroy
 
+  validate do
+    report_fields.each do |f|
+      if !f.valid?
+        f.errors.each do |attr, msg|
+          self.errors.add(:report_fields, msg)
+        end
+      end
+    end
+    bmarks.each do |b|
+      if !b.valid?
+        b.errors.each do |attr, msg|
+          self.errors.add(:bmarks, msg)
+        end
+      end
+    end
+  end
 
   def name
     "#{region.display_name} #{year}"
