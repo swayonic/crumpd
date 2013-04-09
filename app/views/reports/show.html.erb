@@ -54,6 +54,8 @@
 
   <br>
 
-  <%= link_to 'Edit', edit_report_path(@report), class: 'btn btn-primary' %>
+  <% if @report.assignment.can_edit_reports?(@cas_user) -%>
+    <%= link_to 'Edit', edit_report_path(@report), class: 'btn btn-primary' %>
+  <% end -%>
   <%= link_to 'Back', assignment_path(@report.assignment), class: 'btn' %>
 </div>

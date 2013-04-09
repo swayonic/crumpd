@@ -27,7 +27,7 @@
 <% if @user.periods_as_admin.count > 0 -%>
   <h3>Coaching Periods</h3>
   <ul>
-    <% for p in @user.periods_as_admin -%>
+    <% for p in @user.periods_as_admin.sort_by{|p| [-p.year, p.region.name]} -%>
       <li><%= link_to_if p.can_view?(@cas_user), p.name, p %></li>
     <% end -%>
   </ul>

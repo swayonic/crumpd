@@ -60,7 +60,7 @@
               <% if line.report_field.is_number? -%>
                 <%= l.text_field :value, class: 'input-small' %>
               <% elsif line.report_field.is_text? -%>
-                <%= l.text_area :value %>
+                <%= l.text_area :value, rows: 3 %>
               <% else -%>
                 <%= l.text_field :value %>
               <% end -%>

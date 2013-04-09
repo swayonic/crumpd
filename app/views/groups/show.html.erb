@@ -58,14 +58,18 @@
     <i>None</i>
   <% else -%>
     <% if @group.can_view_list?(@cas_user) -%>
-      <%= link_to 'Detailed listing', list_group_path(@group), class: 'btn' %>
+      <%= link_to 'Detailed Listing', list_group_path(@group), class: 'btn' %>
       <br>
       <br>
     <% end -%>
     <ul>
       <% for a in @group.assignments.sort_by{|a| a.user.sort_name} -%>
         <li>
-          <%= link_to_if a.can_view?(@cas_user), a.user.display_name, a %>
+          <% if a.can_view?(@cas_user) -%>
+            <%= link_to a.user.display_name, a %>
+          <% else -%>
+            <%= link_to_if a.user.can_view?(@cas_user), a.user.display_name, a.user %>
+          <% end -%>
           <% if @group.can_edit?(@cas_user) and a.can_edit?(@cas_user) -%>
             <%= link_to image_tag('icons/silk/delete.png'),
               url_for(:controller => :assignments, :action => :destroy, :id => a.id, :delete => 'group'),

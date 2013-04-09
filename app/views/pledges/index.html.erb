@@ -8,41 +8,41 @@ Filling in this information is not required (unless your coach asks you to). Thi
 <% end -%>
 
 <div class="span4">
-<div class="well well-small">
   <% if @assignment.can_edit_pledges?(@cas_user) -%>
-    <h3>New Pledge</h3>
-    <%= form_for @new_pledge, :url => assignment_pledges_path(@assignment) do |f| -%>
-      <table class="table">
-        <tr>
-          <td><%= f.label :name %></td>
-          <td><%= f.text_field :name, class: 'input-medium' %></td>
-        </tr>
-        <tr>
-          <td><%= f.label :amount %></td>
-          <td><%= f.text_field :amount, class: 'input-small' %></td>
-        </tr>
-        <tr>
-          <td><%= f.label :is_in_hand, 'In-Hand' %></td>
-          <td><%= f.check_box :is_in_hand %></td>
-        </tr>
-        <tr>
-          <td><%= f.label :frequency %></td>
-          <td>
-            <% freq_array = @assignment.goals.map{|g| [g.title, g.frequency]} -%>
-            <%= f.select :frequency, options_for_select(freq_array), {}, class: 'input-medium' %>
-          </td>
-        </tr>
-      </table>
-      <%= f.submit class: 'btn btn-primary' %>
-    <% end -%>
+    <div class="well well-small">
+      <h3>New Pledge</h3>
+      <%= form_for @new_pledge, :url => assignment_pledges_path(@assignment) do |f| -%>
+        <table class="table">
+          <tr>
+            <td><%= f.label :name %></td>
+            <td><%= f.text_field :name, class: 'input-medium' %></td>
+          </tr>
+          <tr>
+            <td><%= f.label :amount %></td>
+            <td><%= f.text_field :amount, class: 'input-small' %></td>
+          </tr>
+          <tr>
+            <td><%= f.label :is_in_hand, 'In-Hand' %></td>
+            <td><%= f.check_box :is_in_hand %></td>
+          </tr>
+          <tr>
+            <td><%= f.label :frequency %></td>
+            <td>
+              <% freq_array = @assignment.goals.map{|g| [g.title, g.frequency]} -%>
+              <%= f.select :frequency, options_for_select(freq_array), {}, class: 'input-medium' %>
+            </td>
+          </tr>
+        </table>
+        <%= f.submit class: 'btn btn-primary' %>
+      <% end -%>
+    </div>
   <% end -%>
-
-</div>
 
   <div class="well well-small">
     <h3>Progress</h3>
     <%= render :partial => 'progress_size4' %>
   </div>
+
 </div>
 
 <div class="span8 well well-small">
@@ -54,7 +54,7 @@ Filling in this information is not required (unless your coach asks you to). Thi
         <th width=1%>Amount</th>
         <th width=1%>Frequency</th>
         <th width=1%>In-Hand</th>
-        <% if @assignment.can_edit?(@cas_user) -%>
+        <% if @assignment.can_edit_pledges?(@cas_user) -%>
           <th width=1%>Delete</th>
         <% end -%>
       </tr>

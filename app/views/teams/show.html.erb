@@ -53,7 +53,7 @@
     <i>None</i>
   <% else -%>
     <% if @team.can_view_list?(@cas_user) -%>
-      <%= link_to 'Detailed listing', list_team_path(@team), class: 'btn' %>
+      <%= link_to 'Detailed Listing', list_team_path(@team), class: 'btn' %>
       <br>
       <br>
     <% end -%>
@@ -61,7 +61,11 @@
     <ul>
       <% for a in @team.assignments.sort_by{|a| a.user.sort_name} -%>
         <li>
-          <%= link_to_if a.can_view?(@cas_user), a.user.display_name, a %>
+          <% if a.can_view?(@cas_user) -%>
+            <%= link_to a.user.display_name, a %>
+          <% else -%>
+            <%= link_to_if a.user.can_view?(@cas_user), a.user.display_name, a.user %>
+          <% end -%>
           <% if @team.can_edit?(@cas_user) and a.can_edit?(@cas_user) -%>
             <%= link_to image_tag('icons/silk/delete.png'),
               url_for(:controller => :assignments, :action => :destroy, :id => a.id, :delete => 'team'),
