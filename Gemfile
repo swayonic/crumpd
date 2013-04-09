@@ -15,6 +15,8 @@ gem 'rubycas-client', '~> 2.3.9.rc1'
 # For Errbit
 gem 'airbrake'
 
+gem 'whenever', :require => false
+
 group :assets do
   gem "therubyracer"
   gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
