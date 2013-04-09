@@ -33,7 +33,7 @@ class HomeController < ApplicationController
   # POST /full_update
 	def full_update
 		if !@cas_user.is_admin?
-			render 'shared/unauthorized'
+			render 'shared/forbidden'
 			return
 		end
 
@@ -41,6 +41,37 @@ class HomeController < ApplicationController
 		Sitrack.update_all
 		redirect_to :back
 	end
+
+  # GET /backdoor?code=[action]
+  #
+  # Ok, so it's not really a backdoor
+  def backdoor
+    if !@cas_user.is_admin?
+      render 'shared/forbidden'
+      return
+    end
+
+    flash.alert = 'What were you trying to do?'
+
+    if params[:code] == 'delete_everything'
+      # Delete all periods but #1 and all users but #1-#3
+      # Replicates a db:migrate:redo, db:seed
+      for p in Period.all
+        if p.id != 1
+          p.destroy # And all child objects
+        end
+      end
+      for u in User.all
+        if u.id > 3
+          u.destroy # And all child objects
+        end
+      end
+
+      flash.alert = 'Deleted everything'
+    end
+
+    redirect_to root_path
+  end
 
 	def not_found
 		render 'shared/not_found'
