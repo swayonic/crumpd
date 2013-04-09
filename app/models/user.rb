@@ -15,39 +15,59 @@ class User < ActiveRecord::Base
   has_many :teams_as_leader, :through => :team_leaders, :source => :team, :order => "name"
   has_many :periods_as_admin, :through => :period_admins, :source => :period
 
-  # TODO: Validate that text fields are blank or nil
+  validate do
+    self.guid = User.cleanup_guid(self.guid)
+    self.account_number = User.cleanup_account_number(self.account_number)
+
+    if !self.guid and !self.account_number
+      # Don't allow both to be nil
+      self.errors.add(:guid, 'Must set either valid guid or valid account_number')
+    end
+  end
+
+  validates_each :first_name, :last_name, :preferred_name, :phone, :email do |record, attr, value|
+    record[attr] = nil if value.nil? or value.blank?
+  end
 
   validates :email, :format => { 
     :with => /^[_A-Za-z0-9-]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,4})$/,
     :allow_nil => true,
-    :allow_blank => true,
+    :allow_blank => true, #Overwritten by above validation
     :message => "Invalid format"
     }
 
   validates_inclusion_of :time_zone, in: ActiveSupport::TimeZone.zones_map(&:name), :allow_nil => true
 
-  def self.cleanup_account_number(accountNo)
-    return nil if accountNo.nil? or accountNo.blank?
-    return "00#{$2}#{$3}" if accountNo.strip =~ /^(00|)(\d{7})(S|)$/
+  # Turns value into a valid guid or nil
+  def self.cleanup_guid(value)
+    return nil if value.nil? or value.blank?
+    return value if value =~ /^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$/
+    return nil
+  end
+
+  # Turns value into a valid account_number or nil
+  def self.cleanup_account_number(value)
+    return nil if value.nil? or value.blank?
+    return "00#{$2}#{$3}" if value.strip =~ /^(00|)(\d{7})(S|)$/
     return nil
   end
 
   def display_name
-    return "##{account_number}"  if first_name.nil? and last_name.nil?
-    return last_name if first_name.nil?
-    return first_name if last_name.nil?
-    return "#{first_name} #{last_name}" if preferred_name.nil?
-    
-    return "#{preferred_name} #{last_name}"
+    f = preferred_name || first_name
+    l = last_name
+    return "##{account_number}"  if !f and !l
+    return l if !f
+    return f if !l
+    return "#{f} #{l}"
   end
 
   def sort_name
-    return "##{account_number}" if first_name.nil? and last_name.nil?
-    return last_name if first_name.nil?
-    return first_name if last_name.nil?
-    return "#{last_name}, #{first_name}" if preferred_name.nil?
-    
-    return "#{last_name}, #{preferred_name}"
+    f = preferred_name || first_name
+    l = last_name
+    return "##{account_number}"  if !f and !l
+    return l if !f
+    return f if !l
+    return "#{l}, #{f}"
   end
 
 

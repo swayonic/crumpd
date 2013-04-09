@@ -10,7 +10,7 @@ class ReportField < ActiveRecord::Base
   validates :name, :presence => {:message => 'Name cannot be blank'}
 
   validates_each :description do |record, attr, value|
-    record.description = nil if value and value.strip.blank?
+    record.description = nil if value.nil? or value.blank?
   end
 
   def self.type_array

@@ -17,15 +17,34 @@ class Sitrack < ActiveRecord::Base
 
     if result and result.count == 1
       r = result[0]
-      user = User.find_by_guid(r[:globallyUniqueID]) || User.find_by_account_number(r[:accountNo]) || User.new
-      user.guid = r[:globallyUniqueID]
-      user.account_number = r[:accountNo]
+      guid = User.cleanup_guid(r[:globallyUniqueID])
+      account_number = User.cleanup_account_number(r[:accountNo])
+
+      # Find existing user
+      #   by guid
+      if guid
+        user = User.find_by_guid(guid)
+        user.account_number = account_number if user and account_number
+      end
+      #   or account_number
+      if user.nil? and account_number
+        user = User.find_by_account_number(account_number)
+        user.guid = guid if user and guid
+      end
+      #   or create a new one
+      if user.nil?
+        user = User.new if user.nil?
+        user.guid = guid
+        user.account_number = account_number
+      end
+
+      # Update user's params
       user.first_name = r[:firstName]
       user.preferred_name = r[:preferredName]
       user.last_name = r[:lastName]
       user.email = r[:email]
       user.phone = r[:mobilePhone] || r[:homePhone] || r[:otherPhone]
-  
+
       return user
     else
       return nil
@@ -100,7 +119,7 @@ class Sitrack < ActiveRecord::Base
       'JOIN simplesecuritymanager_user AS ssm ON p.fk_ssmUserID = ssm.userID ' +
       'LEFT JOIN ministry_staff AS s ON p.personID = s.person_id ' +
       'WHERE '
-    
+
     if account_numbers.count > 0
       query = query + "p.accountNo IN (#{account_numbers.join(',')})"
     end
@@ -110,14 +129,15 @@ class Sitrack < ActiveRecord::Base
     if guids.count > 0
       query = query + "ssm.globallyUniqueID IN (#{guids.join(',')})"
     end
-    
+
     return false if !result = Sitrack.find_by_sql(query)
 
     for line in result
-      if u = User.find_by_guid(line[:globallyUniqueID]) or u = find_by_account_number(line[:accountNo])
-        if !process_user(line, period)
-          logger.info "Failed to update user with params: #{line.inspect}"
-        end
+      if !process_user(line, period)
+        logger.info ">>>>> Invalid Data"
+        logger.info ">>> GUID: #{line['globallyUniqueID']}"
+        logger.info ">>> Account Number: #{line['accountNo']}"
+        logger.info ">>> Name: #{line['firstName']} #{line['lastName']}"
       end
     end
 
@@ -146,7 +166,7 @@ class Sitrack < ActiveRecord::Base
     ### Process result
 
     # With groups, have to deal with poorly capitalized coach names
-    # So, {'luke yeager' => {1 => 'Luke Yeager', 2 => 'Luke YEAGER', ...}, ...}
+    # So, {'joe schmoe' => {1 => 'Joe Schmoe', 2 => 'Joe SCHMOE', ...}, ...}
     groups = Hash.new
     # With teams, have to deal with missing and conflicting additional data (city, state, country, etc)
     # So, {123 => {:city => [nil, 'Austin', 'AUSTIN'], :state => {...}, ...}, 124 => {...}, ...}
@@ -219,7 +239,10 @@ class Sitrack < ActiveRecord::Base
           logger.info 'ERROR: Unknown exception'
         end
       else
-        logger.debug ">>>>> Invalid account number: #{line['accountNo']}"
+        logger.info ">>>>> Invalid Data"
+        logger.info ">>> GUID: #{line['globallyUniqueID']}"
+        logger.info ">>> Account Number: #{line['accountNo']}"
+        logger.info ">>> Name: #{line['firstName']} #{line['lastName']}"
       end
     end
 
@@ -250,9 +273,28 @@ class Sitrack < ActiveRecord::Base
 
   # Creates or updates a User from a query result
   def self.process_user(params, period = nil)
-    user = User.find_by_guid(params[:globallyUniqueID]) || User.find_by_account_number(params[:accountNo]) || User.new
-    user.guid = params[:globallyUniqueID]
-    user.account_number = params[:accountNo]
+    guid = User.cleanup_guid(params[:globallyUniqueID])
+    account_number = User.cleanup_account_number(params[:accountNo])
+
+    # Find existing user
+    #   by guid
+    if guid
+      user = User.find_by_guid(guid)
+      user.account_number = account_number if user and account_number
+    end
+    #   or account_number
+    if user.nil? and account_number
+      user = User.find_by_account_number(account_number)
+      user.guid = guid if user and guid
+    end
+    #   or create a new one
+    if user.nil?
+      user = User.new if user.nil?
+      user.guid = guid
+      user.account_number = account_number
+    end
+
+    # Update user's params
     user.first_name = params[:firstName]
     user.preferred_name = params[:preferredName]
     user.last_name = params[:lastName]
