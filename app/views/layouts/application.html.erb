@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>MPD - <%= @page_title or params[:controller].to_s.capitalize %></title>
+  <title>SIMPD - <%= @page_title or params[:controller].to_s.capitalize %></title>
 <!-- STYLESHEETS -->
   <%= stylesheet_link_tag    "application", :media => 'all'  %>
   <%= yield :stylesheets %>
@@ -23,7 +23,7 @@
     <%= render :partial => 'shared/login' %>
   </div>
   <!-- Breadcrumbs -->
-  <div class="row-fluid">
+  <div class="row-fluid breadcrumbs">
     <%= render :partial => 'shared/breadcrumbs' %>
   </div>
   <!-- Page header -->
@@ -40,14 +40,20 @@
       <%= bootstrap_flash %>
     </div>
   </div>
+  <!-- Content -->
   <% if content_for?(:content) -%>
     <%= yield(:content) %>
   <% else -%>
-    <!-- Content -->
     <div id="content-row" class="row-fluid">
       <%= yield %>
     </div>
   <% end -%>
+  <!-- Footer -->
+  <div class="row-fluid footer-separator">
+  </div>
+  <div class="row-fluid footer">
+    <%= render :partial => 'shared/footer' %>
+  </div>
 </div>
 </body>
 </html>

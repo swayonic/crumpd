@@ -1,0 +1,12 @@
+My problem is:
+
+
+My browser is:
+
+
+Technical information:
+  Time: <%= Time.now %>
+<% if cas_user -%>
+  User: guid=<%= cas_user.guid %>, account_number=<%= cas_user.account_number %>
+<% end -%>
+  URI: <%= request.url %>

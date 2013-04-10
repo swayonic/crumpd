@@ -1,0 +1,8 @@
+<div class="span12" align="center">
+  <%= link_to 'SIMPD Home', root_path %>
+  |
+  <% str = u("#{render :partial => 'shared/bug_report_email'}") -%>
+  <%= link_to 'Report a bug', "mailto:swayonic@gmail.com?subject=#{u 'SIMPD Bug Report'}&body=#{str}"  %>
+  |
+  <%= link_to 'File a detailed bug report', 'https://github.com/swayonic/crumpd/issues', target: '_blank' %>
+</div>

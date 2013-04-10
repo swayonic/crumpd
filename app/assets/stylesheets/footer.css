@@ -1,0 +1,11 @@
+div.footer-separator {
+	height: 20px;
+	background: #123;
+}
+
+div.footer {
+}
+
+div.footer div {
+  padding: 9px;
+}
