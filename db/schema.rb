@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130405145809) do
+ActiveRecord::Schema.define(:version => 20130410113043) do
 
   create_table "assignments", :force => true do |t|
     t.integer "user_id",     :null => false
@@ -108,13 +108,14 @@ ActiveRecord::Schema.define(:version => 20130405145809) do
   end
 
   create_table "teams", :force => true do |t|
-    t.integer "period_id",  :null => false
+    t.integer "period_id",    :null => false
     t.string  "name"
     t.integer "sitrack_id"
     t.string  "city"
     t.string  "state"
     t.string  "country"
     t.string  "continent"
+    t.string  "sitrack_name"
   end
 
   create_table "users", :force => true do |t|

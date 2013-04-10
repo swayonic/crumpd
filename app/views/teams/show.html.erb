@@ -11,6 +11,12 @@
       <th>Coaching Period</th>
       <td><%= link_to_if @team.period.can_view?(@cas_user), @team.period.name, @team.period %></td>
     </tr>
+    <% if @team.sitrack_name and @team.sitrack_name != @team.display_name -%>
+      <tr>
+        <th>Sitrack Name</th>
+        <td><%= @team.sitrack_name %></td>
+      </tr>
+    <% end -%>
     <% if @team.sitrack_id -%>
       <tr>
         <th>Sitrack Team #</th>

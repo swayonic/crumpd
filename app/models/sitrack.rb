@@ -234,6 +234,17 @@ class Sitrack < ActiveRecord::Base
     )
   end
 
+  # Grabs team names
+  def self.teams_query(teams)
+    ids = teams.select{|t| !t.sitrack_id.blank? }.map{|t| t.sitrack_id}
+    return false if ids.empty?
+    Sitrack.find_by_sql(
+      'SELECT teamID, name ' +
+      'FROM ministry_locallevel ' +
+      "WHERE teamID IN(#{ids.join(',')})"
+    )
+  end
+
   private
 
   # Builds a User from a query result
@@ -294,16 +305,5 @@ class Sitrack < ActiveRecord::Base
       end
       return value
     end
-
-  # Update all teams
-  def self.teams_query(teams)
-    ids = teams.select{|t| !t.sitrack_id.blank? }.map{|t| t.sitrack_id}
-    return false if ids.empty?
-    Sitrack.find_by_sql(
-      'SELECT teamID, name ' +
-      'FROM ministry_locallevel ' +
-      "WHERE teamID IN(#{ids.join(',')})"
-    )
-  end
 
 end
