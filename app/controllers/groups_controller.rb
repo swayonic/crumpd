@@ -112,7 +112,7 @@ class GroupsController < ApplicationController
     elsif @group.destroy
       flash.notice = 'Group deleted'
     else
-      flash.alert = 'Falied to delete group'
+      flash.alert = 'Failed to delete group'
     end
     
     redirect_to @group.period
@@ -130,7 +130,7 @@ class GroupsController < ApplicationController
     end
 
     @period = @group.period
-    @assignments = @group.assignments
+    @assignments = @group.assignments.active
     @fields = params[:fields] || Hash.new
 
     if params[:commit] == 'Download Excel'

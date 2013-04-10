@@ -1,6 +1,15 @@
 class Assignment < ActiveRecord::Base
   attr_accessible :user_id, :period_id, :team_id, :group_id, :intern_type, :status
 
+  def self.active
+    Assignment.all.select{|a| a.active?}
+  end
+
+  def active?
+    return true if !period.keep_updated?
+    return ['accepted','placed','on_assignment','alumni'].include?(status)
+  end
+
   belongs_to :user
   belongs_to :period
   belongs_to :group
@@ -9,7 +18,14 @@ class Assignment < ActiveRecord::Base
   has_many :reports, :order => 'created_at DESC', :dependent => :destroy
   has_many :goals, :order => 'frequency', :dependent => :destroy
 
-  # TODO: validate group and team in same period
+  validate do
+    if group and period and group.period_id != period_id
+      self.errors.add(:group_id, "group.period doesn't match period")
+    end
+    if team and period and team.period_id != period_id
+      self.errors.add(:team_id, "team.period doesn't match period")
+    end
+  end
 
   def latest_report
     return nil if reports.count == 0

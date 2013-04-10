@@ -63,7 +63,7 @@
       <br>
     <% end -%>
     <ul>
-      <% for a in @group.assignments.sort_by{|a| a.user.sort_name} -%>
+      <% for a in @group.assignments.active.sort_by{|a| a.user.sort_name} -%>
         <li>
           <% if a.can_view?(@cas_user) -%>
             <%= link_to a.user.display_name, a %>

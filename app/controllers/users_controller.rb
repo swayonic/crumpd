@@ -86,11 +86,11 @@ class UsersController < ApplicationController
   # GET /users/autocomplete
   def autocomplete
     results = Array.new
-    
+
     # TODO
     # Do I need to filter?
     # This is slow
-    for user in User.has_guid
+    for user in User.all
       if user.account_number and !user.account_number.blank?
         string = "#{user.display_name} (#{user.account_number})"
       else
@@ -101,7 +101,7 @@ class UsersController < ApplicationController
       end
     end
 
-    render :json => results.to_json
+    render :json => results.sort_by{|r| r[:label]}[0..9].to_json
   end
 
   # POST /users/1/toggle_admin

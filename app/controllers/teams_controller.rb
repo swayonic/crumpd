@@ -154,7 +154,7 @@ class TeamsController < ApplicationController
     end
 
     @period = @team.period
-    @assignments = @team.assignments
+    @assignments = @team.assignments.active
     @fields = params[:fields] || Hash.new
 
     if params[:commit] == 'Download Excel'

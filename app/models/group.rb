@@ -7,6 +7,14 @@ class Group < ActiveRecord::Base
   has_many :assignments
   has_many :members, :through => :assignments, :source => :user
 
+  def active?
+    assignments.active.count > 0
+  end
+
+  def self.active
+    Group.all.select{|t| t.active?}
+  end
+
   def self.capitalize_name(name)
     return nil if name.nil?
     name.strip!

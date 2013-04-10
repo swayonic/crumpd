@@ -10,6 +10,14 @@ class Team < ActiveRecord::Base
   has_many :assignments
   has_many :members, :through => :assignments, :source => :user
 
+  def active?
+    assignments.active.count > 0
+  end
+
+  def self.active
+    Team.all.select{|t| t.active?}
+  end
+
   def display_name
     return name if !name.blank?
     return sitrack_name if !sitrack_name.blank?

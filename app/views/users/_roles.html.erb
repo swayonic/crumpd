@@ -1,8 +1,8 @@
 <% showed_something = false -%>
-<% if @user.assignments.count > 0 -%>
+<% if @user.assignments.active.count > 0 -%>
   <h3>Assignments</h3>
   <ul>
-    <% for a in @user.assignments.sort_by{|a| [-a.period.year, a.period.region.name]} -%>
+    <% for a in @user.assignments.active.sort_by{|a| [-a.period.year, a.period.region.name]} -%>
       <li><%= link_to_if a.period.can_view?(@cas_user), a.period.name, a.period %>
       <ul>
         <% if a.can_view?(@cas_user) %><li>Assignment: <%= link_to 'Home Page', a %></li><% end -%>

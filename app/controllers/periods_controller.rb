@@ -249,7 +249,7 @@ class PeriodsController < ApplicationController
       return
     end
 
-    @assignments = @period.assignments
+    @assignments = @period.assignments.active
     @fields = params[:fields] || Hash.new
 
     if params[:commit] == 'Download Excel'

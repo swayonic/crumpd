@@ -56,6 +56,12 @@ class Sitrack < ActiveRecord::Base
           end
           assn.status = line[:status]
 
+          if !assn.active?
+            # Don't bother updating the rest of the information
+            assn.save!
+            next
+          end
+
           # Set assignment team
           if sitrack_id = line[:asgTeam]
             # Find existing team or create one
