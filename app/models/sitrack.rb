@@ -81,6 +81,12 @@ class Sitrack < ActiveRecord::Base
     regions_query
   end
 
+  # Updates all teams for a period
+  #   (Called within update_period)
+  def self.update_teams p
+    teams_query p.teams
+  end
+
   private
 
   def self.regions_query
@@ -165,13 +171,6 @@ class Sitrack < ActiveRecord::Base
 
     ### Process result
 
-    # With groups, have to deal with poorly capitalized coach names
-    # So, {'joe schmoe' => {1 => 'Joe Schmoe', 2 => 'Joe SCHMOE', ...}, ...}
-    groups = Hash.new
-    # With teams, have to deal with missing and conflicting additional data (city, state, country, etc)
-    # So, {123 => {:city => [nil, 'Austin', 'AUSTIN'], :state => {...}, ...}, 124 => {...}, ...}
-    teams = Hash.new
-
     for line in result
       if user = process_user(line, p)
         begin
@@ -185,7 +184,7 @@ class Sitrack < ActiveRecord::Base
             assn.intern_type = nil
           end
           assn.status = line['status']
-          
+
           # Set assignment team
           if sitrack_id = line['asgTeam']
             # Find existing team or create one
@@ -194,21 +193,8 @@ class Sitrack < ActiveRecord::Base
               team.save
             end
             assn.team = team
-          
-            # Save team data for processing later
-            if !teams[sitrack_id]
-              teams[sitrack_id] = Hash.new
-              teams[sitrack_id][:city] = Array.new
-              teams[sitrack_id][:state] = Array.new
-              teams[sitrack_id][:country] = Array.new
-              teams[sitrack_id][:continent] = Array.new
-            end
-            teams[sitrack_id][:city] << line['asgCity']
-            teams[sitrack_id][:state] << line['asgState']
-            teams[sitrack_id][:country] << line['asgCountry']
-            teams[sitrack_id][:continent] << line['asgContinent']
           end
-          
+
           # Set assignment group
           if name = line['coachName']
             name = Group.capitalize_name(name)
@@ -246,22 +232,13 @@ class Sitrack < ActiveRecord::Base
       end
     end
 
-    # Process team data
-    teams.each do |sitrack_id, hash|
-      if team = Team.find_by_period_id_and_sitrack_id(p.id, sitrack_id)
-        team.city = process_team_data(hash[:city])
-        team.state = process_team_data(hash[:state])
-        team.country = process_team_data(hash[:country])
-        team.continent = process_team_data(hash[:continent])
-
-        team.save!
-      end
-    end
-
     # Delete empty teams
     for team in p.teams
       team.destroy if team.assignments.count == 0
     end
+
+    # Update team names
+    update_teams(p)
 
     # Delete empty groups
     for group in p.groups
@@ -269,6 +246,31 @@ class Sitrack < ActiveRecord::Base
     end
 
     return true
+  end
+
+  # Update all teams
+  def self.teams_query(teams)
+    result = nil
+
+    ids = teams.select{|t| !t.sitrack_id.blank? }.map{|t| t.sitrack_id}
+
+    return false if ids.empty?
+
+    ActiveRecord::Base.silence_auto_explain do
+      # no automatic EXPLAIN is triggered here
+      result = Sitrack.find_by_sql(
+        'SELECT teamID, name ' +
+        'FROM ministry_locallevel ' +
+        "WHERE teamID IN(#{ids.join(',')})"
+      )
+    end
+
+    for line in result
+      if t = Team.find_by_sitrack_id(line[:teamID])
+        t.sitrack_name = line[:name] if !line[:name].blank?
+        t.save
+      end
+    end
   end
 
   # Creates or updates a User from a query result
@@ -304,29 +306,5 @@ class Sitrack < ActiveRecord::Base
 
     return user.save ? user : nil
   end
-
-    # Take an array of values and return the best one
-    def self.process_team_data(array)
-      return nil if array.nil? or array.empty?
-      value = nil
-  
-      possible_values = Hash.new
-      for entry in array
-        if entry and entry != 'Unavailable' and entry != 'unavailable' and entry != 'unavail'
-          possible_values[entry] = 0 if !possible_values[entry]
-          possible_values[entry] = possible_values[entry] + 1
-        end
-      end
-
-      # Find the mode
-      max = 0
-      possible_values.each do |entry, frequency|
-        if frequency > max
-          max = frequency
-          value = entry
-        end
-      end
-      return value
-    end
 
 end
