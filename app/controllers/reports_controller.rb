@@ -90,6 +90,8 @@ class ReportsController < ApplicationController
       end
     end
 
+    @report.updated_by = @cas_user.id
+
     if @report.save
       redirect_to @report, notice: 'Report was successfully created.'
     else
@@ -150,16 +152,16 @@ class ReportsController < ApplicationController
       render 'shared/not_found'
       return
     end
-    if !@report.assignment.can_edit_reports?(@cas_user)
+    if !@report.can_delete?(@cas_user)
       render 'shared/forbidden'
       return
     end
     a = @report.assignment
     @report.destroy
-    
+
     redirect_to a
   end
-  
+
   # GET /assignments/1/reports/list
   def list
     if !@assignment = Assignment.find_by_id(params[:assignment_id])

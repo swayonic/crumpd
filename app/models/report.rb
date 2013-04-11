@@ -28,4 +28,10 @@ class Report < ActiveRecord::Base
       end
     end
   end
+
+  def can_delete?(u)
+    return true if u.is_admin?
+    #return true if u == assignment.user
+    return assignment.period.admins.include?(u)
+  end
 end
