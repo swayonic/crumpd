@@ -1,4 +1,4 @@
-<div class="span8 offset2 well well-small">
+<div class="span10 offset1 well well-small">
   <%= form_for :fields, :html => {:id => 'fields_form'} do |f| %>
     <table class="mytable" width=100%>
       <tr>
@@ -69,6 +69,7 @@
                   </td>
                   <td>
                     <%= rf.name %>
+                    <%= help_tip rf.description %>
                   </td>
                 </tr>
               <% end -%>
