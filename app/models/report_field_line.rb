@@ -4,25 +4,29 @@ class ReportFieldLine < ActiveRecord::Base
   belongs_to :report
   belongs_to :report_field
 
-  validates :value, :length => { :maximum => 255,
-    :too_long => "%{count} characters is the maximum allowed" }
-
-  validates_each :value, :if => :is_number? do |record, attr, value|
+  validates_each :value do |record, attr, value|
     if value.nil? or value.blank?
       if !record.report_field.required
-        value = 0
+        if record.report_field.is_number?
+          record[attr] = 0
+        else
+          record[attr] = nil
+        end
       else
         record.errors.add(attr, "\"#{record.report_field.name}\" is a required field.")
       end
-    elsif value =~ /^\s*\d+(\.\d+)?\s*$/
-      value = String(Integer(Float(value))) if record.report_field.field_type == 'I'
-      value = String(Float(value)) if record.report_field.field_type == 'D'
-    else
-      record.errors.add(attr, "\"#{record.report_field.name}\" must be a number")
+    elsif record.report_field.is_number?
+      if value =~ /^\s*\d+(\.\d+)?\s*$/
+        record[attr] = String(Integer(Float(value))) if record.report_field.field_type == 'I'
+        record[attr] = String(Float(value)) if record.report_field.field_type == 'D'
+      else
+        record.errors.add(attr, "\"#{record.report_field.name}\" must be a number")
+      end
+    else # Not a number
+      if value.length > 255
+        record.errors.add(attr, "\"#{record.report_field.name}\" is too long. 255 characters is the maximum length.")
+      end
     end
   end
 
-  def is_number?
-    return report_field.is_number?
-  end
 end

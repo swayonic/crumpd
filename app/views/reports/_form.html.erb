@@ -1,5 +1,5 @@
-<div class="span10 offset1 well well-small">
-  <%= form_for [@assignment, @report], :html => {class: 'form-horizontal'} do |f| %>
+<div class="span8 offset2 well well-small">
+  <%= form_for [@assignment, @report], :html => {class: 'form-horizontal report-form'} do |f| %>
     <% if @report.errors.any? %>
       <% set_flash_from_block :error do -%>
         <h4><%= pluralize(@report.errors.count/2, "error") %> prohibited this report from being saved:</h4>
@@ -60,9 +60,9 @@
               <% if line.report_field.is_number? -%>
                 <%= l.text_field :value, class: 'input-small' %>
               <% elsif line.report_field.is_text? -%>
-                <%= l.text_area :value, rows: 3 %>
+                <%= l.text_area :value, rows: 2, class: 'input-xlarge' %>
               <% else -%>
-                <%= l.text_field :value %>
+                <%= l.text_field :value, class: 'input-medium' %>
               <% end -%>
               <% if line.report_field.description -%>
                 <div class="add-on">
@@ -75,11 +75,9 @@
       <% end -%>
     <% end -%>
 
-    <div class="control-group">
-      <div class="controls">
+    <div class="form-actions">
         <%= f.submit class: 'btn btn-primary' %>
         <%= link_to 'Back', assignment_path(@report.assignment), class: 'btn' %>
-      </div>
     </div>
   <% end %>
 </div>
