@@ -4,7 +4,7 @@ class ReportField < ActiveRecord::Base
   belongs_to :period
   has_many :report_field_lines
 
-  validates_associated :report_field_lines #If we change the field, let's make sure the associated lines are still valid
+  #validates_associated :report_field_lines
   validates :list_index, :numericality => { :only_integer => true }
 
   validates :name, :presence => {:message => 'Name cannot be blank'}
