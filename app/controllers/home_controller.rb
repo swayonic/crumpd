@@ -70,6 +70,22 @@ class HomeController < ApplicationController
       flash.alert = 'Deleted everything'
     end
 
+    if params[:code] == 'remove_duplicate_admins'
+      # Fixes a bug that I introduced where all coaches were being added as admins
+      for p in Period.all
+        uniq_admins = p.admins.uniq
+        for pa in p.period_admins
+          pa.destroy
+        end
+        for user in uniq_admins
+          p.period_admins.build(:user_id => user.id)
+        end
+        p.save
+      end
+
+      flash.alert = 'Removed duplicate admins'
+    end
+
     redirect_to root_path
   end
 

@@ -24,7 +24,8 @@ class Sitrack < ActiveRecord::Base
   def self.update_period(p)
     return false if !p or !p.keep_updated?
 
-    users = p.admins
+    users = Array.new
+    users.concat p.admins
     for g in p.groups
       users.concat g.coaches
     end
