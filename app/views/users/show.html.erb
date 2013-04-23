@@ -20,6 +20,12 @@
       <th>Account Number</th>
       <td><%= @user.account_number %></td>
     </tr>
+    <% if @cas_user.is_admin? -%>
+      <tr>
+        <th>GUID <%= help_tip 'Admin only' %></th>
+        <td><%= @user.guid %></td>
+      </tr>
+    <% end -%>
     <tr>
       <th>Phone Number</th>
       <td><%= @user.phone %></td>
