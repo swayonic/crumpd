@@ -174,6 +174,9 @@ class ReportsController < ApplicationController
     end
 
     @period = @assignment.period
+    @list_title = "Reports - #{@assignment.user.display_name}"
+    @list_type = 'reports'
+
     @fields = params[:fields]
     if !@fields
       @fields = Hash.new
@@ -184,8 +187,7 @@ class ReportsController < ApplicationController
     end
 
     if params[:commit] == 'Download Excel'
-      @title = "Reports - #{@assignment.user.display_name}"
-      render "list.xls", :content_type => "application/xls"
+      render 'list.xml', :content_type => 'application/xls'
       return
     end
 

@@ -1,0 +1,124 @@
+<%= open_header %>
+  <%= open_row %>
+    <%= open_cell_head %>Name<%= close_cell_head %>
+    <% if @fields['intern_type'] == '1' -%>
+      <%= open_cell_head %>Type<%= close_cell_head %>
+    <% end -%>
+    <% if @fields['group'] == '1' -%>
+      <%= open_cell_head %>Group<%= close_cell_head %>
+    <% end -%>
+    <% if @fields['team'] == '1' -%>
+      <%= open_cell_head %>Team<%= close_cell_head %>
+    <% end -%>
+    <%= open_cell_head %>Last Report<%= close_cell_head %>
+    <% for g in Goal.defaults -%>
+      <% if @fields["#{g.frequency}_goal"] == '1' -%>
+        <%= open_cell_head %><%= g.title %> Goal<%= close_cell_head %>
+      <% end -%>
+      <% if @fields["#{g.frequency}_inhand_pct"] == '1' -%>
+        <%= open_cell_head %><%= "#{g.title} In-Hand Pct" %><%= close_cell_head %>
+      <% end -%>
+      <% if @fields["#{g.frequency}_inhand_amt"] == '1' -%>
+        <%= open_cell_head %><%= "#{g.title} In-Hand Amt" %><%= close_cell_head %>
+      <% end -%>
+      <% if @fields["#{g.frequency}_pledged_pct"] == '1' -%>
+        <%= open_cell_head %><%= "#{g.title} Pledged Pct" %><%= close_cell_head %>
+      <% end -%>
+      <% if @fields["#{g.frequency}_pledged_amt"] == '1' -%>
+        <%= open_cell_head %><%= "#{g.title} Pledged Amt" %><%= close_cell_head %>
+      <% end -%>
+    <% end -%>
+    <% for rf in @period.report_fields -%>
+      <% if @fields["field_#{rf.id}"] == '1' -%>
+        <%= open_cell_head %><%= rf.name %><%= close_cell_head %>
+      <% end -%>
+    <% end -%>
+  <%= close_row %>
+<%= close_header %>
+
+<%= open_body %>
+  <% for a in @assignments -%>
+    <% r = a.latest_report -%>
+    <%= open_row %>
+      <%= open_cell_body %><%= link_to_if use_links, a.user.sort_name, a %><%= close_cell_body %>
+      <% if !@assignment -%>
+        <% if @fields[:intern_type] == '1' -%>
+          <%= open_cell_body %><%= a.intern_type ? a.intern_type : raw('') %><%= close_cell_body %>
+        <% end -%>
+        <% if @fields[:group] == '1' -%>
+          <%= open_cell_body %><%= a.group ? link_to_if(use_links, a.group.display_name, a.group) : raw('') %><%= close_cell_body %>
+        <% end -%>
+        <% if @fields[:team] == '1' -%>
+          <%= open_cell_body %><%= a.team ? link_to_if(use_links, a.team.display_name, a.team) : raw('') %><%= close_cell_body %>
+        <% end -%>
+      <% end -%>
+      <%= open_cell_body %><%= r.nil? ? 'None' : r.date.strftime('%Y %m/%d') %><%= close_cell_body %>
+      <% for g in Goal.defaults -%>
+        <% if @fields["#{g.frequency}_goal"] == '1' -%>
+          <%= open_cell_body %><%= number_to_currency a.goal_amt(g.frequency) %><%= close_cell_body %>
+        <% end -%>
+        <% if @fields["#{g.frequency}_inhand_pct"] == '1' -%>
+<%
+if r
+  if l = r.goal_lines.find_by_frequency(g.frequency)
+    val = "#{Goal.pct(l.inhand, a.goal_amt(g.frequency))}%"
+  else
+    val = "0%"
+  end
+else
+  val = nil
+end
+-%>
+          <%= open_cell_body %><%= val %><%= close_cell_body %>
+        <% end -%>
+        <% if @fields["#{g.frequency}_inhand_amt"] == '1' -%>
+<%
+if r
+  if l = r.goal_lines.find_by_frequency(g.frequency)
+    val = number_to_currency(l.inhand)
+  else
+    val = number_to_currency(0)
+  end
+else
+  val = nil
+end
+-%>
+          <%= open_cell_body %><%= val %><%= close_cell_body %>
+        <% end -%>
+        <% if @fields["#{g.frequency}_pledged_pct"] == '1' -%>
+<%
+if r
+  if l = r.goal_lines.find_by_frequency(g.frequency)
+    val = "#{Goal.pct(l.pledged, a.goal_amt(g.frequency))}%"
+  else
+    val = "0%"
+  end
+else
+  val = nil
+end
+-%>
+          <%= open_cell_body %><%= val %><%= close_cell_body %>
+        <% end -%>
+        <% if @fields["#{g.frequency}_pledged_amt"] == '1' -%>
+<%
+if r
+  if l = r.goal_lines.find_by_frequency(g.frequency)
+    val = number_to_currency(l.pledged)
+  else
+    val = number_to_currency(0)
+  end
+else
+  val = nil
+end
+-%>
+          <%= open_cell_body %><%= val %><%= close_cell_body %>
+        <% end -%>
+      <% end -%>
+      <% for rf in @period.report_fields -%>
+        <% if @fields["field_#{rf.id}"] == '1' -%>
+          <%= open_cell_body %><%= l.value if r and l = r.field_lines.find_by_report_field_id(rf.id) -%><%= close_cell_body %>
+        <% end -%>
+      <% end -%>
+    <%= close_row %>
+  <% end -%>
+<%= close_body %>
