@@ -161,7 +161,7 @@ class TeamsController < ApplicationController
     @fields = params[:fields] || Hash.new
 
     if params[:commit] == 'Download Excel'
-      render 'assignments/list.xls', :content_type => 'application/xls'
+      render 'assignments/list.xml', :content_type => 'application/xls'
       return
     end
 
