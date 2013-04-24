@@ -58,51 +58,65 @@
           <%= open_cell_body %><%= number_to_currency a.goal_amt(g.frequency) %><%= close_cell_body %>
         <% end -%>
         <% if @fields["#{g.frequency}_inhand_pct"] == '1' -%>
-          <%= open_cell_body %>
-          <% if r -%>
-            <% if l = r.goal_lines.find_by_frequency(g.frequency) -%>
-              <%= Goal.pct(l.inhand, a.goal_amt(g.frequency)) %>%
-            <% else -%>
-              0%
-            <% end -%>
-          <% end -%>
+<%
+if r
+  if l = r.goal_lines.find_by_frequency(g.frequency)
+    val = "#{Goal.pct(l.inhand, a.goal_amt(g.frequency))}%"
+  else
+    val = "0%"
+  end
+else
+  val = nil
+end
+-%>
+          <%= open_cell_body %><%= val %><%= close_cell_body %>
         <% end -%>
         <% if @fields["#{g.frequency}_inhand_amt"] == '1' -%>
-          <%= open_cell_body %>
-          <% if r -%>
-            <% if l = r.goal_lines.find_by_frequency(g.frequency) -%>
-              <%= number_to_currency l.inhand %>
-            <% else -%>
-              <%= number_to_currency 0 %>
-            <% end -%>
-          <% end -%>
+<%
+if r
+  if l = r.goal_lines.find_by_frequency(g.frequency)
+    val = number_to_currency(l.inhand)
+  else
+    val = number_to_currency(0)
+  end
+else
+  val = nil
+end
+-%>
+          <%= open_cell_body %><%= val %><%= close_cell_body %>
         <% end -%>
         <% if @fields["#{g.frequency}_pledged_pct"] == '1' -%>
-          <%= open_cell_body %>
-          <% if r -%>
-            <% if l = r.goal_lines.find_by_frequency(g.frequency) -%>
-              <%= Goal.pct(l.pledged, a.goal_amt(g.frequency)) %>%
-            <% else -%>
-              0%
-            <% end -%>
-          <% end -%>
+<%
+if r
+  if l = r.goal_lines.find_by_frequency(g.frequency)
+    val = "#{Goal.pct(l.pledged, a.goal_amt(g.frequency))}%"
+  else
+    val = "0%"
+  end
+else
+  val = nil
+end
+-%>
+          <%= open_cell_body %><%= val %><%= close_cell_body %>
         <% end -%>
         <% if @fields["#{g.frequency}_pledged_amt"] == '1' -%>
-          <%= open_cell_body %>
-          <% if r -%>
-            <% if l = r.goal_lines.find_by_frequency(g.frequency) -%>
-              <%= number_to_currency l.pledged %>
-            <% else -%>
-              <%= number_to_currency 0 %>
-            <% end -%>
-          <% end -%>
+<%
+if r
+  if l = r.goal_lines.find_by_frequency(g.frequency)
+    val = number_to_currency(l.pledged)
+  else
+    val = number_to_currency(0)
+  end
+else
+  val = nil
+end
+-%>
+          <%= open_cell_body %><%= val %><%= close_cell_body %>
         <% end -%>
       <% end -%>
       <% for rf in @period.report_fields -%>
         <% if @fields["field_#{rf.id}"] == '1' -%>
-          <%= open_cell_body %>
-          <%= l.value if r and l = r.field_lines.find_by_report_field_id(rf.id) -%>
-          <%= close_cell_body %>
+          <%= open_cell_body %><%= l.value if r and l = r.field_lines.find_by_report_field_id(rf.id) -%><%= close_cell_body %>
         <% end -%>
       <% end -%>
     <%= close_row %>
