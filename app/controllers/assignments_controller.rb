@@ -91,9 +91,9 @@ class AssignmentsController < ApplicationController
     end
 
     continue = params[:continue] || request.referrer
-    
+
     if params[:add_member].nil?
-      flash_alert = 'Member not added'
+      flash.alert = 'Member not added'
       redirect_to continue
       return
     end
@@ -185,18 +185,22 @@ class AssignmentsController < ApplicationController
       render 'shared/not_found'
       return
     end
-    if !assn.can_edit?(@cas_user)
+    if assn.period.keep_updated? or !assn.can_edit?(@cas_user)
       render 'shared/forbidden'
       return
     end
 
     if !params[:delete]
-      flash.alert = 'Nothing to delete'
-      redirect_to :back
+      u = assn.user
+      if assn.destroy
+        flash.notice = 'Assignment destroyed.'
+        redirect_to u
+      else
+        flash.alert = 'Failed to delete assignment.'
+        redirect_to assn
+      end
       return
-    end
-
-    if params[:delete] == 'group'
+    elsif params[:delete] == 'group'
       assn.group = nil
     elsif params[:delete] == 'team'
       assn.team = nil
@@ -207,10 +211,9 @@ class AssignmentsController < ApplicationController
     end
 
     if assn.group.nil? and assn.team.nil?
-      # Don't delete the assignment
-      # TODO: Change? Would require deleting all reports, pledges, etc
+      # Don't delete the assignment automatically
     end
-    
+
     if assn.save
       flash.notice = 'Member removed'
     else

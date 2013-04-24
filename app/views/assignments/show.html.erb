@@ -45,6 +45,9 @@
   </table>
   <% if @assignment.can_edit?(@cas_user) -%>
     <%= link_to 'Edit', edit_assignment_path(@assignment), class: 'btn' %>
+    <% if !@assignment.period.keep_updated? -%>
+      <%= link_to 'Delete', @assignment, method: 'delete', confirm: 'Are you sure you want to delete this assignment and all related pledges and reports?', class: 'btn btn-danger' %>
+    <% end -%>
   <% end -%>
 
 </div>
