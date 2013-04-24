@@ -6,7 +6,6 @@ class Assignment < ActiveRecord::Base
   end
 
   def active?
-    return true if !period.keep_updated?
     return ['accepted','placed','on_assignment','alumni'].include?(status)
   end
 

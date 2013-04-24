@@ -2,6 +2,10 @@
 
 <div class="span6 offset3 well well-mini">
   <%= form_for @assignment do |f| %>
+    Status
+    <%= f.text_field :status %>
+    <%= help_tip 'Possible values: on_assignment, Re-Applied, withdrawn, started, alumni, terminated, placed, declined, re-applied, accepted, etc.' %>
+
     <h3>Groups</h3>
 
     <% teams_array = [['None', 0]].concat( @assignment.period.teams.map { |t| [t.display_name, t.id] }) -%>
