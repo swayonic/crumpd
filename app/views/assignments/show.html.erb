@@ -128,7 +128,7 @@
         </tr>
       </thead>
       <tbody>
-        <% for r in @assignment.reports.reverse -%>
+        <% for r in @assignment.reports -%>
           <tr>
             <th>
               <%= link_to r.date.strftime('%b %e'), r %>

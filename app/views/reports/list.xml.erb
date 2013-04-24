@@ -1,9 +1,27 @@
-<% 
-  headers["Content-Disposition"] = "attachment; filename=\"#{@title}.xls\""
--%>
-<table>
-  <tr><td><b><%= @title %></b></td></tr>
-  <tr><td><%= Time.now %></td></tr>
-  <tr></tr>
-  <%= render :partial => 'list_data.html' %>
-</table>
+<%= excel_sheet @list_title do -%>
+  <Row>
+    <Cell><Data ss:Type="String"><%= @list_title %></Data></Cell>
+  </Row>
+  <Row>
+    <Cell><Data ss:Type="String"><%= Time.now.strftime('%b %e, %Y at %I:%M %p') %></Data></Cell>
+  </Row>
+
+  <Row>
+  </Row>
+
+  <%= render :partial => 'list_data',
+    :locals => {
+      :use_links => false,
+      :open_header => raw(''),
+      :close_header => raw(''),
+      :open_body => raw(''),
+      :close_body => raw(''),
+      :open_row => raw('<Row>'),
+      :close_row => raw('</Row>'),
+      :open_cell_head => raw('<Cell ss:StyleID="style_header"><Data ss:Type="String">'),
+      :close_cell_head => raw('</Data></Cell>'),
+      :open_cell_body => raw('<Cell><Data ss:Type="String">'),
+      :close_cell_body => raw('</Data></Cell>')
+    }
+  %>
+<% end -%>
