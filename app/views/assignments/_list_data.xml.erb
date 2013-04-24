@@ -1,6 +1,9 @@
 <%= open_header %>
   <%= open_row %>
     <%= open_cell_head %>Name<%= close_cell_head %>
+    <% if @fields['show_all'] == '1' -%>
+      <%= open_cell_head %>Status<%= close_cell_head %>
+    <% end -%>
     <% if @fields['intern_type'] == '1' -%>
       <%= open_cell_head %>Type<%= close_cell_head %>
     <% end -%>
@@ -42,6 +45,9 @@
     <%= open_row %>
       <%= open_cell_body %><%= link_to_if use_links, a.user.sort_name, a %><%= close_cell_body %>
       <% if !@assignment -%>
+        <% if @fields[:show_all] == '1' -%>
+          <%= open_cell_body %><%= a.status ? a.status : raw('') %><%= close_cell_body %>
+        <% end -%>
         <% if @fields[:intern_type] == '1' -%>
           <%= open_cell_body %><%= a.intern_type ? a.intern_type : raw('') %><%= close_cell_body %>
         <% end -%>

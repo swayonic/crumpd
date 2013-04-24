@@ -251,10 +251,14 @@ class PeriodsController < ApplicationController
 
     @list_title = "#{@period.name} Complete List"
     @list_type = 'period'
-
-    # TODO: Allow viewing of non-active assignments (Maybe just for admins?)
-    @assignments = @period.assignments.active.sort_by{|a| a.user.sort_name}
     @fields = params[:fields] || Hash.new
+
+    if @fields[:show_all] == '1'
+      @assignments = @period.assignments
+    else
+      @assignments = @period.assignments.active
+    end
+    @assignments = @assignments.sort_by{|a| a.user.sort_name}
 
     if params[:commit] == 'Download Excel'
       render 'assignments/list.xml', :content_type => 'application/xls'

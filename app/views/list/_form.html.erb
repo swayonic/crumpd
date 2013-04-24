@@ -4,6 +4,12 @@
       <tr>
         <td>
           <table class="mytable">
+            <% if @list_type == 'period' -%>
+              <tr>
+                <td><%= check_box :fields, :show_all, :checked => '1' == (@fields[:show_all] ||= '0') %></td>
+                <td>Show All <%= help_tip "Including people who have been marked as 'rejected', 'terminated', etc." %></td>
+              </tr>
+            <% end -%>
             <% if @list_type != 'reports' -%>
               <tr>
                 <td><%= check_box :fields, :intern_type, :checked => '1' == (@fields[:intern_type] ||= '0') %></td>
@@ -65,11 +71,16 @@
               <th colspan=2>Report Fields</th>
             </tr>
             <% if @period.report_fields.count > 0 -%>
+              <tr>
+                <td>
+                  <%= check_box_tag 'selectAllReportFields', '1', false, title: 'Select all' %>
+                </td>
+              </tr>
               <% for rf in @period.report_fields -%>
                 <tr>
                   <td>
                     <% name = "field_#{rf.id}" -%>
-                    <%= check_box :fields, name, :checked => '1' == (@fields[name] ||= '0') %>
+                    <%= check_box :fields, name, :checked => '1' == (@fields[name] ||= '0'), class: 'report_field_box' %>
                   </td>
                   <td>
                     <%= rf.name %>
@@ -95,3 +106,13 @@
     </table>
   <% end %>
 </div>
+
+<script type='text/javascript'>
+  $('#selectAllReportFields').change(function() {
+    var val = $(this).is(':checked')
+    $('.report_field_box').each( function(index, element) {
+      var $this = $(this);
+      $this.attr('checked', val == '1');
+    });
+  });
+</script>
