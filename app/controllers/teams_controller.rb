@@ -154,17 +154,19 @@ class TeamsController < ApplicationController
     end
 
     @period = @team.period
-    @assignments = @team.assignments.active
+    @list_title = "#{@period.name} - #{@team.display_name}"
+    @list_type = 'team'
+
+    @assignments = @team.assignments.active.sort_by{|a| a.user.sort_name}
     @fields = params[:fields] || Hash.new
 
     if params[:commit] == 'Download Excel'
-      @title = "#{@period.name} - #{@team.display_name}"
       render 'assignments/list.xls', :content_type => 'application/xls'
       return
     end
 
     member_breadcrumbs
-    render :layout => 'list'
+    render 'assignments/list', :layout => 'list'
   end
 
   private

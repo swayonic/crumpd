@@ -130,17 +130,19 @@ class GroupsController < ApplicationController
     end
 
     @period = @group.period
-    @assignments = @group.assignments.active
+    @list_title = "#{@period.name} - #{@group.display_name}"
+    @list_type = 'group'
+
+    @assignments = @group.assignments.active.sort_by{|a| a.sort_name}
     @fields = params[:fields] || Hash.new
 
     if params[:commit] == 'Download Excel'
-      @title = "#{@period.name} - #{@group.display_name}"
       render 'assignments/list.xls', :content_type => 'application/xls'
       return
     end
 
     member_breadcrumbs
-    render :layout => 'list'
+    render 'assignments/list', :layout => 'list'
   end
 
   private

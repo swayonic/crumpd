@@ -1,29 +1,33 @@
 <div class="span10 offset1 well well-small">
   <%= form_for :fields, :html => {:id => 'fields_form'} do |f| %>
-    <table class="mytable" width=100%>
+    <table class="mytable" width="100%">
       <tr>
         <td>
-          <table class="myTable">
-            <% if !@assignment -%>
+          <table class="mytable">
+            <% if @list_type != 'reports' -%>
               <tr>
                 <td><%= check_box :fields, :intern_type, :checked => '1' == (@fields[:intern_type] ||= '0') %></td>
                 <td>Intern Type</td>
               </tr>
-              <tr>
-                <td><%= check_box :fields, :group, :checked => '1' == (@fields[:group] ||= '0') %></td>
-                <td>Coaching Group</td>
-              </tr>
-              <tr>
-                <td><%= check_box :fields, :team, :checked => '1' == (@fields[:team] ||= '0') %></td>
-                <td>Team</td>
-              </tr>
+              <% if @list_type != 'group' -%>
+                <tr>
+                  <td><%= check_box :fields, :group, :checked => '1' == (@fields[:group] ||= '0') %></td>
+                  <td>Coaching Group</td>
+                </tr>
+              <% end -%>
+              <% if @list_type != 'team' -%>
+                <tr>
+                  <td><%= check_box :fields, :team, :checked => '1' == (@fields[:team] ||= '0') %></td>
+                  <td>Team</td>
+                </tr>
+              <% end -%>
               <tr><td>&nbsp;</td></tr>
             <% end -%>
             <% for g in Goal.defaults -%>
               <tr>
                 <td colspan="2">
                   <b><%= g.title %></b>
-                  <% if @assignment -%>
+                  <% if @list_type == 'reports' -%>
                     (<%= number_to_currency @assignment.goal_amt(g.frequency) %>)
                   <% else -%>
                     <% name = "#{g.frequency}_goal" -%>
@@ -56,7 +60,7 @@
           </table>
         </td>
         <td>
-          <table class="myTable">
+          <table class="mytable">
             <tr>
               <th colspan=2>Report Fields</th>
             </tr>

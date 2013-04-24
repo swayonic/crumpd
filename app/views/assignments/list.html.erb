@@ -1,0 +1,33 @@
+<% title @page_title -%>
+
+<% content_for :form do -%>
+  <%= render :partial => 'list/form' %>
+<% end -%>
+
+<% content_for :list do -%>
+  <div class="span12">
+    <table id='assignmentList' class='tablesorter-blue'>
+      <%= render :partial => 'assignments/list_data.xml',
+        :locals => {
+          :use_links => true,
+          # Standard html table
+          :open_header => raw('<thead>'),
+          :close_header => raw('</thead>'),
+          :open_body => raw('<tbody>'),
+          :close_body => raw('</tbody>'),
+          :open_row => raw('<tr>'),
+          :close_row => raw('</tr>'),
+          :open_cell_head => raw('<th>'),
+          :close_cell_head => raw('</th>'),
+          :open_cell_body => raw('<td>'),
+          :close_cell_body => raw('</td>')
+        }
+    %>
+    </table>
+    <script type='text/javascript'>
+      $(document).ready(function() {
+        $('#assignmentList').tablesorter();
+      });
+    </script>
+  </div>
+<% end -%>

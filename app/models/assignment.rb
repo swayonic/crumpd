@@ -15,7 +15,7 @@ class Assignment < ActiveRecord::Base
   belongs_to :group
   belongs_to :team
   has_many :pledges, :dependent => :destroy
-  has_many :reports, :order => 'created_at DESC', :dependent => :destroy
+  has_many :reports, :order => 'date DESC', :dependent => :destroy
   has_many :goals, :order => 'frequency', :dependent => :destroy
 
   validate do
