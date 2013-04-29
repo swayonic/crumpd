@@ -32,9 +32,9 @@ class Assignment < ActiveRecord::Base
   end
 
   def goal_amt(f)
-    total = 0
-    for g in self.goals.select{|g| g.frequency == f}
-      total = g.amount
+    total = nil
+    for goal in self.goals.select{|g| g.frequency == f}
+      total = goal.amount
     end
     return total
   end
@@ -68,7 +68,7 @@ class Assignment < ActiveRecord::Base
     goal = 0
     for g in goals
       amt = amt + goal_pledged(g.frequency) * (g.frequency == 0 ? 1 : g.frequency)
-      goal = goal + goal_amt(g.frequency) * (g.frequency == 0 ? 1 : g.frequency)
+      goal = goal + goal_amt(g.frequency) * (g.frequency == 0 ? 1 : g.frequency) if goal_amt(g.frequency)
     end
     return Goal.pct(amt, goal)
   end
@@ -78,17 +78,17 @@ class Assignment < ActiveRecord::Base
     goal = 0
     for g in goals
       amt = amt + goal_inhand(g.frequency) * (g.frequency == 0 ? 1 : g.frequency)
-      goal = goal + goal_amt(g.frequency) * (g.frequency == 0 ? 1 : g.frequency)
+      goal = goal + goal_amt(g.frequency) * (g.frequency == 0 ? 1 : g.frequency) if goal_amt(g.frequency)
     end
     return Goal.pct(amt, goal)
   end
-  
+
   def combined_total_pct
     amt = 0
     goal = 0
     for g in goals
       amt = amt + goal_total(g.frequency) * (g.frequency == 0 ? 1 : g.frequency)
-      goal = goal + goal_amt(g.frequency) * (g.frequency == 0 ? 1 : g.frequency)
+      goal = goal + goal_amt(g.frequency) * (g.frequency == 0 ? 1 : g.frequency) if goal_amt(g.frequency)
     end
     return Goal.pct(amt, goal)
   end

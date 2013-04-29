@@ -2,7 +2,7 @@
   <%= form_for :fields, :html => {:id => 'fields_form'} do |f| %>
     <table class="mytable" width="100%">
       <tr>
-        <td>
+        <td align="left">
           <table class="mytable">
             <% if @list_type == 'period' -%>
               <tr>
@@ -29,7 +29,16 @@
               <% end -%>
               <tr><td>&nbsp;</td></tr>
             <% end -%>
-            <% for g in Goal.defaults -%>
+            <% goals = @list_type == 'reports' ? @assignment.goals : Goal.defaults -%>
+            <tr>
+              <th colspan="2">Goals</th>
+            </tr>
+            <% if goals.count == 0 -%>
+              <tr>
+                <td colspan="2"><i>None</i></td>
+              </tr>
+            <% end -%>
+            <% for g in goals -%>
               <tr>
                 <td colspan="2">
                   <b><%= g.title %></b>
@@ -65,7 +74,7 @@
             <% end -%>
           </table>
         </td>
-        <td>
+        <td align="right">
           <table class="mytable">
             <tr>
               <th colspan=2>Report Fields</th>

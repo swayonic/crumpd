@@ -170,6 +170,11 @@ class AssignmentsController < ApplicationController
       assn = a
     end
 
+    if assn.status.blank?
+      # This should only happen in test regions, so we just want to make it visible
+      assn.status = 'placed'
+    end
+
     if assn.save
       flash.notice = 'Member added'
     else

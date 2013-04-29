@@ -52,25 +52,21 @@
           <%= open_cell_body %><%= a.intern_type ? a.intern_type : raw('') %><%= close_cell_body %>
         <% end -%>
         <% if @fields[:group] == '1' -%>
-          <%= open_cell_body %><%= a.group ? link_to_if(use_links, a.group.display_name, a.group) : raw('') %><%= close_cell_body %>
+          <%= open_cell_body %><%= a.group ? link_to_if((use_links and a.group.can_view?(@cas_user)), a.group.display_name, a.group) : raw('') %><%= close_cell_body %>
         <% end -%>
         <% if @fields[:team] == '1' -%>
-          <%= open_cell_body %><%= a.team ? link_to_if(use_links, a.team.display_name, a.team) : raw('') %><%= close_cell_body %>
+          <%= open_cell_body %><%= a.team ? link_to_if((use_links and a.team.can_view?(@cas_user)), a.team.display_name, a.team) : raw('') %><%= close_cell_body %>
         <% end -%>
       <% end -%>
-      <%= open_cell_body %><%= r.nil? ? 'None' : r.date.strftime('%Y %m/%d') %><%= close_cell_body %>
+      <%= open_cell_body %><%= r.nil? ? 'None' : link_to_if((use_links and a.can_view_reports?(@cas_user)), r.date.strftime('%Y %m/%d'), r) %><%= close_cell_body %>
       <% for g in Goal.defaults -%>
         <% if @fields["#{g.frequency}_goal"] == '1' -%>
-          <%= open_cell_body %><%= number_to_currency a.goal_amt(g.frequency) %><%= close_cell_body %>
+          <%= open_cell_body %><%= number_to_currency(a.goal_amt(g.frequency)) if a.goal_amt(g.frequency) %><%= close_cell_body %>
         <% end -%>
         <% if @fields["#{g.frequency}_inhand_pct"] == '1' -%>
 <%
-if r
-  if l = r.goal_lines.find_by_frequency(g.frequency)
-    val = "#{Goal.pct(l.inhand, a.goal_amt(g.frequency))}%"
-  else
-    val = "0%"
-  end
+if r and l = r.goal_lines.find_by_frequency(g.frequency)
+  val = "#{Goal.pct(l.inhand, a.goal_amt(g.frequency))}%"
 else
   val = nil
 end
@@ -79,12 +75,8 @@ end
         <% end -%>
         <% if @fields["#{g.frequency}_inhand_amt"] == '1' -%>
 <%
-if r
-  if l = r.goal_lines.find_by_frequency(g.frequency)
-    val = number_to_currency(l.inhand)
-  else
-    val = number_to_currency(0)
-  end
+if r and l = r.goal_lines.find_by_frequency(g.frequency)
+  val = number_to_currency(l.inhand)
 else
   val = nil
 end
@@ -93,12 +85,8 @@ end
         <% end -%>
         <% if @fields["#{g.frequency}_pledged_pct"] == '1' -%>
 <%
-if r
-  if l = r.goal_lines.find_by_frequency(g.frequency)
-    val = "#{Goal.pct(l.pledged, a.goal_amt(g.frequency))}%"
-  else
-    val = "0%"
-  end
+if r and l = r.goal_lines.find_by_frequency(g.frequency)
+  val = "#{Goal.pct(l.pledged, a.goal_amt(g.frequency))}%"
 else
   val = nil
 end
@@ -107,12 +95,8 @@ end
         <% end -%>
         <% if @fields["#{g.frequency}_pledged_amt"] == '1' -%>
 <%
-if r
-  if l = r.goal_lines.find_by_frequency(g.frequency)
-    val = number_to_currency(l.pledged)
-  else
-    val = number_to_currency(0)
-  end
+if r and l = r.goal_lines.find_by_frequency(g.frequency)
+  val = number_to_currency(l.pledged)
 else
   val = nil
 end

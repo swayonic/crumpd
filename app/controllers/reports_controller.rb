@@ -181,7 +181,7 @@ class ReportsController < ApplicationController
     if !@fields
       @fields = Hash.new
       # Start with these
-      for g in Goal.defaults
+      for g in @assignment.goals
         @fields["#{g.frequency}_inhand_pct"] = '1'
       end
     end
