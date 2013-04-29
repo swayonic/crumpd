@@ -47,8 +47,8 @@
     <% end -%>
     <% if @user.can_sudo?(true_user) -%>
       <tr>
-        <th>Sudo <%= help_tip 'Assume the permissions of this person' %></th>
-        <td><%= link_to 'Assume', sudo_user_path(@user), class: 'btn' %></td>
+        <th>Sudo <%= help_tip 'Temporarily assume the identity of this person. Lets you see what they see.' %></th>
+        <td><%= link_to 'Assume', sudo_user_path(@user), class: 'btn btn-info' %></td>
       </tr>
     <% end -%>
     <% if @cas_user.is_admin? -%>
@@ -56,9 +56,9 @@
         <th>Admin <%= help_tip 'Grants this user Admin priveleges' %></th>
         <td>
           <% if @user.is_admin? %>
-            <%= link_to 'Revoke', toggle_admin_user_path(@user), method: 'post', class: 'btn' %>
+            <%= link_to 'Revoke', toggle_admin_user_path(@user), method: 'post', class: 'btn btn-warning' %>
           <% else -%>
-            <%= link_to 'Grant', toggle_admin_user_path(@user), method: 'post', class: 'btn' %>
+            <%= link_to 'Grant', toggle_admin_user_path(@user), method: 'post', class: 'btn btn-warning' %>
           <% end -%>
         </td>
       </tr>
@@ -72,7 +72,7 @@
 'Are you sure you want to delete this user and all objects dependent on it?
 This cannot be undone.'
             },
-            class: 'btn'
+            class: 'btn btn-danger'
           %>
         </td>
       </tr>
