@@ -35,9 +35,9 @@ class PledgesController < ApplicationController
     elsif @pledge.save
       flash.notice = 'Pledge added'
     else
-      flash.alert = 'Pledge not added: an error occured while saving'
+      flash.alert = 'Your pledge was improperly formatted and could not be saved.'
     end
-    
+
     redirect_to :action => :index, :assignment_id => @pledge.assignment.id
   end
 
