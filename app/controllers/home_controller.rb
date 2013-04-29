@@ -42,6 +42,17 @@ class HomeController < ApplicationController
 		redirect_to :back
 	end
 
+  # POST /view_user
+  def view_user
+    # Only admins can see this tool, but it just redirects to a user's page, so we don't need to check security
+    if !params[:view_user] or !user = User.find_by_id(params[:view_user][:id])
+      render 'shared/not_found'
+      return
+    end
+
+    redirect_to user
+  end
+
   # GET /backdoor?code=[action]
   #
   # Ok, so it's not really a backdoor

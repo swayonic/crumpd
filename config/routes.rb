@@ -58,6 +58,7 @@ Mpd::Application.routes.draw do
 	match 'login' => 'home#do_login', :via => :post
 	match 'logout' => 'home#logout'
 	match 'full_update' => 'home#full_update'
+  match 'view_user' => 'home#view_user'
 	
   # Shameless
   match 'backdoor' => 'home#backdoor'

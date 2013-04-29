@@ -1,6 +1,41 @@
 <% title 'SIMPD Home' %>
 
+<% if @cas_user.is_admin? -%>
+
+  <div class="span4 well well-small">
+    <h3>View a User</h3>
+
+    <%= form_for :view_user, :url => view_user_path do |f| %>
+      <%= f.hidden_field :id %>
+      <table class="mytable">
+        <tr>
+          <td><%= f.label :name, 'User', class: 'control-label' %></td>
+          <td>
+            <div class="input-append">
+              <%= autocomplete_field 'view_user', 'name', autocomplete_users_path, :id_element => '#view_user_id', class: 'input-medium' %>
+              <span class="add-on">
+                <%= help_tip User.autocomplete_help_tip_text %>
+              </span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" style="text-align:center;">
+            <%= f.submit 'View', class: 'btn btn-primary' %>
+          </td>
+        </tr>
+      </table>
+    <% end %>
+  </div>
+
+  <%= autofocus 'view_user_name' %>
+
+<!-- Start roles -->
+<div class="span8 well well-small">
+<% else -%>
+<!-- Start roles -->
 <div class="span8 offset2 well well-small">
+<% end -%>
   <% @user = @cas_user -%>
   <%= render :partial => 'users/roles' %>
 </div>
