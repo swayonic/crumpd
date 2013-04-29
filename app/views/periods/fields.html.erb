@@ -2,7 +2,6 @@
 <b>NOTE:</b>
 <ul>
   <i>
-  <li>Lines are automatically added for goal progress, two for each goal (e.g. "Monthly pledged" and "Monthly in-hand").</li>
   <li>You cannot edit the 'Type' of an existing field if a report has already been created for this period, since this could lead to data corruption. If you must make a change, you can delete the field and add it again, but you will lose all information that had been entered for that field.</li>
   </i>
 </ul>
@@ -36,18 +35,36 @@
       </tr>
     </thead>
     <tbody>
-      <% for rf in @period.report_fields %>
-<%
-if rf.id
-  field_id = "field_#{rf.id}"
-else
-  # This happens if a new field didn't save successfully
-  field_id = "newfield_#{newFieldId}"
-  newFieldId = newFieldId + 1
-end
--%>
-        <%= render :partial => 'field_row', :locals => {:id => field_id, :rf => rf} %>
-      <% end %>
+      <%
+        for rf in @period.report_fields
+          if rf.id
+            rf[:html_id] = "field_#{rf.id}"
+          else
+            # This happens if a new field didn't save successfully
+            rf[:html_id] = "newfield_#{newFieldId}"
+            newFieldId = newFieldId + 1
+          end
+        end
+      -%>
+      <% for rf in @period.report_fields.select{|field| field.list_index < 0} -%>
+        <%= render :partial => 'field_row', :locals => {
+          :id => rf.html_id,
+          :rf => rf
+          }
+        %>
+      <% end -%>
+      <%= render :partial => 'field_row', :locals => {
+        :id => 'goals',
+        :rf => ReportField.new(:list_index => 0)
+        }
+      %>
+      <% for rf in @period.report_fields.select{|field| field.list_index > 0} -%>
+        <%= render :partial => 'field_row', :locals => {
+          :id => rf.html_id,
+          :rf => rf
+          }
+        %>
+      <% end -%>
     </tbody>
     </table>
 
@@ -66,12 +83,54 @@ end
 </div>
     
 <script type='text/javascript'>
+function setListIndices()
+{
+  var rows = $('#fieldsTable tbody tr');
+  var index = rows.length;
+  for (var i=0; i<rows.length; i++)
+  {
+    console.log(rows[i].id);
+    if (rows[i].id == 'goals_row')
+    {
+      index = i;
+      break;
+    }
+  }
+  if (index == rows.length)
+  {
+    // No goals_row tr
+    //alert('no goals row!');
+    var x = 1;
+    for (var i=0; i<rows.length; i++)
+    {
+      rows[i].cells[0].childNodes[1].value = x;
+      x = x+1;
+    }
+  }
+  else
+  {
+    // Set indices for those above goals_row
+    var x = -1;
+    for (var i=index-1; i>=0; i--)
+    {
+      rows[i].cells[0].childNodes[1].value = x;
+      x = x-1;
+    }
+    // Set indices for those below goals_row
+    var x = 1;
+    for (var i=index+1; i<rows.length; i++)
+    {
+      rows[i].cells[0].childNodes[1].value = x;
+      x = x+1;
+    }
+  }
+}
 function reorder(id, dir)
 {
   id = id + '_row';
-  var rows = $('#fieldsTable tr');
-  var index = rows.length; //invalid
-  for (var i = 1; i < rows.length; i++)
+  var rows = $('#fieldsTable tbody tr');
+  var index = rows.length;
+  for (var i=0; i < rows.length; i++)
   {
     if (rows[i].id == id)
     {
@@ -83,13 +142,10 @@ function reorder(id, dir)
 
   if (dir == 'up')
   {
-    if (index == 1)
+    if (index == 0)
     {
-      //alert("can't!");
-      return;
+      return; // At top
     }
-    rows[index].cells[0].childNodes[1].value = index - 1;
-    rows[index - 1].cells[0].childNodes[1].value = index;
     var otherId = rows[index - 1].id;
     $('#'+otherId).insertAfter('#'+id);
   }
@@ -97,14 +153,13 @@ function reorder(id, dir)
   {
     if (index == rows.length - 1)
     {
-      //alert("can't!");
-      return;
+      return; // At bottom
     }
-    rows[index].cells[0].childNodes[1].value = index + 1;
-    rows[index + 1].cells[0].childNodes[1].value = index;
     var otherId = rows[index + 1].id;
     $('#'+id).insertAfter('#'+otherId);
   }
+
+  setListIndices();
 };
 
 function toggleDelete()
@@ -134,8 +189,9 @@ function addRow()
   id = id + '_row';
   $('#fieldsTable tr :last')[0].id = id;
   $('#'+id).html(html);
-  $('#'+id)[0].cells[0].childNodes[1].value = $('#fieldsTable tr').length-1;
   $('#'+id+' .remove_field_box')[0].onchange = toggleDelete;
+
+  setListIndices();
 }
 
 $(document).ready(function()
@@ -146,6 +202,8 @@ $(document).ready(function()
     boxes[i].onchange = toggleDelete;
   }
   newFieldId = <%= newFieldId %>;
+
+  setListIndices();
 });
 </script>
 

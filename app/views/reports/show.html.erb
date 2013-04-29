@@ -32,6 +32,19 @@
 
     <tr><td>&nbsp;</td></tr>
 
+    <% for line in @report.field_lines.select{|l| l.report_field.list_index < 0}.sort_by{|l| l.report_field.list_index} -%>
+      <tr>
+        <td>
+          <% if line.report_field.is_required? -%>
+            <b><%= line.report_field.name %></b>
+          <% else -%>
+            <%= line.report_field.name %>
+          <% end -%>
+        </td>
+        <td><%= line.value %></td>
+      </tr>
+    <% end -%>
+
     <% for line in @report.goal_lines -%>
       <tr>
         <td><b><%= Goal.title(line.frequency) %> in-hand</b></td>
@@ -43,9 +56,7 @@
       </tr>
     <% end -%>
 
-    <tr><td>&nbsp;</td></tr>
-
-    <% for line in @report.field_lines.sort_by{|l| l.report_field.list_index} -%>
+    <% for line in @report.field_lines.select{|l| l.report_field.list_index > 0}.sort_by{|l| l.report_field.list_index} -%>
       <tr>
         <td>
           <% if line.report_field.is_required? -%>

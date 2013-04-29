@@ -19,7 +19,9 @@
       </div>
     </div>
 
-    <div class="control-group"></div>
+    <% for line in @report.field_lines.select{|l| l.report_field.list_index < 0}.sort_by{|l| l.report_field.list_index} -%>
+      <%= render :partial => 'form_field_line', :locals => {:line => line} %>
+    <% end -%>
 
     <% for line in @report.goal_lines -%>
       <%= fields_for "goal_#{line.frequency}", line do |l| %>
@@ -47,32 +49,8 @@
       <% end -%>
     <% end -%>
 
-    <div class="control-group"></div>
-
-    <% for line in @report.field_lines.sort_by{|l| l.report_field.list_index} -%>
-      <%= fields_for "field_#{line.report_field.id}", line do |l| %>
-        <div class="control-group">
-          <%= l.label :value, 
-            line.report_field.name, 
-            class: (line.report_field.required? ? 'control-label required-label' : 'control-label') %>
-          <div class="controls">
-            <div class="input-append">
-              <% if line.report_field.is_number? -%>
-                <%= l.text_field :value, class: 'input-small' %>
-              <% elsif line.report_field.is_text? -%>
-                <%= l.text_area :value, rows: 2, class: 'input-xlarge' %>
-              <% else -%>
-                <%= l.text_field :value, class: 'input-medium' %>
-              <% end -%>
-              <% if line.report_field.description -%>
-                <div class="add-on">
-                  <%= help_tip line.report_field.description %>
-                </div>
-              <% end -%>
-            </div>
-          </div>
-        </div>
-      <% end -%>
+    <% for line in @report.field_lines.select{|l| l.report_field.list_index > 0}.sort_by{|l| l.report_field.list_index} -%>
+      <%= render :partial => 'form_field_line', :locals => {:line => line} %>
     <% end -%>
 
     <div class="form-actions">
