@@ -100,8 +100,12 @@ class HomeController < ApplicationController
     redirect_to root_path
   end
 
-	def not_found
-		render 'shared/not_found'
-	end
+  def not_found
+    if params[:format].blank? or params[:format] == 'html'
+      render 'shared/not_found', :status => :not_found
+    else
+      raise ActionController::RoutingError.new('Not Found')
+    end
+  end
 
 end
