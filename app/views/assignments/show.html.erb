@@ -10,6 +10,14 @@
         <%= link_to_if @assignment.user.can_view?(@cas_user), @assignment.user.display_name, @assignment.user %>
       </td>
     </tr>
+    <tr>
+      <th>Account Number</th>
+      <td><%= @assignment.user.account_number %></td>
+    </tr>
+    <tr>
+      <th>Phone Number</th>
+      <td><%= @assignment.user.phone %></td>
+    </tr>
     <% if @assignment.intern_type -%>
       <tr>
         <th>Intern type</th>
