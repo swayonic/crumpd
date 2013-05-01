@@ -163,7 +163,7 @@ end
       <% end -%>
 <%# ### Report fields -%>
       <% if @fields['total_partners'] == '1' -%>
-        <%= open_cell_body %><%= r.partners_line.total %><%= close_cell_body %>
+        <%= open_cell_body %><%= r.partners_line.total if r %><%= close_cell_body %>
       <% end -%>
       <% for rf in @period.report_fields -%>
         <% if @fields["field_#{rf.id}"] == '1' -%>
