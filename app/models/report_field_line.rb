@@ -7,11 +7,7 @@ class ReportFieldLine < ActiveRecord::Base
   validates_each :value do |record, attr, value|
     if value.nil? or value.blank?
       if !record.report_field.required
-        if record.report_field.is_number?
-          record[attr] = 0
-        else
-          record[attr] = nil
-        end
+        record[attr] = nil
       else
         record.errors.add(attr, "\"#{record.report_field.name}\" is a required field.")
       end

@@ -1,6 +1,7 @@
 <%= open_header %>
   <%= open_row %>
     <%= open_cell_head %>Date<%= close_cell_head %>
+<%# ### Goal information -%>
     <% for g in Goal.defaults -%>
       <% if @fields["#{g.frequency}_inhand_pct"] == '1' -%>
         <%= open_cell_head %><%= "#{g.title} In-Hand Pct" %><%= close_cell_head %>
@@ -14,7 +15,21 @@
       <% if @fields["#{g.frequency}_pledged_amt"] == '1' -%>
         <%= open_cell_head %><%= "#{g.title} Pledged Amt" %><%= close_cell_head %>
       <% end -%>
+      <% if @fields["#{g.frequency}_total_pct"] == '1' -%>
+        <%= open_cell_head %><%= "#{g.title} Total Pct" %><%= close_cell_head %>
+      <% end -%>
     <% end -%>
+<%# ### Goal combined percentages -%>
+    <% if @fields['goal_combined_inhand'] == '1' -%>
+      <%= open_cell_head %>Combined In-hand Pct<%= close_cell_head %>
+    <% end -%>
+    <% if @fields['goal_combined_pledged'] == '1' -%>
+      <%= open_cell_head %>Combined Pledged Pct<%= close_cell_head %>
+    <% end -%>
+    <% if @fields['goal_combined_total'] == '1' -%>
+      <%= open_cell_head %>Combined Total Pct<%= close_cell_head %>
+    <% end -%>
+<%# ### Report fields -%>
     <% for rf in @period.report_fields -%>
       <% if @fields["field_#{rf.id}"] == '1' -%>
         <%= open_cell_head %><%= rf.name %><%= close_cell_head %>
@@ -27,9 +42,10 @@
   <% for r in @assignment.reports -%>
     <%= open_row %>
       <%= open_cell_body %><%= link_to_if use_links, r.date.strftime('%Y %m/%d'), r %><%= close_cell_body %>
+<%# ### Goal information -%>
       <% for g in Goal.defaults -%>
         <% if @fields["#{g.frequency}_inhand_pct"] == '1' -%>
-          <% val = (r and l = r.goal_lines.find_by_frequency(g.frequency)) ? Goal.pct(l.inhand, @assignment.goal_amt(g.frequency)) : nil -%>
+          <% val = (r and l = r.goal_lines.find_by_frequency(g.frequency)) ? "#{Goal.pct(l.inhand, @assignment.goal_amt(g.frequency))}%" : nil -%>
           <%= open_cell_body %><%= val %><%= close_cell_body %>
         <% end -%>
         <% if @fields["#{g.frequency}_inhand_amt"] == '1' -%>
@@ -37,14 +53,47 @@
           <%= open_cell_body %><%= val %><%= close_cell_body %>
         <% end -%>
         <% if @fields["#{g.frequency}_pledged_pct"] == '1' -%>
-          <% val = (r and l = r.goal_lines.find_by_frequency(g.frequency)) ? Goal.pct(l.pledged, @assignment.goal_amt(g.frequency)) : nil -%>
+          <% val = (r and l = r.goal_lines.find_by_frequency(g.frequency)) ? "#{Goal.pct(l.pledged, @assignment.goal_amt(g.frequency))}%" : nil -%>
           <%= open_cell_body %><%= val %><%= close_cell_body %>
         <% end -%>
         <% if @fields["#{g.frequency}_pledged_amt"] == '1' -%>
           <% val = (r and l = r.goal_lines.find_by_frequency(g.frequency)) ? l.pledged : nil -%>
           <%= open_cell_body %><%= val %><%= close_cell_body %>
         <% end -%>
+        <% if @fields["#{g.frequency}_total_pct"] == '1' -%>
+          <% val = (r and l = r.goal_lines.find_by_frequency(g.frequency)) ? "#{Goal.pct(l.inhand + l.pledged, @assignment.goal_amt(g.frequency))}%" : nil -%>
+          <%= open_cell_body %><%= val %><%= close_cell_body %>
+        <% end -%>
       <% end -%>
+<%# ### Goal combined percentages -%>
+<%
+inhand_amt = nil
+pledged_amt = nil
+goal_amt = 0
+# Don't display if the report is missing a goal_line
+if r and r.goal_lines.count == @assignment.goals.count
+  inhand_amt = 0
+  pledged_amt = 0
+  for g in @assignment.goals
+    l = r.goal_lines.find_by_frequency(g.frequency)
+    break unless l
+    multiplier = (g.frequency == 0 ? 1 : g.frequency)
+    inhand_amt = inhand_amt + l.inhand * multiplier
+    pledged_amt = pledged_amt + l.pledged * multiplier
+    goal_amt = goal_amt + @assignment.goal_amt(g.frequency) * multiplier
+  end
+end
+-%>
+      <% if @fields['goal_combined_inhand'] == '1' -%>
+        <%= open_cell_body %><%= "#{Goal.pct(inhand_amt, goal_amt)}%" if inhand_amt %><%= close_cell_body %>
+      <% end -%>
+      <% if @fields['goal_combined_pledged'] == '1' -%>
+        <%= open_cell_body %><%= "#{Goal.pct(pledged_amt, goal_amt)}%" if pledged_amt %><%= close_cell_body %>
+      <% end -%>
+      <% if @fields['goal_combined_total'] == '1' -%>
+        <%= open_cell_body %><%= "#{Goal.pct(inhand_amt + pledged_amt, goal_amt)}%" if inhand_amt and pledged_amt %><%= close_cell_body %>
+      <% end -%>
+<%# ### Report fields -%>
       <% for rf in @period.report_fields -%>
         <% if @fields["field_#{rf.id}"] == '1' -%>
           <%= open_cell_body %><%= l.value if r and l = r.field_lines.find_by_report_field_id(rf.id) -%><%= close_cell_body %>

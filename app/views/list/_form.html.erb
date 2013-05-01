@@ -68,6 +68,33 @@
                       <%= check_box :fields, name, :checked => '1' == (@fields[name] ||= '0') %>
                       Amount
                     </li>
+                    <li>
+                      <b>Total</b>
+                      <% name = "#{g.frequency}_total_pct" -%>
+                      <%= check_box :fields, name, :checked => '1' == (@fields[name] ||= '0') %>
+                      Percent
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+            <% end -%>
+            <% if goals.count > 1 -%>
+              <tr>
+                <td colspan=2>
+                  <b>Combined</b> (<i>percentages</i>)
+                  <ul>
+                    <li>
+                      <%= check_box :fields, :goal_combined_inhand, :checked => '1' == (@fields[:goal_combined_inhand] ||= '0') %>
+                      In-hand
+                    </li>
+                    <li>
+                      <%= check_box :fields, :goal_combined_pledged, :checked => '1' == (@fields[:goal_combined_pledged] ||= '0') %>
+                      Pledged
+                    </li>
+                    <li>
+                      <%= check_box :fields, :goal_combined_total, :checked => '1' == (@fields[:goal_combined_total] ||= '0') %>
+                      Total
+                    </li>
                   </ul>
                 </td>
               </tr>
