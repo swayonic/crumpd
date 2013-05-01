@@ -45,6 +45,11 @@
       </tr>
     <% end -%>
 
+    <tr>
+      <td><b>Number of Partners</b></td>
+      <td><%= @report.partners_line.total %></td>
+    </tr>
+
     <% for line in @report.goal_lines -%>
       <tr>
         <td><b><%= Goal.title(line.frequency) %> in-hand</b></td>

@@ -28,14 +28,17 @@ class ReportsController < ApplicationController
     @report = @assignment.reports.new
     @report.date = Date.today
 
+    @report.partners_lines.build(:total => @assignment.partners_count)
+
     for g in @assignment.goals
-      l = @report.goal_lines.new(:frequency => g.frequency, :pledged => @assignment.goal_pledged(g.frequency), :inhand => @assignment.goal_inhand(g.frequency))
+      @report.goal_lines.build(:frequency => g.frequency, :pledged => @assignment.goal_pledged(g.frequency), :inhand => @assignment.goal_inhand(g.frequency))
     end
 
     for f in @assignment.period.report_fields
-      l = @report.field_lines.new
+      l = @report.field_lines.build
       l.report_field = f
     end
+
     collection_breadcrumbs
   end
 
@@ -50,7 +53,7 @@ class ReportsController < ApplicationController
       render 'shared/forbidden'
       return
     end
-    
+
     for g in assignment.goals
       if @report.goal_lines.find_by_frequency(g.frequency).nil?
         l = @report.goal_lines.new(:frequency => g.frequency)
@@ -78,7 +81,10 @@ class ReportsController < ApplicationController
     @report = @assignment.reports.new(params[:report])
 
     params.each do |key, value|
-      if key =~ /^goal_(\d+)$/
+      if key == 'partners_line'
+        l = @report.partners_lines.build
+        l.total = value[:total]
+      elsif key =~ /^goal_(\d+)$/
         l = @report.goal_lines.build
         l.frequency = $1
         l.inhand = value[:inhand]
@@ -113,12 +119,16 @@ class ReportsController < ApplicationController
     valid = true
 
     params.each do |key, value|
-      if key =~ /^goal_(\d+)$/
+      if key == 'partners_line'
+        l = @report.partners_line
+        l.total = value[:total]
+        valid = false if !l.save
+      elsif key =~ /^goal_(\d+)$/
         freq = Integer($1)
         if !@report.goal_lines.find_by_frequency(freq)
           @report.goal_lines.build(:frequency => freq)
         end
-        @report.goal_lines.select{|l| l.frequency == freq}.each do |l|  
+        @report.goal_lines.select{|l| l.frequency == freq}.each do |l|
           l.inhand = value[:inhand]
           l.pledged = value[:pledged]
           valid = false if !l.save

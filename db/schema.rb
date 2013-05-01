@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130411020227) do
+ActiveRecord::Schema.define(:version => 20130501144524) do
 
   create_table "assignments", :force => true do |t|
     t.integer "user_id",     :null => false
@@ -92,6 +92,12 @@ ActiveRecord::Schema.define(:version => 20130411020227) do
     t.integer "frequency",                  :null => false
     t.decimal "inhand",    :default => 0.0
     t.decimal "pledged",   :default => 0.0
+  end
+
+  create_table "report_partners_lines", :force => true do |t|
+    t.integer "report_id", :null => false
+    t.integer "total"
+    t.integer "new"
   end
 
   create_table "reports", :force => true do |t|

@@ -56,7 +56,7 @@ table.mytable th {
 
 /* field_with_errors */
 div.field_with_errors{
-  float: left;
+  display: inline;
 }
 div.field_with_errors input {
 }

@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  report_id: 1
+  total: 1
+  new: 1
+
+two:
+  report_id: 1
+  total: 1
+  new: 1

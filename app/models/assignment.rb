@@ -93,6 +93,12 @@ class Assignment < ActiveRecord::Base
     return Goal.pct(amt, goal)
   end
 
+  # Returns the number of unique names in pledges
+  #   Used for building partners_lines
+  def partners_count
+    pledges.map{|p| p.name.strip}.uniq.count
+  end
+
   def can_view?(u)
     return true if u.is_admin
     return true if u == self.user

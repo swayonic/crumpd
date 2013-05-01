@@ -29,6 +29,7 @@
               <% end -%>
               <tr><td>&nbsp;</td></tr>
             <% end -%>
+
             <% goals = @list_type == 'reports' ? @assignment.goals : Goal.defaults -%>
             <tr>
               <th colspan="2">Goals</th>
@@ -106,27 +107,23 @@
             <tr>
               <th colspan=2>Report Fields</th>
             </tr>
-            <% if @period.report_fields.count > 0 -%>
+            <tr>
+              <td><%= check_box_tag 'selectAllReportFields', '1', false, title: 'Select all' %></td>
+            </tr>
+            <tr>
+              <td><%= check_box :fields, :total_partners, :checked => '1' == (@fields[:total_partners] ||= '0'), class: 'report_field_box' %></td>
+              <td>Number of Partners</td>
+            </tr>
+            <% for rf in @period.report_fields -%>
               <tr>
                 <td>
-                  <%= check_box_tag 'selectAllReportFields', '1', false, title: 'Select all' %>
+                  <% name = "field_#{rf.id}" -%>
+                  <%= check_box :fields, name, :checked => '1' == (@fields[name] ||= '0'), class: 'report_field_box' %>
                 </td>
-              </tr>
-              <% for rf in @period.report_fields -%>
-                <tr>
-                  <td>
-                    <% name = "field_#{rf.id}" -%>
-                    <%= check_box :fields, name, :checked => '1' == (@fields[name] ||= '0'), class: 'report_field_box' %>
-                  </td>
-                  <td>
-                    <%= rf.name %>
-                    <%= help_tip rf.description %>
-                  </td>
-                </tr>
-              <% end -%>
-            <% else -%>
-              <tr>
-                <td><i>None</i></td>
+                <td>
+                  <%= rf.name %>
+                  <%= help_tip rf.description %>
+                </td>
               </tr>
             <% end -%>
           </table>

@@ -12,9 +12,16 @@
     <% if id == 'goals' -%>
       <td colspan="5">
         <h4>
-          Goals
-          <%= help_tip 'These lines are added automatically, two for each goal. (e.g. "Monthly in-hand" and "Monthly pledged")' %>
+          Partners and Goals
+          <%= help_tip 'These lines are added automatically for every report.' %>
         </h4>
+        <ul>
+          <li>Number of Partners</li>
+          <li>One-time in-hand</li>
+          <li>One-time pledged</li>
+          <li>Monthly in-hand</li>
+          <li>Monthly pledged</li>
+        </ul>
       </td>
     <% else -%>
       <td><%= g.text_field :name, :size => 20 %></td>

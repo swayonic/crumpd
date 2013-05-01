@@ -46,6 +46,9 @@
       <%= open_cell_head %>Combined Total Pct<%= close_cell_head %>
     <% end -%>
 <%# ### Report fields -%>
+    <% if @fields['total_partners'] == '1' -%>
+      <%= open_cell_head %>Number of Partners<%= close_cell_head %>
+    <% end -%>
     <% for rf in @period.report_fields -%>
       <% if @fields["field_#{rf.id}"] == '1' -%>
         <%= open_cell_head %><%= rf.name %><%= close_cell_head %>
@@ -159,6 +162,9 @@ end
         <%= open_cell_body %><%= "#{Goal.pct(inhand_amt + pledged_amt, goal_amt)}%" if inhand_amt and pledged_amt %><%= close_cell_body %>
       <% end -%>
 <%# ### Report fields -%>
+      <% if @fields['total_partners'] == '1' -%>
+        <%= open_cell_body %><%= r.partners_line.total %><%= close_cell_body %>
+      <% end -%>
       <% for rf in @period.report_fields -%>
         <% if @fields["field_#{rf.id}"] == '1' -%>
           <%= open_cell_body %><%= l.value if r and l = r.field_lines.find_by_report_field_id(rf.id) -%><%= close_cell_body %>

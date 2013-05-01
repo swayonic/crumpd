@@ -23,6 +23,20 @@
       <%= render :partial => 'form_field_line', :locals => {:line => line} %>
     <% end -%>
 
+    <%= fields_for 'partners_line', @report.partners_line do |l| %>
+      <div class="control-group">
+        <%= l.label :total, 'Number of Partners', class: 'control-label required-label' %>
+        <div class="controls">
+          <div class="input-append">
+            <%= l.text_field :total, class: 'input-small' %>
+            <span class="add-on">
+              <%= help_tip raw('The total number of partners, including those from whom you have not yet received the support in hand.') %>
+            </span>
+          </div>
+        </div>
+      </div>
+    <% end -%>
+
     <% for line in @report.goal_lines -%>
       <%= fields_for "goal_#{line.frequency}", line do |l| %>
         <div class="control-group">
