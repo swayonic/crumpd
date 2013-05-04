@@ -120,9 +120,15 @@ class ReportsController < ApplicationController
 
     params.each do |key, value|
       if key == 'partners_line'
-        l = @report.partners_line
-        l.total = value[:total]
-        valid = false if !l.save
+        if @report.partners_lines.count == 0
+          @report.partners_lines.build
+        elsif @report.partners_lines.count > 1
+          throw "Something's wrong with report.partners_lines for report ##{@report.id}"
+        end
+        for l in @report.partners_lines # Should only be exactly one
+          l.total = value[:total]
+          valid = false if !l.save
+        end
       elsif key =~ /^goal_(\d+)$/
         freq = Integer($1)
         if !@report.goal_lines.find_by_frequency(freq)

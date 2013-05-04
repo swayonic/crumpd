@@ -2,10 +2,11 @@
   <%= form_for [@assignment, @report], :html => {class: 'form-horizontal report-form'} do |f| %>
     <% if @report.errors.any? %>
       <% set_flash_from_block :error do -%>
-        <h4><%= pluralize(@report.errors.count/2, "error") %> prohibited this report from being saved:</h4>
+        <%# HACK: I can't get rid of the "is invalid" errors -%>
+        <% errors = @report.errors.select{|attr, msg| msg != "is invalid"} -%>
+        <h4><%= pluralize(errors.count, 'error') %> prohibited this report from being saved:</h4>
         <ul>
-          <%# HACK: I can't get rid of the "is invalid" errors -%>
-          <% @report.errors.select{|attr, msg| msg != "is invalid"}.each do |attr, msg| -%>
+          <% errors.each do |attr, msg| -%>
             <li><%= msg %></li>
           <% end -%>
         </ul>
@@ -23,14 +24,17 @@
       <%= render :partial => 'form_field_line', :locals => {:line => line} %>
     <% end -%>
 
+    <div class="control-group">
+    </div>
+
     <%= fields_for 'partners_line', @report.partners_line do |l| %>
-      <div class="control-group">
+      <div class="control-group<%= ' error' if @report.partners_line.errors.any? %>">
         <%= l.label :total, 'Number of Partners', class: 'control-label required-label' %>
         <div class="controls">
           <div class="input-append">
             <%= l.text_field :total, class: 'input-small' %>
             <span class="add-on">
-              <%= help_tip raw('The total number of partners, including those from whom you have not yet received the support in hand.') %>
+              <%= help_tip raw('The total number of people who have committed to being financial ministry partners. <i>Includes pledged support.</i>') %>
             </span>
           </div>
         </div>
@@ -39,7 +43,7 @@
 
     <% for line in @report.goal_lines -%>
       <%= fields_for "goal_#{line.frequency}", line do |l| %>
-        <div class="control-group">
+        <div class="control-group<%= ' error' if line.errors.select{|attr,msg| attr == :inhand}.any? %>">
           <%= l.label :inhand, "#{Goal.title(line.frequency)} in-hand", class: 'control-label required-label' %>
           <div class="controls">
             <div class="input-prepend">
@@ -48,7 +52,7 @@
             </div>
           </div>
         </div>
-        <div class="control-group">
+        <div class="control-group<%= ' error' if line.errors.select{|attr,msg| attr == :pledged}.any? %>">
           <%= l.label :pledged, "#{Goal.title(line.frequency)} pledged", class: 'control-label required-label' %>
           <div class="controls">
             <div class="input-prepend input-append">
@@ -62,6 +66,9 @@
         </div>
       <% end -%>
     <% end -%>
+
+    <div class="control-group">
+    </div>
 
     <% for line in @report.field_lines.select{|l| l.report_field.list_index > 0}.sort_by{|l| l.report_field.list_index} -%>
       <%= render :partial => 'form_field_line', :locals => {:line => line} %>

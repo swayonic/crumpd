@@ -15,17 +15,13 @@ class Period < ActiveRecord::Base
 
   validate do
     report_fields.each do |f|
-      if !f.valid?
-        f.errors.each do |attr, msg|
-          self.errors.add(:report_fields, msg)
-        end
+      f.errors.each do |attr, msg|
+        self.errors.add(:report_fields, msg)
       end
     end
     bmarks.each do |b|
-      if !b.valid?
-        b.errors.each do |attr, msg|
-          self.errors.add(:bmarks, msg)
-        end
+      b.errors.each do |attr, msg|
+        self.errors.add(:bmarks, msg)
       end
     end
   end

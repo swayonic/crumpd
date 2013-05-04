@@ -1,7 +1,7 @@
 module ApplicationHelper
 
   def set_flash_from_block(type, &block)
-    flash[type] = capture(&block) if block
+    flash.now[type] = capture(&block) if block
   end
 
   def title(title, &block)

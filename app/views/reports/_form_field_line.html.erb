@@ -1,7 +1,7 @@
 <%= fields_for "field_#{line.report_field.id}", line do |l| %>
-  <div class="control-group">
-    <%= l.label :value, 
-      line.report_field.name, 
+  <div class="control-group<%= ' error' if line.errors.any? %>">
+    <%= l.label :value,
+      line.report_field.name,
       class: (line.report_field.required? ? 'control-label required-label' : 'control-label') %>
     <div class="controls">
       <div class="input-append">

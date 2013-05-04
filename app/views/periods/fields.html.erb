@@ -6,13 +6,14 @@
   </i>
 </ul>
 <% end -%>
-  
+
 <% if @period.errors.any? -%>
   <% set_flash_from_block :error do -%>
-      <h4><%= pluralize(@period.errors.count/2, "error") %> prohibited this period from being saved:</h4>
+      <%# HACK: I can't get rid of the "is invalid" errors -%>
+      <% errors = @period.errors.select{|attr, msg| msg != "is invalid"} -%>
+      <h4><%= pluralize(errors.count, 'error') %> prohibited this period from being saved:</h4>
       <ul>
-        <%# HACK: I can't get rid of the "is invalid" errors -%>
-        <% @period.errors.select{|attr, msg| msg != "is invalid"}.each do |attr, msg| -%>
+      <% errors.each do |attr, msg| -%>
           <li><%= msg %></li>
         <% end -%>
       </ul>
