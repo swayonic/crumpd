@@ -20,12 +20,6 @@
       <th>Account Number</th>
       <td><%= @user.account_number %></td>
     </tr>
-    <% if @cas_user.is_admin? -%>
-      <tr>
-        <th>GUID <%= help_tip 'Admin only' %></th>
-        <td><%= @user.guid %></td>
-      </tr>
-    <% end -%>
     <tr>
       <th>Phone Number</th>
       <td><%= @user.phone %></td>
@@ -34,6 +28,19 @@
       <th>Email Address</th>
       <td><%= @user.email %></td>
     </tr>
+    <% if @cas_user.is_admin? -%>
+      <tr>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <th>GUID</th>
+        <td><%= @user.guid %></td>
+      </tr>
+      <tr>
+        <th>Last login</th>
+        <td><%= @user.last_login.nil? ? raw('<i>Never</i>') : @user.last_login.strftime('%b %e, %Y at %I:%M %p') %></td>
+      </tr>
+    <% end -%>
 
     <tr>
       <td>&nbsp;</td>

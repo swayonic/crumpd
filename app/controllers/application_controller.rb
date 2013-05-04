@@ -53,9 +53,16 @@ class ApplicationController < ActionController::Base
 						logger.info "Added user ##{@cas_user.id} from login attributes: #{session[:cas_extra_attributes]}"
 					end
 				end
+        if @cas_user and (@cas_user.last_login.nil? or (DateTime.now - @cas_user.last_login) * 24 * 60 > 20)
+          # Set last_login if it has never been set or is older than 20 minutes ago
+          @cas_user.last_login = DateTime.now
+          @cas_user.save
+        end
 			end
 		else # Development mode
 			@cas_user = User.find_by_id(session[:user_id]) if session[:user_id]
+      @cas_user.last_login = DateTime.now
+      @cas_user.save
 		end
 
 		return @cas_user

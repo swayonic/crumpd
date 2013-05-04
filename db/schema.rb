@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130501144524) do
+ActiveRecord::Schema.define(:version => 20130504145640) do
 
   create_table "assignments", :force => true do |t|
     t.integer "user_id",     :null => false
@@ -135,15 +135,16 @@ ActiveRecord::Schema.define(:version => 20130501144524) do
   end
 
   create_table "users", :force => true do |t|
-    t.string  "guid"
-    t.string  "account_number"
-    t.string  "first_name"
-    t.string  "last_name"
-    t.string  "preferred_name"
-    t.string  "phone"
-    t.string  "email"
-    t.boolean "is_admin",       :default => false, :null => false
-    t.string  "time_zone"
+    t.string   "guid"
+    t.string   "account_number"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "preferred_name"
+    t.string   "phone"
+    t.string   "email"
+    t.boolean  "is_admin",       :default => false, :null => false
+    t.string   "time_zone"
+    t.datetime "last_login"
   end
 
 end
