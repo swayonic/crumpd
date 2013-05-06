@@ -59,14 +59,15 @@ class ApplicationController < ActionController::Base
           @cas_user.save
         end
 			end
-		else # Development mode
-			@cas_user = User.find_by_id(session[:user_id]) if session[:user_id]
-      @cas_user.last_login = DateTime.now
-      @cas_user.save
-		end
+    else # Development mode
+      if session[:user_id] and @cas_user = User.find_by_id(session[:user_id])
+        @cas_user.last_login = DateTime.now
+        @cas_user.save
+      end
+    end
 
-		return @cas_user
-	end
+    return @cas_user
+  end
 	
 	helper_method :sudoer
   def sudoer

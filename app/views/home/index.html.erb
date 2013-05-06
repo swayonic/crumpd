@@ -1,7 +1,6 @@
 <% title 'SIMPD Home' %>
 
-<% if @cas_user.is_admin? -%>
-
+<% if @cas_user.is_admin? or @cas_user.periods_as_admin.count > 0 -%>
   <div class="span4 well well-small">
     <h3>View a User</h3>
 

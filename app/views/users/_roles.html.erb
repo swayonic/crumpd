@@ -18,8 +18,11 @@
 <% if @user.groups_as_coach.count > 0 -%>
   <h3>Coaching Groups</h3>
   <ul>
-    <% for g in @user.groups_as_coach -%>
-      <li><%= link_to_if g.can_view?(@cas_user), g.display_name, g %></li>
+    <% for g in @user.groups_as_coach.sort_by{|g| [-g.period.year, g.period.region.name]} -%>
+      <li><%= link_to_if g.period.can_view?(@cas_user), g.period.name, g.period %>
+      <ul>
+        <li><%= link_to_if g.can_view?(@cas_user), g.display_name, g %></li>
+      </ul>
     <% end -%>
   </ul>
   <% showed_something = true -%>
