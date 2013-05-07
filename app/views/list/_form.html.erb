@@ -14,8 +14,8 @@
                 <td>GUID</td>
               </tr>
               <tr>
-                <td><%= check_box :fields, :assignments, :checked => '1' == (@fields[:assignments] ||= '0') %></td>
-                <td>Number of active assignments</td>
+                <td><%= check_box :fields, :roles, :checked => '1' == (@fields[:roles] ||= '0') %></td>
+                <td>Number of active roles <%= help_tip 'As period admin, group coach, or intern' %></td>
               </tr>
               <tr>
                 <td><%= check_box :fields, :last_login, :checked => '1' == (@fields[:last_login] ||= '0') %></td>

@@ -65,7 +65,7 @@ class HomeController < ApplicationController
     @list_type = 'complete'
     @fields = params[:fields] || Hash.new
 
-    @users = User.all
+    @users = User.all.sort_by{|u| u.sort_name}
 
     if params[:commit] == 'Download Excel'
       render 'list.xml', :content_type => 'application/xls'

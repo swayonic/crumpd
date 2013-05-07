@@ -8,8 +8,8 @@
     <% if @fields['guid'] == '1' -%>
       <%= open_cell_head %>GUID<%= close_cell_head %>
     <% end -%>
-    <% if @fields['assignments'] == '1' -%>
-      <%= open_cell_head %># Assignments<%= close_cell_head %>
+    <% if @fields['roles'] == '1' -%>
+      <%= open_cell_head %>Roles<%= close_cell_head %>
     <% end -%>
     <% if @fields['last_login'] == '1' -%>
       <%= open_cell_head %>Last Login<%= close_cell_head %>
@@ -28,8 +28,8 @@
       <% if @fields[:guid] == '1' -%>
         <%= open_cell_body %><%= user.guid %><%= close_cell_body %>
       <% end -%>
-      <% if @fields[:assignments] == '1' -%>
-        <%= open_cell_body %><%= user.assignments.active.count %><%= close_cell_body %>
+      <% if @fields[:roles] == '1' -%>
+        <%= open_cell_body %><%= user.assignments.active.count + user.groups_as_coach.active.count + user.periods_as_admin.count %><%= close_cell_body %>
       <% end -%>
       <% if @fields[:last_login] == '1' -%>
         <%= open_cell_body %><%= user.last_login.strftime('%Y/%m/%d %H:%M') if user.last_login %><%= close_cell_body %>
