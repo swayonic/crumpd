@@ -25,6 +25,9 @@
         </tr>
       </table>
     <% end %>
+    <% if @cas_user.is_admin? -%>
+      <%= link_to 'Complete User List', list_path, class: 'btn' -%>
+    <% end -%>
   </div>
 
   <%= autofocus 'view_user_name' %>

@@ -4,130 +4,151 @@
       <tr>
         <td align="left">
           <table class="mytable">
-            <% if @list_type == 'period' -%>
+            <% if @list_type == 'complete' -%>
               <tr>
-                <td><%= check_box :fields, :show_all, :checked => '1' == (@fields[:show_all] ||= '0') %></td>
-                <td>Show All <%= help_tip "Including people who have been marked as 'rejected', 'terminated', etc." %></td>
+                <td><%= check_box :fields, :account_number, :checked => '1' == (@fields[:account_number] ||= '0') %></td>
+                <td>Account number</td>
               </tr>
-            <% end -%>
-            <% if @list_type != 'reports' -%>
               <tr>
-                <td><%= check_box :fields, :intern_type, :checked => '1' == (@fields[:intern_type] ||= '0') %></td>
-                <td>Intern Type</td>
+                <td><%= check_box :fields, :guid, :checked => '1' == (@fields[:guid] ||= '0') %></td>
+                <td>GUID</td>
               </tr>
-              <% if @list_type != 'group' -%>
+              <tr>
+                <td><%= check_box :fields, :assignments, :checked => '1' == (@fields[:assignments] ||= '0') %></td>
+                <td>Number of active assignments</td>
+              </tr>
+              <tr>
+                <td><%= check_box :fields, :last_login, :checked => '1' == (@fields[:last_login] ||= '0') %></td>
+                <td>Last login</td>
+              </tr>
+            <% else -%>
+              <% if @list_type == 'period' -%>
                 <tr>
-                  <td><%= check_box :fields, :group, :checked => '1' == (@fields[:group] ||= '0') %></td>
-                  <td>Coaching Group</td>
+                  <td><%= check_box :fields, :show_all, :checked => '1' == (@fields[:show_all] ||= '0') %></td>
+                  <td>Show All <%= help_tip "Including people who have been marked as 'rejected', 'terminated', etc." %></td>
                 </tr>
               <% end -%>
-              <% if @list_type != 'team' -%>
+              <% if @list_type == 'period' or @list_type == 'group' or @list_type == 'team' -%>
                 <tr>
-                  <td><%= check_box :fields, :team, :checked => '1' == (@fields[:team] ||= '0') %></td>
-                  <td>Team</td>
+                  <td><%= check_box :fields, :intern_type, :checked => '1' == (@fields[:intern_type] ||= '0') %></td>
+                  <td>Intern Type</td>
                 </tr>
+                <% if @list_type != 'group' -%>
+                  <tr>
+                    <td><%= check_box :fields, :group, :checked => '1' == (@fields[:group] ||= '0') %></td>
+                    <td>Coaching Group</td>
+                  </tr>
+                <% end -%>
+                <% if @list_type != 'team' -%>
+                  <tr>
+                    <td><%= check_box :fields, :team, :checked => '1' == (@fields[:team] ||= '0') %></td>
+                    <td>Team</td>
+                  </tr>
+                <% end -%>
+                <tr><td>&nbsp;</td></tr>
               <% end -%>
-              <tr><td>&nbsp;</td></tr>
-            <% end -%>
 
-            <% goals = @list_type == 'reports' ? @assignment.goals : Goal.defaults -%>
-            <tr>
-              <th colspan="2">Goals</th>
-            </tr>
-            <% if goals.count == 0 -%>
+              <% goals = @list_type == 'reports' ? @assignment.goals : Goal.defaults -%>
               <tr>
-                <td colspan="2"><i>None</i></td>
+                <th colspan="2">Goals</th>
               </tr>
-            <% end -%>
-            <% for g in goals -%>
-              <tr>
-                <td colspan="2">
-                  <b><%= g.title %></b>
-                  <% if @list_type == 'reports' -%>
-                    (<%= number_to_currency @assignment.goal_amt(g.frequency) %>)
-                  <% else -%>
-                    <% name = "#{g.frequency}_goal" -%>
-                    <%= check_box :fields, name, :checked => '1' == (@fields[name] ||= '0') %>
-                    Goal
-                  <% end -%>
-                  <ul>
-                    <li>
-                      <b>In-Hand</b>
-                      <% name = "#{g.frequency}_inhand_pct" -%>
+              <% if goals.count == 0 -%>
+                <tr>
+                  <td colspan="2"><i>None</i></td>
+                </tr>
+              <% end -%>
+              <% for g in goals -%>
+                <tr>
+                  <td colspan="2">
+                    <b><%= g.title %></b>
+                    <% if @list_type == 'reports' -%>
+                      (<%= number_to_currency @assignment.goal_amt(g.frequency) %>)
+                    <% else -%>
+                      <% name = "#{g.frequency}_goal" -%>
                       <%= check_box :fields, name, :checked => '1' == (@fields[name] ||= '0') %>
-                      Percent
-                      <% name = "#{g.frequency}_inhand_amt" -%>
-                      <%= check_box :fields, name, :checked => '1' == (@fields[name] ||= '0') %>
-                      Amount
-                    </li>
-                    <li>
-                      <b>Pledged</b>
-                      <% name = "#{g.frequency}_pledged_pct" -%>
-                      <%= check_box :fields, name, :checked => '1' == (@fields[name] ||= '0') %>
-                      Percent
-                      <% name = "#{g.frequency}_pledged_amt" -%>
-                      <%= check_box :fields, name, :checked => '1' == (@fields[name] ||= '0') %>
-                      Amount
-                    </li>
-                    <li>
-                      <b>Total</b>
-                      <% name = "#{g.frequency}_total_pct" -%>
-                      <%= check_box :fields, name, :checked => '1' == (@fields[name] ||= '0') %>
-                      Percent
-                    </li>
-                  </ul>
-                </td>
-              </tr>
-            <% end -%>
-            <% if goals.count > 1 -%>
-              <tr>
-                <td colspan=2>
-                  <b>Combined</b> (<i>percentages</i>)
-                  <ul>
-                    <li>
-                      <%= check_box :fields, :goal_combined_inhand, :checked => '1' == (@fields[:goal_combined_inhand] ||= '0') %>
-                      In-hand
-                    </li>
-                    <li>
-                      <%= check_box :fields, :goal_combined_pledged, :checked => '1' == (@fields[:goal_combined_pledged] ||= '0') %>
-                      Pledged
-                    </li>
-                    <li>
-                      <%= check_box :fields, :goal_combined_total, :checked => '1' == (@fields[:goal_combined_total] ||= '0') %>
-                      Total
-                    </li>
-                  </ul>
-                </td>
-              </tr>
-            <% end -%>
-          </table>
-        </td>
-        <td align="right">
-          <table class="mytable">
-            <tr>
-              <th colspan=2>Report Fields</th>
-            </tr>
-            <tr>
-              <td><%= check_box_tag 'selectAllReportFields', '1', false, title: 'Select all' %></td>
-            </tr>
-            <tr>
-              <td><%= check_box :fields, :total_partners, :checked => '1' == (@fields[:total_partners] ||= '0'), class: 'report_field_box' %></td>
-              <td>Number of Partners</td>
-            </tr>
-            <% for rf in @period.report_fields -%>
-              <tr>
-                <td>
-                  <% name = "field_#{rf.id}" -%>
-                  <%= check_box :fields, name, :checked => '1' == (@fields[name] ||= '0'), class: 'report_field_box' %>
-                </td>
-                <td>
-                  <%= rf.name %>
-                  <%= help_tip rf.description %>
-                </td>
-              </tr>
+                      Goal
+                    <% end -%>
+                    <ul>
+                      <li>
+                        <b>In-Hand</b>
+                        <% name = "#{g.frequency}_inhand_pct" -%>
+                        <%= check_box :fields, name, :checked => '1' == (@fields[name] ||= '0') %>
+                        Percent
+                        <% name = "#{g.frequency}_inhand_amt" -%>
+                        <%= check_box :fields, name, :checked => '1' == (@fields[name] ||= '0') %>
+                        Amount
+                      </li>
+                      <li>
+                        <b>Pledged</b>
+                        <% name = "#{g.frequency}_pledged_pct" -%>
+                        <%= check_box :fields, name, :checked => '1' == (@fields[name] ||= '0') %>
+                        Percent
+                        <% name = "#{g.frequency}_pledged_amt" -%>
+                        <%= check_box :fields, name, :checked => '1' == (@fields[name] ||= '0') %>
+                        Amount
+                      </li>
+                      <li>
+                        <b>Total</b>
+                        <% name = "#{g.frequency}_total_pct" -%>
+                        <%= check_box :fields, name, :checked => '1' == (@fields[name] ||= '0') %>
+                        Percent
+                      </li>
+                    </ul>
+                  </td>
+                </tr>
+              <% end -%>
+              <% if goals.count > 1 -%>
+                <tr>
+                  <td colspan=2>
+                    <b>Combined</b> (<i>percentages</i>)
+                    <ul>
+                      <li>
+                        <%= check_box :fields, :goal_combined_inhand, :checked => '1' == (@fields[:goal_combined_inhand] ||= '0') %>
+                        In-hand
+                      </li>
+                      <li>
+                        <%= check_box :fields, :goal_combined_pledged, :checked => '1' == (@fields[:goal_combined_pledged] ||= '0') %>
+                        Pledged
+                      </li>
+                      <li>
+                        <%= check_box :fields, :goal_combined_total, :checked => '1' == (@fields[:goal_combined_total] ||= '0') %>
+                        Total
+                      </li>
+                    </ul>
+                  </td>
+                </tr>
+              <% end -%>
             <% end -%>
           </table>
         </td>
+        <% if @list_type != 'complete' -%>
+          <td align="right">
+            <table class="mytable">
+              <tr>
+                <th colspan=2>Report Fields</th>
+              </tr>
+              <tr>
+                <td><%= check_box_tag 'selectAllReportFields', '1', false, title: 'Select all' %></td>
+              </tr>
+              <tr>
+                <td><%= check_box :fields, :total_partners, :checked => '1' == (@fields[:total_partners] ||= '0'), class: 'report_field_box' %></td>
+                <td>Number of Partners</td>
+              </tr>
+              <% for rf in @period.report_fields -%>
+                <tr>
+                  <td>
+                    <% name = "field_#{rf.id}" -%>
+                    <%= check_box :fields, name, :checked => '1' == (@fields[name] ||= '0'), class: 'report_field_box' %>
+                  </td>
+                  <td>
+                    <%= rf.name %>
+                    <%= help_tip rf.description %>
+                  </td>
+                </tr>
+              <% end -%>
+            </table>
+          </td>
+        <% end -%>
       </tr>
       <tr>
         <td colspan='2' style='text-align:center;'>
@@ -140,6 +161,7 @@
   <% end %>
 </div>
 
+<% if @list_type != 'complete' -%>
 <script type='text/javascript'>
   $('#selectAllReportFields').change(function() {
     var val = $(this).is(':checked')
@@ -149,3 +171,4 @@
     });
   });
 </script>
+<% end -%>

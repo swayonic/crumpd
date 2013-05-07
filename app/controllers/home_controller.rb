@@ -53,6 +53,33 @@ class HomeController < ApplicationController
     redirect_to user
   end
 
+  # GET /list
+  # POST /list
+  def list
+    if !@cas_user.is_admin?
+      render 'shared/forbidden'
+      return
+    end
+
+    @list_title = "SIMPD Complete List"
+    @list_type = 'complete'
+    @fields = params[:fields] || Hash.new
+
+    @users = User.all
+
+    if params[:commit] == 'Download Excel'
+      render 'list.xml', :content_type => 'application/xls'
+      return
+    end
+
+    if params[:commit] == 'Clear'
+      # Clear selections
+      @fields = Hash.new
+    end
+
+    render :layout => 'list'
+  end
+
   # GET /backdoor?code=[action]
   #
   # Ok, so it's not really a backdoor

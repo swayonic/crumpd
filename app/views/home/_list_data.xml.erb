@@ -1,0 +1,39 @@
+<%= open_header %>
+  <%= open_row %>
+    <%= open_cell_head %>ID<%= close_cell_head %>
+    <%= open_cell_head %>Name<%= close_cell_head %>
+    <% if @fields['account_number'] == '1' -%>
+      <%= open_cell_head %>Account #<%= close_cell_head %>
+    <% end -%>
+    <% if @fields['guid'] == '1' -%>
+      <%= open_cell_head %>GUID<%= close_cell_head %>
+    <% end -%>
+    <% if @fields['assignments'] == '1' -%>
+      <%= open_cell_head %># Assignments<%= close_cell_head %>
+    <% end -%>
+    <% if @fields['last_login'] == '1' -%>
+      <%= open_cell_head %>Last Login<%= close_cell_head %>
+    <% end -%>
+  <%= close_row %>
+<%= close_header %>
+
+<%= open_body %>
+  <% for user in @users -%>
+    <%= open_row %>
+      <%= open_cell_body %><%= user.id %><%= close_cell_body %>
+      <%= open_cell_body %><%= link_to_if use_links, user.sort_name, user %><%= close_cell_body %>
+      <% if @fields[:account_number] == '1' -%>
+        <%= open_cell_body %><%= user.account_number %><%= close_cell_body %>
+      <% end -%>
+      <% if @fields[:guid] == '1' -%>
+        <%= open_cell_body %><%= user.guid %><%= close_cell_body %>
+      <% end -%>
+      <% if @fields[:assignments] == '1' -%>
+        <%= open_cell_body %><%= user.assignments.active.count %><%= close_cell_body %>
+      <% end -%>
+      <% if @fields[:last_login] == '1' -%>
+        <%= open_cell_body %><%= user.last_login.strftime('%Y/%m/%d %H:%M') if user.last_login %><%= close_cell_body %>
+      <% end -%>
+    <%= close_row %>
+  <% end -%>
+<%= close_body %>
