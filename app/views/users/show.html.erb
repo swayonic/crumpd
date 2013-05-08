@@ -60,12 +60,22 @@
     <% end -%>
     <% if @cas_user.is_admin? -%>
       <tr>
-        <th>Admin <%= help_tip 'Grants this user Admin priveleges' %></th>
+        <th>Admin <%= help_tip 'Grants this user Admin privileges' %></th>
         <td>
           <% if @user.is_admin? %>
-            <%= link_to 'Revoke', toggle_admin_user_path(@user), method: 'post', class: 'btn btn-warning' %>
+            <%= link_to 'Revoke',
+              toggle_admin_user_path(@user),
+              method: 'post',
+              data: {confirm: "Are you sure you want to revoke #{@user.display_name}'s admin privileges?"},
+              class: 'btn btn-warning'
+            %>
           <% else -%>
-            <%= link_to 'Grant', toggle_admin_user_path(@user), method: 'post', class: 'btn btn-warning' %>
+            <%= link_to 'Grant',
+              toggle_admin_user_path(@user),
+              method: 'post',
+              data: {confirm: "Are you sure you want to grant #{@user.display_name} admin privileges?"},
+              class: 'btn btn-warning'
+            %>
           <% end -%>
         </td>
       </tr>
