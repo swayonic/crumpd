@@ -39,6 +39,8 @@ class Sitrack < ActiveRecord::Base
       end
     end
 
+    Assignment.update_all("status = 'lost'", ['period_id = ?', p.id])
+
     # With teams, have to deal with missing and conflicting additional data (city, state, country, etc)
     # So, {123 => {:city => [nil, 'Austin', 'AUSTIN'], :state => {...}, ...}, 124 => {...}, ...}
     teams = Hash.new
