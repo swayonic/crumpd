@@ -6,7 +6,7 @@ class LeadersController < ApplicationController
       render 'shared/not_found'
       return
     end
-    if !@team.can_view?(@cas_user)
+    if !@team.can_view?(current_user)
       render 'shared/forbidden'
       return
     end
@@ -32,7 +32,7 @@ class LeadersController < ApplicationController
       render 'shared/not_found'
       return
     end
-    if !@leader.team.can_edit?(@cas_user)
+    if !@leader.team.can_edit?(current_user)
       render 'shared/forbidden'
       return
     end

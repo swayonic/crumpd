@@ -3,7 +3,7 @@
   <td><%= p.name %></td>
   <td><%= number_to_currency p.amount %></td>
   <td><%= Goal.title(p.frequency) %></td>
-  <% if @assignment.can_edit_pledges?(@cas_user) -%>
+  <% if @assignment.can_edit_pledges?(current_user) -%>
     <td style='text-align:center;'>
       <% if p.is_in_hand -%>
         <%= link_to image_tag('icons/silk/tick.png'), toggle_pledge_path(p), :method => :put, :title => 'Toggle' %>

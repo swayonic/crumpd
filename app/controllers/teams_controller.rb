@@ -6,14 +6,14 @@ class TeamsController < ApplicationController
       render 'shared/not_found'
       return
     end
-    if !@team.can_view?(@cas_user)
+    if !@team.can_view?(current_user)
       render 'shared/forbidden'
       return
     end
 
     @new_leader = TeamLeader.new
     @new_leader.team = @team
-    
+
     @new_assn = Assignment.new
     @new_assn.team = @team
     @new_assn.period = @team.period
@@ -27,7 +27,7 @@ class TeamsController < ApplicationController
       render 'shared/not_found'
       return
     end
-    if !@team.can_edit?(@cas_user)
+    if !@team.can_edit?(current_user)
       render 'shared/forbidden'
       return
     end
@@ -40,7 +40,7 @@ class TeamsController < ApplicationController
       render 'shared/not_found'
       return
     end
-    if !@period.can_edit?(@cas_user) or @period.keep_updated?
+    if !@period.can_edit?(current_user) or @period.keep_updated?
       render 'shared/forbidden'
       return
     end
@@ -62,7 +62,7 @@ class TeamsController < ApplicationController
       render 'shared/not_found'
       return
     end
-    if !@team.can_edit?(@cas_user)
+    if !@team.can_edit?(current_user)
       render 'shared/forbidden'
       return
     end
@@ -126,7 +126,7 @@ class TeamsController < ApplicationController
       render 'shared/not_found'
       return
     end
-    if !@team.period.can_edit?(@cas_user) or @team.period.keep_updated?
+    if !@team.period.can_edit?(current_user) or @team.period.keep_updated?
       render 'shared/forbidden'
       return
     end
@@ -138,7 +138,7 @@ class TeamsController < ApplicationController
     else
       flash.alert = 'Failed to delete team'
     end
-    
+
     redirect_to @team.period
   end
 
@@ -148,7 +148,7 @@ class TeamsController < ApplicationController
       render 'shared/not_found'
       return
     end
-    if !@team.can_view_list?(@cas_user)
+    if !@team.can_view_list?(current_user)
       render 'shared/forbidden'
       return
     end
@@ -172,7 +172,7 @@ class TeamsController < ApplicationController
   private
   # Adds breadcrumbs for all member views
   def member_breadcrumbs
-    add_breadcrumb(@team.period.name, url_for(@team.period), @team.period.can_view?(@cas_user), 'Coaching Period')
+    add_breadcrumb(@team.period.name, url_for(@team.period), @team.period.can_view?(current_user), 'Coaching Period')
     add_breadcrumb(@team.display_name, url_for(@team), 'Team')
   end
 

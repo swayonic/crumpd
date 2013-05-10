@@ -8,7 +8,7 @@ Filling in this information is not required (unless your coach asks you to). Thi
 <% end -%>
 
 <div class="span4">
-  <% if @assignment.can_edit_pledges?(@cas_user) -%>
+  <% if @assignment.can_edit_pledges?(current_user) -%>
     <div class="well well-small">
       <h3>New Pledge</h3>
       <%= form_for @new_pledge, :url => assignment_pledges_path(@assignment) do |f| -%>
@@ -54,7 +54,7 @@ Filling in this information is not required (unless your coach asks you to). Thi
         <th width=1%>Amount</th>
         <th width=1%>Frequency</th>
         <th width=1%>In-Hand</th>
-        <% if @assignment.can_edit_pledges?(@cas_user) -%>
+        <% if @assignment.can_edit_pledges?(current_user) -%>
           <th width=1%>Delete</th>
         <% end -%>
       </tr>

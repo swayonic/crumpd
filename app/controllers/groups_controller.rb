@@ -6,14 +6,14 @@ class GroupsController < ApplicationController
       render 'shared/not_found'
       return
     end
-    if !@group.can_view?(@cas_user)
+    if !@group.can_view?(current_user)
       render 'shared/forbidden'
       return
     end
 
     @new_coach = GroupCoach.new
     @new_coach.group = @group
-    
+
     @new_assn = Assignment.new
     @new_assn.group = @group
     @new_assn.period = @group.period
@@ -27,7 +27,7 @@ class GroupsController < ApplicationController
       render 'shared/not_found'
       return
     end
-    if !@group.can_edit?(@cas_user)
+    if !@group.can_edit?(current_user)
       render 'shared/forbidden'
       return
     end
@@ -40,7 +40,7 @@ class GroupsController < ApplicationController
       render 'shared/not_found'
       return
     end
-    if !@period.can_edit?(@cas_user) or @period.keep_updated?
+    if !@period.can_edit?(current_user) or @period.keep_updated?
       render 'shared/forbidden'
       return
     end
@@ -62,7 +62,7 @@ class GroupsController < ApplicationController
       render 'shared/not_found'
       return
     end
-    if !@group.can_edit?(@cas_user)
+    if !@group.can_edit?(current_user)
       render 'shared/forbidden'
       return
     end
@@ -102,7 +102,7 @@ class GroupsController < ApplicationController
       render 'shared/not_found'
       return
     end
-    if !@group.period.can_edit?(@cas_user) or @group.period.keep_updated?
+    if !@group.period.can_edit?(current_user) or @group.period.keep_updated?
       render 'shared/forbidden'
       return
     end
@@ -124,7 +124,7 @@ class GroupsController < ApplicationController
       render 'shared/not_found'
       return
     end
-    if !@group.can_view_list?(@cas_user)
+    if !@group.can_view_list?(current_user)
       render 'shared/forbidden'
       return
     end
@@ -148,7 +148,7 @@ class GroupsController < ApplicationController
   private
   # Adds breadcrumbs for all member views
   def member_breadcrumbs
-    add_breadcrumb(@group.period.name, url_for(@group.period), @group.period.can_view?(@cas_user), 'Coaching Period')
+    add_breadcrumb(@group.period.name, url_for(@group.period), @group.period.can_view?(current_user), 'Coaching Period')
     add_breadcrumb(@group.display_name, url_for(@group), true, 'Coaching Group')
   end
 

@@ -11,7 +11,7 @@ class UsersController < ApplicationController
       render 'shared/not_found'
       return
     end
-    if !@user.can_view?(@cas_user)
+    if !@user.can_view?(current_user)
       render 'shared/forbidden'
       return
     end
@@ -23,7 +23,7 @@ class UsersController < ApplicationController
       render 'shared/not_found'
       return
     end
-    if !@user.can_edit?(@cas_user)
+    if !@user.can_edit?(current_user)
       render 'shared/forbidden'
       return
     end
@@ -35,7 +35,7 @@ class UsersController < ApplicationController
       render 'shared/not_found'
       return
     end
-    if !@user.can_edit?(@cas_user)
+    if !@user.can_edit?(current_user)
       render 'shared/forbidden'
       return
     end
@@ -51,6 +51,14 @@ class UsersController < ApplicationController
       @user.email = params[:user][:email]
     end
 
+    if current_user.is_admin?
+      if params[:real_user][:name].blank?
+        @user.real_id = nil
+      else
+        @user.real_id = params[:user][:real_id]
+      end
+    end
+
     if @user.save
       redirect_to @user, notice: 'User was successfully updated.'
     else
@@ -64,7 +72,7 @@ class UsersController < ApplicationController
       render 'shared/not_found'
       return
     end
-    if !@cas_user.is_admin?
+    if !current_user.is_admin?
       render 'shared/forbidden'
       return
     end
@@ -111,7 +119,7 @@ class UsersController < ApplicationController
       return
     end
 
-    if !@cas_user.is_admin?
+    if !current_user.is_admin?
       render 'shared/forbidden'
       return
     end
@@ -129,6 +137,7 @@ class UsersController < ApplicationController
       return
     end
 
+    true_user = sudo_user || current_user
     if !user.can_sudo?(true_user)
       render 'shared/forbidden'
       return

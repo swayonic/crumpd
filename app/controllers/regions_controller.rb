@@ -53,7 +53,7 @@ class RegionsController < ApplicationController
 
   # Simplify actions, only admins have access
   def region_filter
-    if !@cas_user.is_admin?
+    if !current_user.is_admin?
       render 'shared/forbidden'
       return false
     end

@@ -3,11 +3,11 @@
   <h3>Assignments</h3>
   <ul>
     <% for a in @user.assignments.active.sort_by{|a| [-a.period.year, a.period.region.name]} -%>
-      <li><%= link_to_if a.period.can_view?(@cas_user), a.period.name, a.period %>
+      <li><%= link_to_if a.period.can_view?(current_user), a.period.name, a.period %>
       <ul>
-        <% if a.can_view?(@cas_user) %><li>Assignment: <%= link_to 'Home Page', a %></li><% end -%>
-        <% if a.team %><li>Team: <%= link_to_if a.team.can_view?(@cas_user), a.team.display_name, a.team %></li><% end %>
-        <% if a.group %><li>Coaching Group: <%= link_to_if a.group.can_view?(@cas_user), a.group.display_name, a.group %></li><% end %>
+        <% if a.can_view?(current_user) %><li>Assignment: <%= link_to 'Home Page', a %></li><% end -%>
+        <% if a.team %><li>Team: <%= link_to_if a.team.can_view?(current_user), a.team.display_name, a.team %></li><% end %>
+        <% if a.group %><li>Coaching Group: <%= link_to_if a.group.can_view?(current_user), a.group.display_name, a.group %></li><% end %>
       </ul>
       <br>
       </li>
@@ -19,9 +19,9 @@
   <h3>Coaching Groups</h3>
   <ul>
     <% for g in @user.groups_as_coach.sort_by{|g| [-g.period.year, g.period.region.name]} -%>
-      <li><%= link_to_if g.period.can_view?(@cas_user), g.period.name, g.period %>
+      <li><%= link_to_if g.period.can_view?(current_user), g.period.name, g.period %>
       <ul>
-        <li><%= link_to_if g.can_view?(@cas_user), g.display_name, g %></li>
+        <li><%= link_to_if g.can_view?(current_user), g.display_name, g %></li>
       </ul>
     <% end -%>
   </ul>
@@ -31,11 +31,12 @@
   <h3>Coaching Periods</h3>
   <ul>
     <% for p in @user.periods_as_admin.sort_by{|p| [-p.year, p.region.name]} -%>
-      <li><%= link_to_if p.can_view?(@cas_user), p.name, p %></li>
+      <li><%= link_to_if p.can_view?(current_user), p.name, p %></li>
     <% end -%>
   </ul>
   <% showed_something = true -%>
 <% end -%>
 <% if !showed_something %>
-  <i>No active roles</i>
+  <h4>No Active Roles</h4>
+  <i>If you believe you ought to have a role, please use the link at the bottom of the page to report a bug.</i>
 <% end -%>

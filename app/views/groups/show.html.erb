@@ -16,10 +16,10 @@
     </tr>
     <tr>
       <th>Coaching Period</th>
-      <td><%= link_to_if @group.period.can_view?(@cas_user), @group.period.name, @group.period %></td>
+      <td><%= link_to_if @group.period.can_view?(current_user), @group.period.name, @group.period %></td>
     </tr>
   </table>
-  <% if @group.can_edit?(@cas_user) -%>
+  <% if @group.can_edit?(current_user) -%>
     <%= link_to 'Edit', edit_group_path(@group), class: 'btn' %>
   <% end -%>
 
@@ -33,15 +33,15 @@
     <ul>
       <% for c in @group.group_coaches.sort_by{|c| c.user.sort_name} -%>
         <li>
-          <%= link_to_if c.user.can_view?(@cas_user), c.user.display_name, c.user %>
-          <% if @group.can_edit?(@cas_user) -%>
+          <%= link_to_if c.user.can_view?(current_user), c.user.display_name, c.user %>
+          <% if @group.can_edit?(current_user) -%>
             <%= link_to image_tag('icons/silk/delete.png'), c, method: :delete, data: { confirm: 'Are you sure you want to remove this coach?' } %>
           <% end -%>
         </li>
       <% end -%>
     </ul>
   <% end -%>
-  <% if @group.can_edit_coaches?(@cas_user) -%>
+  <% if @group.can_edit_coaches?(current_user) -%>
     <%= form_for [@group, @new_coach], :html => {class: 'form-horizontal'} do |f| -%>
       <%= render :partial => 'users/new', :locals => {
         :name => 'add_coach',
@@ -57,7 +57,7 @@
   <% if @group.members.nil? or @group.members.count == 0 -%>
     <i>None</i>
   <% else -%>
-    <% if @group.can_view_list?(@cas_user) -%>
+    <% if @group.can_view_list?(current_user) -%>
       <%= link_to 'Detailed Listing', list_group_path(@group), class: 'btn' %>
       <br>
       <br>
@@ -65,12 +65,12 @@
     <ul>
       <% for a in @group.assignments.active.sort_by{|a| a.user.sort_name} -%>
         <li>
-          <% if a.can_view?(@cas_user) -%>
+          <% if a.can_view?(current_user) -%>
             <%= link_to a.user.display_name, a %>
           <% else -%>
-            <%= link_to_if a.user.can_view?(@cas_user), a.user.display_name, a.user %>
+            <%= link_to_if a.user.can_view?(current_user), a.user.display_name, a.user %>
           <% end -%>
-          <% if @group.can_edit?(@cas_user) and a.can_edit?(@cas_user) -%>
+          <% if @group.can_edit?(current_user) and a.can_edit?(current_user) -%>
             <%= link_to image_tag('icons/silk/delete.png'),
               url_for(:controller => :assignments, :action => :destroy, :id => a.id, :delete => 'group'),
               method: 'delete',
@@ -80,7 +80,7 @@
       <% end -%>
     </ul>
   <% end %>
-  <% if !@group.period.keep_updated and @group.can_edit?(@cas_user) -%>
+  <% if !@group.period.keep_updated and @group.can_edit?(current_user) -%>
     <div class="row-fluid">
       <div class="span6">
     <%= form_for @new_assn, :html => {class: 'form-horizontal'} do |f| -%>

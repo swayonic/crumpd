@@ -7,7 +7,7 @@
     <tr>
       <th>User</th>
       <td>
-        <%= link_to_if @assignment.user.can_view?(@cas_user), @assignment.user.display_name, @assignment.user %>
+        <%= link_to_if @assignment.user.can_view?(current_user), @assignment.user.display_name, @assignment.user %>
       </td>
     </tr>
     <tr>
@@ -30,7 +30,7 @@
         <% if @assignment.team.nil? -%>
           <i>None</i>
         <% else -%>
-          <%= link_to_if @assignment.team.can_view?(@cas_user), @assignment.team.display_name, @assignment.team %>
+          <%= link_to_if @assignment.team.can_view?(current_user), @assignment.team.display_name, @assignment.team %>
         <% end -%>
       </td>
     </tr>
@@ -40,7 +40,7 @@
         <% if @assignment.group.nil? -%>
           <i>None</i>
         <% else -%>
-          <%= link_to_if @assignment.group.can_view?(@cas_user), @assignment.group.display_name, @assignment.group %>
+          <%= link_to_if @assignment.group.can_view?(current_user), @assignment.group.display_name, @assignment.group %>
         <% end -%>
       </td>
     </tr>
@@ -51,7 +51,7 @@
       </tr>
     <% end -%>
   </table>
-  <% if @assignment.can_edit?(@cas_user) -%>
+  <% if @assignment.can_edit?(current_user) -%>
     <%= link_to 'Edit', edit_assignment_path(@assignment), class: 'btn' %>
     <% if !@assignment.period.keep_updated? -%>
       <%= link_to 'Delete', @assignment, method: 'delete', confirm: 'Are you sure you want to delete this assignment and all related pledges and reports?', class: 'btn btn-danger' %>
@@ -82,7 +82,7 @@
   </div>
 <% end -%>
 
-<% if @assignment.can_view_pledges?(@cas_user) and @assignment.goals.count > 0 -%>
+<% if @assignment.can_view_pledges?(current_user) and @assignment.goals.count > 0 -%>
   <div class="well well-small">
     <h3>Pledges</h3>
     <%= link_to 'View Pledges', assignment_pledges_path(@assignment) %>
@@ -122,7 +122,7 @@
   <h3>Reports</h3>
   <table>
     <tr>
-      <td><%= link_to 'New Report', new_assignment_report_path(@assignment), class: 'btn' if @assignment.can_edit_reports?(@cas_user) %></td>
+      <td><%= link_to 'New Report', new_assignment_report_path(@assignment), class: 'btn' if @assignment.can_edit_reports?(current_user) %></td>
       <td><%= link_to 'Report Details', list_assignment_reports_path(@assignment), class: 'btn' if @assignment.reports.count > 0 %></td>
     </tr>
   </table>
@@ -143,7 +143,7 @@
           <tr>
             <th>
               <%= link_to r.date.strftime('%b %e'), r %>
-              <% if r.can_delete?(@cas_user) -%>
+              <% if r.can_delete?(current_user) -%>
                 <%= link_to image_tag('icons/silk/delete.png'), r,
                 method: :delete,
                 data: { confirm: 'Are you sure you want to delete this report?' } %>

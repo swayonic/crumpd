@@ -2,7 +2,7 @@ class PeriodsController < ApplicationController
 
   # GET /periods
   def index
-    if !@cas_user.is_admin?
+    if !current_user.is_admin?
       render 'shared/forbidden'
       return
     end
@@ -14,7 +14,7 @@ class PeriodsController < ApplicationController
 
   # POST /periods
   def create
-    if !@cas_user.is_admin?
+    if !current_user.is_admin?
       render 'shared/forbidden'
       return
     end
@@ -47,7 +47,7 @@ class PeriodsController < ApplicationController
       render 'shared/not_found'
       return
     end
-    if !@period.can_view?(@cas_user)
+    if !@period.can_view?(current_user)
       render 'shared/forbidden'
       return
     end
@@ -66,7 +66,7 @@ class PeriodsController < ApplicationController
 
   # DELETE /periods/1
   def destroy
-    if !@cas_user.is_admin?
+    if !current_user.is_admin?
       render 'shared/forbidden'
       return
     end
@@ -86,7 +86,7 @@ class PeriodsController < ApplicationController
 
   # GET /periods/1/toggle_updated
   def toggle_updated
-    if !@cas_user.is_admin?
+    if !current_user.is_admin?
       render 'shared/forbidden'
       return
     end
@@ -94,7 +94,7 @@ class PeriodsController < ApplicationController
       render 'shared/not_found'
       return
     end
-    
+
     @period.keep_updated = !@period.keep_updated
 
     if @period.save
@@ -112,7 +112,7 @@ class PeriodsController < ApplicationController
       render 'shared/not_found'
       return
     end
-    if !@period.can_edit?(@cas_user)
+    if !@period.can_edit?(current_user)
       render 'shared/forbidden'
       return
     end
@@ -128,7 +128,7 @@ class PeriodsController < ApplicationController
       render 'shared/not_found'
       return
     end
-    if !@period.can_view?(@cas_user)
+    if !@period.can_view?(current_user)
       render 'shared/forbidden'
       return
     end
@@ -141,7 +141,7 @@ class PeriodsController < ApplicationController
       render 'shared/not_found'
       return
     end
-    if !@period.can_edit?(@cas_user)
+    if !@period.can_edit?(current_user)
       render 'shared/forbidden'
       return
     end
@@ -186,7 +186,7 @@ class PeriodsController < ApplicationController
       render 'shared/not_found'
       return
     end
-    if !@period.can_view?(@cas_user)
+    if !@period.can_view?(current_user)
       render 'shared/forbidden'
       return
     end
@@ -199,7 +199,7 @@ class PeriodsController < ApplicationController
       render 'shared/not_found'
       return
     end
-    if !@period.can_edit?(@cas_user)
+    if !@period.can_edit?(current_user)
       render 'shared/forbidden'
       return
     end
@@ -244,7 +244,7 @@ class PeriodsController < ApplicationController
       render 'shared/not_found'
       return
     end
-    if !@period.can_view?(@cas_user)
+    if !@period.can_view?(current_user)
       render 'shared/forbidden'
       return
     end

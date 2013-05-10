@@ -6,7 +6,7 @@ class AdminsController < ApplicationController
       render 'shared/not_found'
       return
     end
-    if !@period.can_edit?(@cas_user)
+    if !@period.can_edit?(current_user)
       render 'shared/forbidden'
       return
     end
@@ -83,7 +83,7 @@ class AdminsController < ApplicationController
       render 'shared/not_found'
       return
     end
-    if !@admin.period.can_edit?(@cas_user)
+    if !@admin.period.can_edit?(current_user)
       render 'shared/forbidden'
       return
     end

@@ -6,7 +6,7 @@ class AssignmentsController < ApplicationController
       render 'shared/not_found'
       return
     end
-    if !@assignment.can_view?(@cas_user)
+    if !@assignment.can_view?(current_user)
       render 'shared/forbidden'
       return
     end
@@ -19,11 +19,11 @@ class AssignmentsController < ApplicationController
       render 'shared/not_found'
       return
     end
-    if !@assignment.can_edit?(@cas_user)
+    if !@assignment.can_edit?(current_user)
       render 'shared/forbidden'
       return
     end
-    
+
     @new_goal = Goal.new
     member_breadcrumbs
   end
@@ -34,7 +34,7 @@ class AssignmentsController < ApplicationController
       render 'shared/not_found'
       return
     end
-    if !@assignment.can_edit?(@cas_user)
+    if !@assignment.can_edit?(current_user)
       render 'shared/forbidden'
       return
     end
@@ -85,7 +85,7 @@ class AssignmentsController < ApplicationController
   # POST /assignments/create
   def create
     assn = Assignment.new(params[:assignment])
-    if !assn.can_edit?(@cas_user)
+    if !assn.can_edit?(current_user)
       render 'shared/forbidden'
       return
     end
@@ -190,7 +190,7 @@ class AssignmentsController < ApplicationController
       render 'shared/not_found'
       return
     end
-    if assn.period.keep_updated? or !assn.can_edit?(@cas_user)
+    if assn.period.keep_updated? or !assn.can_edit?(current_user)
       render 'shared/forbidden'
       return
     end
@@ -231,11 +231,11 @@ class AssignmentsController < ApplicationController
   private
   # Adds breadcrumbs for all member views
   def member_breadcrumbs
-    add_breadcrumb(@assignment.period.name, url_for(@assignment.period), @assignment.period.can_view?(@cas_user), 'Coaching Period')
+    add_breadcrumb(@assignment.period.name, url_for(@assignment.period), @assignment.period.can_view?(current_user), 'Coaching Period')
     if @assignment.group 
-      add_breadcrumb(@assignment.group.display_name, url_for(@assignment.group), @assignment.group.can_view?(@cas_user), 'Coaching Group')
+      add_breadcrumb(@assignment.group.display_name, url_for(@assignment.group), @assignment.group.can_view?(current_user), 'Coaching Group')
     elsif @assignment.team
-      add_breadcrumb(@assignment.team.display_name, url_for(@assignment.team), @assignment.team.can_view?(@cas_user), 'Team')
+      add_breadcrumb(@assignment.team.display_name, url_for(@assignment.team), @assignment.team.can_view?(current_user), 'Team')
     end
     add_breadcrumb(@assignment.user.display_name, url_for(@assignment), true, 'Assignment')
   end

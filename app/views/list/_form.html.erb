@@ -21,6 +21,10 @@
                 <td><%= check_box :fields, :last_login, :checked => '1' == (@fields[:last_login] ||= '0') %></td>
                 <td>Last login</td>
               </tr>
+              <tr>
+                <td><%= check_box :fields, :real_user, :checked => '1' == (@fields[:real_user] ||= '0') %></td>
+                <td>Real user</td>
+              </tr>
             <% else -%>
               <% if @list_type == 'period' -%>
                 <tr>

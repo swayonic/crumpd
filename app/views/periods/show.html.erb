@@ -38,15 +38,15 @@ Because this period is set to be updated periodically with data from Sitrack, yo
     <ul>
       <% for a in @period.period_admins.sort_by{|a| a.user.sort_name} -%>
         <li>
-          <%= link_to_if a.user.can_view?(@cas_user), a.user.display_name, a.user %>
-          <% if @period.can_edit?(@cas_user) -%>
+          <%= link_to_if a.user.can_view?(current_user), a.user.display_name, a.user %>
+          <% if @period.can_edit?(current_user) -%>
             <%= link_to image_tag('icons/silk/delete.png'), a, method: :delete, data: { confirm: 'Are you sure you want to remove this admin?' } %>
           <% end -%>
         </li>
       <% end -%>
     </ul>
   <% end -%>
-  <% if @period.can_edit?(@cas_user) -%>
+  <% if @period.can_edit?(current_user) -%>
     <%= form_for [@period, @new_admin] do |f| -%>
       <%= render :partial => 'users/new', :locals => {
         :name => 'add_admin',
@@ -67,14 +67,14 @@ Because this period is set to be updated periodically with data from Sitrack, yo
         <li>
           <%= link_to t.display_name, t %>
           (<%= pluralize t.assignments.active.count, 'member' %>)
-          <% if t.assignments.count == 0 and @period.can_edit?(@cas_user) and !@period.keep_updated? -%>
+          <% if t.assignments.count == 0 and @period.can_edit?(current_user) and !@period.keep_updated? -%>
             <%= link_to image_tag('icons/silk/delete.png'), t, method: :delete, data: { confirm: 'Are you sure you want to delete this team?' } %>
           <% end -%>
         </li>
       <% end -%>
     </ul>
   <% end -%>
-  <% if @period.can_edit?(@cas_user) and !@period.keep_updated? -%>
+  <% if @period.can_edit?(current_user) and !@period.keep_updated? -%>
     <%= form_for [@period, @new_team] do |f| -%>
       <%= f.text_field :name, :size => 12 %>
       <%= f.submit class: 'btn btn-primary' %>
@@ -95,14 +95,14 @@ Because this period is set to be updated periodically with data from Sitrack, yo
             <%= image_tag 'icons/silk/error.png', title: 'No coach has been assigned to this group.' %>
           <% end -%>
           (<%= pluralize g.assignments.active.count, 'member' %>)
-          <% if g.assignments.count == 0 and @period.can_edit?(@cas_user) and !@period.keep_updated? -%>
+          <% if g.assignments.count == 0 and @period.can_edit?(current_user) and !@period.keep_updated? -%>
             <%= link_to image_tag('icons/silk/delete.png'), g, method: :delete, title: 'Delete', data: { confirm: 'Are you sure you want to delete this group?' } %>
           <% end -%>
         </li>
       <% end -%>
     </ul>
   <% end -%>
-  <% if @period.can_edit?(@cas_user) and !@period.keep_updated? -%>
+  <% if @period.can_edit?(current_user) and !@period.keep_updated? -%>
     <%= form_for [@period, @new_group] do |f| -%>
       <%= f.text_field :name, :size => 12 %>
       <%= f.submit class: 'btn btn-primary' %>

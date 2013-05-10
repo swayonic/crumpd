@@ -7,7 +7,7 @@ class ReportsController < ApplicationController
       return
     end
     @assignment = @report.assignment
-    if !@assignment.can_view_reports?(@cas_user)
+    if !@assignment.can_view_reports?(current_user)
       render 'shared/forbidden'
       return
     end
@@ -20,7 +20,7 @@ class ReportsController < ApplicationController
       render 'shared/not_found'
       return
     end
-    if !@assignment.can_edit_reports?(@cas_user)
+    if !@assignment.can_edit_reports?(current_user)
       render 'shared/forbidden'
       return
     end
@@ -49,7 +49,7 @@ class ReportsController < ApplicationController
       return
     end
     assignment = @report.assignment
-    if !assignment.can_edit_reports?(@cas_user)
+    if !assignment.can_edit_reports?(current_user)
       render 'shared/forbidden'
       return
     end
@@ -74,7 +74,7 @@ class ReportsController < ApplicationController
       render 'shared/not_found'
       return
     end
-    if !@assignment.can_edit_reports?(@cas_user)
+    if !@assignment.can_edit_reports?(current_user)
       render 'shared/forbidden'
       return
     end
@@ -96,7 +96,7 @@ class ReportsController < ApplicationController
       end
     end
 
-    @report.updated_by = @cas_user.id
+    @report.updated_by = current_user.id
 
     if @report.save
       redirect_to @report, notice: 'Report was successfully created.'
@@ -112,7 +112,7 @@ class ReportsController < ApplicationController
       render 'shared/not_found'
       return
     end
-    if !@report.assignment.can_edit_reports?(@cas_user)
+    if !@report.assignment.can_edit_reports?(current_user)
       render 'shared/forbidden'
       return
     end
@@ -151,7 +151,7 @@ class ReportsController < ApplicationController
       end
     end
 
-    @report.updated_by = @cas_user.id
+    @report.updated_by = current_user.id
     valid = false if !@report.update_attributes(params[:report])
     
     if valid
@@ -168,7 +168,7 @@ class ReportsController < ApplicationController
       render 'shared/not_found'
       return
     end
-    if !@report.can_delete?(@cas_user)
+    if !@report.can_delete?(current_user)
       render 'shared/forbidden'
       return
     end
@@ -184,7 +184,7 @@ class ReportsController < ApplicationController
       render 'shared/not_found'
       return
     end
-    if !@assignment.can_view_reports?(@cas_user)
+    if !@assignment.can_view_reports?(current_user)
       render 'shared/forbidden'
       return
     end
@@ -215,11 +215,11 @@ class ReportsController < ApplicationController
   # Adds breadcrumbs for all collection views
   def collection_breadcrumbs
     assignment = @assignment || @report.assignment
-    add_breadcrumb(assignment.period.name, url_for(assignment.period), assignment.period.can_view?(@cas_user), 'Coaching Period')
+    add_breadcrumb(assignment.period.name, url_for(assignment.period), assignment.period.can_view?(current_user), 'Coaching Period')
     if assignment.group 
-      add_breadcrumb(assignment.group.display_name, url_for(assignment.group), assignment.group.can_view?(@cas_user), 'Coaching Group')
+      add_breadcrumb(assignment.group.display_name, url_for(assignment.group), assignment.group.can_view?(current_user), 'Coaching Group')
     elsif assignment.team
-      add_breadcrumb(assignment.team.display_name, url_for(assignment.team), assignment.team.can_view?(@cas_user), 'Team')
+      add_breadcrumb(assignment.team.display_name, url_for(assignment.team), assignment.team.can_view?(current_user), 'Team')
     end
     add_breadcrumb(assignment.user.display_name, url_for(assignment), true, 'Assignment')
   end

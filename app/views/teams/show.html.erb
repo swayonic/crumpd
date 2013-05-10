@@ -9,7 +9,7 @@
     </tr>
     <tr>
       <th>Coaching Period</th>
-      <td><%= link_to_if @team.period.can_view?(@cas_user), @team.period.name, @team.period %></td>
+      <td><%= link_to_if @team.period.can_view?(current_user), @team.period.name, @team.period %></td>
     </tr>
     <% if @team.sitrack_name and @team.sitrack_name != @team.display_name -%>
       <tr>
@@ -48,7 +48,7 @@
       </tr>
     <% end -%>
   </table>
-  <% if @team.can_edit?(@cas_user) -%>
+  <% if @team.can_edit?(current_user) -%>
     <%= link_to 'Edit', edit_team_path(@team), class: 'btn' %>
   <% end -%>
 </div>
@@ -58,7 +58,7 @@
   <% if @team.members.nil? or @team.members.count == 0 -%>
     <i>None</i>
   <% else -%>
-    <% if @team.can_view_list?(@cas_user) -%>
+    <% if @team.can_view_list?(current_user) -%>
       <%= link_to 'Detailed Listing', list_team_path(@team), class: 'btn' %>
       <br>
       <br>
@@ -67,12 +67,12 @@
     <ul>
       <% for a in @team.assignments.active.sort_by{|a| a.user.sort_name} -%>
         <li>
-          <% if a.can_view?(@cas_user) -%>
+          <% if a.can_view?(current_user) -%>
             <%= link_to a.user.display_name, a %>
           <% else -%>
-            <%= link_to_if a.user.can_view?(@cas_user), a.user.display_name, a.user %>
+            <%= link_to_if a.user.can_view?(current_user), a.user.display_name, a.user %>
           <% end -%>
-          <% if @team.can_edit?(@cas_user) and a.can_edit?(@cas_user) -%>
+          <% if @team.can_edit?(current_user) and a.can_edit?(current_user) -%>
             <%= link_to image_tag('icons/silk/delete.png'),
               url_for(:controller => :assignments, :action => :destroy, :id => a.id, :delete => 'team'),
               method: :delete,
@@ -82,7 +82,7 @@
       <% end -%>
     </ul>
   <% end -%>
-  <% if !@team.period.keep_updated and @team.can_edit?(@cas_user) -%>
+  <% if !@team.period.keep_updated and @team.can_edit?(current_user) -%>
     <div class="row-fluid">
       <div class="span6">
     <%= form_for @new_assn, :html => {class: 'form-horizontal'} do |f| -%>

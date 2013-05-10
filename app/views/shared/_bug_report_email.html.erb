@@ -1,12 +1,27 @@
-My problem is:
+SIMPD Webmaster,
 
+...
 
-My browser is:
+<% if current_user -%>
+  - <%= current_user.display_name %>
+<% else -%>
+  - Anonymous
+<% end -%>
 
 
 Technical information:
-  Time: <%= Time.now %>
-<% if cas_user -%>
-  User: guid=<%= cas_user.guid %>, account_number=<%= cas_user.account_number %>
+<% if current_user -%>
+  Current User:
+    ID=<%= current_user.id %>
+    GUID=<%= current_user.guid %>
+    Account Number=<%= current_user.account_number %>
+
+<% end -%>
+<% if original_user -%>
+  Original User:
+    ID=<%= original_user.id %>
+    GUID=<%= original_user.guid %>
+    Account Number=<%= original_user.account_number %>
+
 <% end -%>
   URI: <%= request.url %>

@@ -32,7 +32,7 @@ class HomeController < ApplicationController
 
   # POST /full_update
   def full_update
-    if !@cas_user.is_admin?
+    if !current_user.is_admin?
       render 'shared/forbidden'
       return
     end
@@ -56,7 +56,7 @@ class HomeController < ApplicationController
   # GET /list
   # POST /list
   def list
-    if !@cas_user.is_admin?
+    if !current_user.is_admin?
       render 'shared/forbidden'
       return
     end
@@ -84,7 +84,7 @@ class HomeController < ApplicationController
   #
   # Ok, so it's not really a backdoor
   def backdoor
-    if !@cas_user.is_admin?
+    if !current_user.is_admin?
       render 'shared/forbidden'
       return
     end

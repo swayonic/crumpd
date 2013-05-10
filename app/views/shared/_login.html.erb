@@ -10,15 +10,15 @@
         <% end -%>
       </td>
       <td width='100%' style='text-align:right;'>
-        <% if @cas_user.nil? -%>
+        <% if current_user.nil? -%>
           <%= link_to 'Login', @login_path %>
         <% else -%>
-          <%= @cas_user.display_name %>
+          <%= current_user.display_name %>
           <br>
-          <%= link_to 'My Profile', @cas_user %>
+          <%= link_to 'My Profile', current_user %>
           <br>
-          <% if @sudoer %>
-            <%= link_to 'Unsudo', unsudo_users_path %> (<i><%= @sudoer.display_name %></i>)
+          <% if sudo_user %>
+            <%= link_to 'Unsudo', unsudo_users_path %> (<i><%= sudo_user.display_name %></i>)
           <% else -%>
             <%= link_to 'Logout', :controller => :home, :action => :logout %>
           <% end -%>

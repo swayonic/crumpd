@@ -1,8 +1,10 @@
 class User < ActiveRecord::Base
-  attr_accessible :guid, :account_number, :first_name, :last_name, :preferred_name, :phone, :email, :is_admin, :time_zone, :last_login
+  attr_accessible :guid, :account_number, :first_name, :last_name, :preferred_name, :phone, :email, :is_admin, :time_zone, :last_login, :real_id
 
   scope :has_guid, where("guid IS NOT NULL")
   scope :admin, where(:is_admin => true)
+
+  belongs_to :real_user, :class_name => "User", :foreign_key => :real_id
 
   has_many :assignments, :dependent => :destroy
   has_many :group_coaches, :dependent => :destroy
@@ -37,6 +39,12 @@ class User < ActiveRecord::Base
     }
 
   validates_inclusion_of :time_zone, in: ActiveSupport::TimeZone.zones_map(&:name), :allow_nil => true
+
+  validates_each :real_id do |record, attr, value|
+    if value and User.find_by_id(value) == record
+      record.errors.add(:real_id, ' - cannot merge a user into itself.')
+    end
+  end
 
   # Turns value into a valid guid or nil
   def self.cleanup_guid(value)

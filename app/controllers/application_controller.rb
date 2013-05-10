@@ -19,13 +19,58 @@ class ApplicationController < ActionController::Base
 
   ### Time zone
 
-  around_filter :user_time_zone, if: :cas_user
+  around_filter :user_time_zone, if: :current_user
 
   ### User methods
+  # current_user: usually what you want
+  # original_user: the User that is actually logged in
+  #   (only set if current_user.real_user exists)
+  # sudo_user: the hidden user who is sudoing to become current_user
+  #   (only set if session[:sudo_id] is set)
 
-  helper_method :cas_user
-  def cas_user
-    return @cas_user if @cas_user # Only set once
+  helper_method :current_user
+  def current_user
+    return @sudoee if @sudoee
+    return @cas_user.real_user if @cas_user and @cas_user.real_user
+    return @cas_user
+  end
+
+  helper_method :original_user
+  def original_user
+    return nil unless @cas_user and @cas_user.real_user
+    return @cas_user
+  end
+
+  helper_method :sudo_user
+  def sudo_user
+    return nil unless @cas_user and @sudoee
+    return @cas_user.real_user if @cas_user and @cas_user.real_user
+    return @cas_user
+  end
+
+  ### Breadcrumbs
+
+  def add_breadcrumb(text, link, allowed = true, title = nil)
+    @breadcrumbs = Array.new if @breadcrumbs.nil?
+    @breadcrumbs << {
+      :text => text,
+      :link => link,
+      :allowed => allowed,
+      :title => title
+      }
+  end
+
+  private
+
+  def authorize
+    # Set login path
+    if Rails.env.production?
+      @login_path = RubyCAS::Filter.login_url(self)
+    else
+      @login_path = '/login'
+    end
+
+    # Set @cas_user from CAS params
 
     if Rails.env.production?
       if session[:cas_extra_attributes] and guid = session[:cas_extra_attributes][:ssoGuid]
@@ -67,62 +112,25 @@ class ApplicationController < ActionController::Base
       end
     end
 
-    return @cas_user
-  end
-
-  helper_method :sudoer
-  def sudoer
-    return @sudoer if @sudoer # Only set once
-
-    if session[:sudo_id]
-      if sudoee = User.find_by_id(session[:sudo_id]) and sudoee.can_sudo?(@cas_user)
-        @sudoer = @cas_user
-        @cas_user = sudoee
-        @cas_user.is_admin = false # You can't sudo into admin privileges
-      end
-    end
-
-    return @sudoer
-  end
-
-  helper_method :true_user
-  def true_user
-    sudoer || cas_user
-  end
-
-  ### Breadcrumbs
-
-  def add_breadcrumb(text, link, allowed = true, title = nil)
-    @breadcrumbs = Array.new if @breadcrumbs.nil?
-    @breadcrumbs << {
-      :text => text,
-      :link => link,
-      :allowed => allowed,
-      :title => title
-      }
-  end
-
-  private
-
-  def authorize
-    if Rails.env.production?
-      @login_path = RubyCAS::Filter.login_url(self)
-    else
-      @login_path = '/login'
-    end
-
-    if cas_user.nil?
+    if @cas_user.nil?
       render 'shared/unauthorized'
       return false
     end
 
-    sudoer
+    # Set @sudoee if necessary
+
+    if session[:sudo_id]
+      if sudoee = User.find_by_id(session[:sudo_id]) and sudoee.can_sudo?(current_user)
+        sudoee.is_admin = false # You can't sudo into admin privileges
+        @sudoee = sudoee
+      end
+    end
 
     return true
   end
 
   def user_time_zone(&block)
-    Time.use_zone(cas_user.time_zone, &block)
+    Time.use_zone(current_user.time_zone, &block)
   end
 
 end

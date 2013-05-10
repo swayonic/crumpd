@@ -6,11 +6,11 @@ class CoachesController < ApplicationController
       render 'shared/not_found'
       return
     end
-    if !@group.can_edit_coaches?(@cas_user)
+    if !@group.can_edit_coaches?(current_user)
       render 'shared/forbidden'
       return
     end
-    
+
     if params[:add_coach].nil?
       flash.alert = 'Coach not added'
       redirect_to @group
@@ -83,7 +83,7 @@ class CoachesController < ApplicationController
       render 'shared/not_found'
       return
     end
-    if !@coach.group.can_edit_coaches?(@cas_user)
+    if !@coach.group.can_edit_coaches?(current_user)
       render 'shared/forbidden'
       return
     end

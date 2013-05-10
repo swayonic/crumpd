@@ -1,4 +1,8 @@
-<% title @user.display_name %>
+<% title @user.display_name do -%>
+  <% if @user.real_user -%>
+    NOTE: This account has been merged into <%= link_to @user.real_user.display_name, @user.real_user %>'s account.
+  <% end -%>
+<% end -%>
 
 <div class="span4 well well-small">
   <table class="mytable">
@@ -28,7 +32,7 @@
       <th>Email Address</th>
       <td><%= @user.email %></td>
     </tr>
-    <% if @cas_user.is_admin? -%>
+    <% if current_user.is_admin? -%>
       <tr>
         <td>&nbsp;</td>
       </tr>
@@ -46,19 +50,19 @@
       <td>&nbsp;</td>
     </tr>
 
-    <% if @user.can_edit?(@cas_user) -%>
+    <% if @user.can_edit?(current_user) -%>
       <tr>
         <th>Edit</th>
         <td><%= link_to 'Edit', edit_user_path(@user), class: 'btn' %></td>
       </tr>
     <% end -%>
-    <% if @user.can_sudo?(true_user) -%>
+    <% if @user.can_sudo?(current_user) -%>
       <tr>
         <th>Sudo <%= help_tip 'Temporarily assume the identity of this person. Lets you see what they see.' %></th>
         <td><%= link_to 'Assume', sudo_user_path(@user), class: 'btn btn-info' %></td>
       </tr>
     <% end -%>
-    <% if @cas_user.is_admin? -%>
+    <% if current_user.is_admin? -%>
       <tr>
         <th>Admin <%= help_tip 'Grants this user Admin privileges' %></th>
         <td>

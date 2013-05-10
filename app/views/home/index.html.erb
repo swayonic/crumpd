@@ -1,6 +1,6 @@
 <% title 'SIMPD Home' %>
 
-<% if @cas_user.is_admin? or @cas_user.periods_as_admin.count > 0 -%>
+<% if current_user.is_admin? or current_user.periods_as_admin.count > 0 -%>
   <div class="span4">
     <div class="well well-small">
       <h3>View a User</h3>
@@ -30,7 +30,7 @@
 
     <%= autofocus 'view_user_name' %>
 
-    <% if @cas_user.is_admin? -%>
+    <% if current_user.is_admin? -%>
       <div class="well well-small">
         <h3>Admin Tools</h3>
         <ul>
@@ -50,6 +50,6 @@
 <!-- Start roles -->
 <div class="span8 offset2 well well-small">
 <% end -%>
-  <% @user = @cas_user -%>
+  <% @user = current_user -%>
   <%= render :partial => 'users/roles' %>
 </div>
