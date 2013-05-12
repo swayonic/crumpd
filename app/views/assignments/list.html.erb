@@ -1,4 +1,5 @@
 <% title @list_title -%>
+<% @list_size_text = pluralize(@assignments.count, 'person') -%>
 
 <% content_for :form do -%>
   <%= render :partial => 'list/form' %>

@@ -3,6 +3,15 @@
   <div class="row-fluid">
     <%= yield(:form) %>
   </div>
+  <!-- List information -->
+  <div class="row-fluid">
+    <div class="span10 offset1">
+      <p class="text-right muted">
+      <%= @list_size_text %>
+      <%= help_tip 'Use the column headers to sort the data. You can SHIFT+Click multiple headers to sort by multiple fields, and click them twice to reverse the sort order' %>
+      </p>
+    </div>
+  </div>
   <!-- List content -->
   <div class="row-fluid">
     <%= yield(:list) %>
