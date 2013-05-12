@@ -2,19 +2,19 @@
   <%= open_row %>
     <%= open_cell_head %>ID<%= close_cell_head %>
     <%= open_cell_head %>Name<%= close_cell_head %>
-    <% if @fields['account_number'] == '1' -%>
+    <% if @fields[:account_number] == '1' -%>
       <%= open_cell_head %>Account #<%= close_cell_head %>
     <% end -%>
-    <% if @fields['guid'] == '1' -%>
+    <% if @fields[:guid] == '1' -%>
       <%= open_cell_head %>GUID<%= close_cell_head %>
     <% end -%>
-    <% if @fields['roles'] == '1' -%>
+    <% if @fields[:roles] == '1' -%>
       <%= open_cell_head %>Roles<%= close_cell_head %>
     <% end -%>
-    <% if @fields['last_login'] == '1' -%>
+    <% if @fields[:last_login] == '1' -%>
       <%= open_cell_head %>Last Login<%= close_cell_head %>
     <% end -%>
-    <% if @fields['real_user'] == '1' -%>
+    <% if @fields[:real_user] == '1' -%>
       <%= open_cell_head %>Real User<%= close_cell_head %>
     <% end -%>
   <%= close_row %>

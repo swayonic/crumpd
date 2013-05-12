@@ -63,7 +63,15 @@ class HomeController < ApplicationController
 
     @list_title = "SIMPD Complete List"
     @list_type = 'complete'
-    @fields = params[:fields] || Hash.new
+    @fields = params[:fields]
+    if !@fields
+      @fields = Hash.new
+      @fields[:account_number] = '1'
+      @fields[:guid] = '1'
+      @fields[:roles] = '1'
+      @fields[:last_login] = '1'
+      @fields[:real_user] = '1'
+    end
 
     @users = User.all.sort_by{|u| u.sort_name}
 
