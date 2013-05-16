@@ -137,7 +137,7 @@ end
 <%
 inhand_amt = nil
 pledged_amt = nil
-goal_amt = 0
+goal_amt = a.goals.any? ? 0 : nil
 # Don't display if the report is missing a goal_line
 if r and r.goal_lines.count == a.goals.count
   inhand_amt = 0
@@ -153,13 +153,13 @@ if r and r.goal_lines.count == a.goals.count
 end
 -%>
       <% if @fields['goal_combined_inhand'] == '1' -%>
-        <%= open_cell_body %><%= "#{Goal.pct(inhand_amt, goal_amt)}%" if inhand_amt %><%= close_cell_body %>
+        <%= open_cell_body %><%= "#{Goal.pct(inhand_amt, goal_amt)}%" if goal_amt and inhand_amt %><%= close_cell_body %>
       <% end -%>
       <% if @fields['goal_combined_pledged'] == '1' -%>
-        <%= open_cell_body %><%= "#{Goal.pct(pledged_amt, goal_amt)}%" if pledged_amt %><%= close_cell_body %>
+        <%= open_cell_body %><%= "#{Goal.pct(pledged_amt, goal_amt)}%" if goal_amt and pledged_amt %><%= close_cell_body %>
       <% end -%>
       <% if @fields['goal_combined_total'] == '1' -%>
-        <%= open_cell_body %><%= "#{Goal.pct(inhand_amt + pledged_amt, goal_amt)}%" if inhand_amt and pledged_amt %><%= close_cell_body %>
+        <%= open_cell_body %><%= "#{Goal.pct(inhand_amt + pledged_amt, goal_amt)}%" if goal_amt and inhand_amt and pledged_amt %><%= close_cell_body %>
       <% end -%>
 <%# ### Report fields -%>
       <% if @fields['total_partners'] == '1' -%>
