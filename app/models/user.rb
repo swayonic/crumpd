@@ -115,9 +115,9 @@ class User < ActiveRecord::Base
   # Returns true if u can become self
   def can_sudo?(u)
     return true if u.is_admin?
-    for p in all_periods
-      return true if p.admins.include?(u)
-    end
+#    for p in all_periods
+#      return true if p.admins.include?(u)
+#    end
 
     return false
   end
