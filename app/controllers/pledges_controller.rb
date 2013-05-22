@@ -31,7 +31,7 @@ class PledgesController < ApplicationController
     @pledge.name.strip!
 
     if @pledge.assignment.pledges.select{ |p| p.name == @pledge.name and p.frequency == @pledge.frequency}.count > 0
-      flash.alert = "Cannot add another pledge with the name \"#{@pledge.name}\" as a #{Goal.freq_title @pledge.frequency} gift. Please choose a different name or remove the other pledge."
+      flash.alert = "Cannot add another pledge with the name \"#{@pledge.name}\" as a #{Goal.title @pledge.frequency} gift. Please choose a different name or remove the other pledge."
     elsif @pledge.save
       flash.notice = 'Pledge added'
     else
@@ -74,7 +74,7 @@ class PledgesController < ApplicationController
       return
     end
 
-    @pledge.destroy
+    flash.notice = 'Pledge deleted.' if @pledge.destroy
 
     redirect_to :action => :index, :assignment_id => @pledge.assignment.id
   end
