@@ -101,16 +101,14 @@ class Sitrack < ActiveRecord::Base
           assn.save!
 
           # Create or update goals
-          if amt = line[:monthlyGoal]
-            goal = assn.goals.find_by_frequency(12) || assn.goals.build(:frequency => 12)
-            goal.amount = amt
-            goal.save!
-          end
-          if amt = line[:oneTimeGoal]
-            goal = assn.goals.find_by_frequency(0) || assn.goals.build(:frequency => 0)
-            goal.amount = amt
-            goal.save!
-          end
+          amt = line[:monthlyGoal] || 0
+          goal = assn.goals.find_by_frequency(12) || assn.goals.build(:frequency => 12)
+          goal.amount = amt
+          goal.save!
+          amt = line[:oneTimeGoal] || 0
+          goal = assn.goals.find_by_frequency(0) || assn.goals.build(:frequency => 0)
+          goal.amount = amt
+          goal.save!
 
         rescue Exception => e
           logger.info 'ERROR: ' + e.message
