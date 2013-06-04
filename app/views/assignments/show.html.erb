@@ -134,7 +134,7 @@
           <td></td>
           <% for g in @assignment.goals -%>
             <th><%= g.title %> in-hand</th>
-            <th><%= g.title %> pledged</th>
+            <th><%= g.title %> total <%= help_tip 'Includes pledged' %></th>
           <% end -%>
         </tr>
       </thead>
