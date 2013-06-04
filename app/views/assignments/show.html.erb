@@ -47,7 +47,12 @@
     <% for goal in @assignment.goals -%>
       <tr>
         <th><%= goal.title %> goal</th>
-        <td><%= number_to_currency goal.amount %></td>
+        <td>
+          <%= number_to_currency goal.amount %>
+          <% if !goal.amount or goal.amount == 0 -%>
+            <%= image_tag 'icons/silk/error.png', title: 'Percentages cannot be calculated for this goal' %>
+          <% end -%>
+        </td>
       </tr>
     <% end -%>
   </table>
@@ -100,15 +105,20 @@
         <% for g in @assignment.goals -%>
           <tr>
             <th><%= g.title %></th>
-            <td><%= @assignment.goal_inhand_pct(g.frequency) %>%</td>
-            <td><%= @assignment.goal_total_pct(g.frequency) %>%</td>
+            <% if g.amount and g.amount > 0 -%>
+              <td><%= @assignment.goal_inhand_pct(g.frequency) %>%</td>
+              <td><%= @assignment.goal_total_pct(g.frequency) %>%</td>
+            <% else -%>
+              <td><%= number_to_currency @assignment.goal_inhand(g.frequency) %></td>
+              <td><%= number_to_currency @assignment.goal_total(g.frequency) %></td>
+            <% end -%>
           </tr>
         <% end -%>
         <% if @assignment.goals.count > 1 -%>
           <tr>
             <th>Combined</th>
-            <td><%= @assignment.combined_inhand_pct %>%</td>
-            <td><%= @assignment.combined_total_pct %>%</td>
+            <td><%= view_pct @assignment.combined_inhand_pct %></td>
+            <td><%= view_pct @assignment.combined_total_pct %></td>
           </tr>
         <% end -%>
       </thead>
@@ -151,8 +161,13 @@
             </th>
             <% for g in @assignment.goals -%>
               <% if l = r.goal_lines.find_by_frequency(g.frequency) -%>
-                <td><%= Goal.pct(l.inhand, @assignment.goal_amt(g.frequency)) %>%</td>
-                <td><%= Goal.pct(l.inhand + l.pledged, @assignment.goal_amt(g.frequency)) %>%</td>
+                <% if !g.amount or g.amount == 0 -%>
+                  <td><%= number_to_currency l.inhand %></td>
+                  <td><%= number_to_currency l.inhand + l.pledged %></td>
+                <% else -%>
+                  <td><%= view_pct Goal.pct(l.inhand, @assignment.goal_amt(g.frequency)) %></td>
+                  <td><%= view_pct Goal.pct(l.inhand + l.pledged, @assignment.goal_amt(g.frequency)) %></td>
+                <% end -%>
               <% end -%>
             <% end -%>
           </tr>

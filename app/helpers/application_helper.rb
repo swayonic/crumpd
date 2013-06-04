@@ -33,4 +33,8 @@ module ApplicationHelper
     render :partial => 'shared/autofocus', :locals => {:id => id}
   end
 
+  def view_pct(p)
+    "#{p}%" if p
+  end
+
 end

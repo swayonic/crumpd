@@ -19,6 +19,7 @@
   </tbody>
 </table>
 
+<% if true or (@assignment.goals.any? and @assignment.goals.select{|g| g.amount and g.amount > 0}.any?) -%>
 <table class="table">
   <thead>
     <tr>
@@ -31,16 +32,22 @@
     <% for g in @assignment.goals -%>
       <tr>
         <th><%= g.title %></th>
-        <td><%= @assignment.goal_inhand_pct(g.frequency) %>%</td>
-        <td><%= @assignment.goal_total_pct(g.frequency) %>%</td>
+        <% if g.amount and g.amount > 0 -%>
+          <td><%= @assignment.goal_inhand_pct(g.frequency) %>%</td>
+          <td><%= @assignment.goal_total_pct(g.frequency) %>%</td>
+        <% else -%>
+          <td></td>
+          <td></td>
+        <% end -%>
       </tr>
     <% end -%>
     <% if @assignment.goals.count > 1 -%>
       <tr>
         <th>Combined</th>
-        <td><%= @assignment.combined_inhand_pct %>%</td>
-        <td><%= @assignment.combined_total_pct %>%</td>
+        <td><%= view_pct @assignment.combined_inhand_pct %></td>
+        <td><%= view_pct @assignment.combined_total_pct %></td>
       </tr>
     <% end -%>
   </tbody>
 </table>
+<% end -%>

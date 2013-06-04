@@ -66,7 +66,9 @@
                   <td colspan="2">
                     <b><%= g.title %></b>
                     <% if @list_type == 'reports' -%>
-                      (<%= number_to_currency @assignment.goal_amt(g.frequency) %>)
+                      (<%= number_to_currency @assignment.goal_amt(g.frequency) %><% if !@assignment.goal_amt(g.frequency) or @assignment.goal_amt(g.frequency) == 0 -%>
+                        <%= image_tag 'icons/silk/error.png', title: 'Percentages cannot be calculated for this goal' %>
+                      <% end -%>)
                     <% else -%>
                       <% name = "#{g.frequency}_goal" -%>
                       <%= check_box :fields, name, :checked => '1' == (@fields[name] ||= '0') %>
