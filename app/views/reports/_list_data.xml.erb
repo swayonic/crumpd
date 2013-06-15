@@ -52,7 +52,7 @@
           <%= open_cell_body %><%= val %><%= close_cell_body %>
         <% end -%>
         <% if @fields["#{g.frequency}_inhand_amt"] == '1' -%>
-          <% val = (r and l = r.goal_lines.find_by_frequency(g.frequency)) ? l.inhand : nil -%>
+          <% val = (r and l = r.goal_lines.find_by_frequency(g.frequency)) ? number_to_currency(l.inhand) : nil -%>
           <%= open_cell_body %><%= val %><%= close_cell_body %>
         <% end -%>
         <% if @fields["#{g.frequency}_pledged_pct"] == '1' -%>
@@ -60,7 +60,7 @@
           <%= open_cell_body %><%= val %><%= close_cell_body %>
         <% end -%>
         <% if @fields["#{g.frequency}_pledged_amt"] == '1' -%>
-          <% val = (r and l = r.goal_lines.find_by_frequency(g.frequency)) ? l.pledged : nil -%>
+          <% val = (r and l = r.goal_lines.find_by_frequency(g.frequency)) ? number_to_currency(l.pledged) : nil -%>
           <%= open_cell_body %><%= val %><%= close_cell_body %>
         <% end -%>
         <% if @fields["#{g.frequency}_total_pct"] == '1' -%>
