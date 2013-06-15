@@ -34,7 +34,7 @@
           <div class="input-append">
             <%= l.text_field :total, class: 'input-small' %>
             <span class="add-on">
-              <%= help_tip raw('The total number of people who have committed to being financial ministry partners. <i>Includes pledged support.</i>') %>
+              <%= help_tip raw('<p>The total number of people who have committed to being financial ministry partners</p><p><i>This includes those who have pledged support.</i></p>') %>
             </span>
           </div>
         </div>
@@ -46,9 +46,12 @@
         <div class="control-group<%= ' error' if line.errors.select{|attr,msg| attr == :inhand}.any? %>">
           <%= l.label :inhand, "#{Goal.title(line.frequency)} in-hand", class: 'control-label required-label' %>
           <div class="controls">
-            <div class="input-prepend">
+            <div class="input-prepend input-append">
               <span class="add-on">$</span>
               <%= l.text_field :inhand, class: 'input-small' %>
+              <span class="add-on">
+                <%= help_tip raw('<p>Amount of <strong>received</strong> support</p><p><i>This can mean that they have given you their first check and you literally have it in your possession, that they’ve signed up for EFT, or that HQ has received their first month’s gift.</i></p>') %>
+              </span>
             </div>
           </div>
         </div>
@@ -59,7 +62,7 @@
               <span class="add-on">$</span>
               <%= l.text_field :pledged, class: 'input-small' %>
               <span class="add-on">
-                <%= help_tip raw('Amount that has been pledged <strong>in addition to</strong> what has already been received.') %>
+                <%= help_tip raw('<p>Amount of <strong>verbally committed</strong> support</p><p><i>This means that they have not yet given it to you, set up EFT, or sent in their first check to HQ.</i></p>') %>
               </span>
             </div>
           </div>
